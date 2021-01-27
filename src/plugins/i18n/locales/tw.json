@@ -1,0 +1,19 @@
+{
+   "page": {
+      "home": {
+         "title": "首頁"
+      }
+   },
+   "validate": {
+      "required": "必填",
+      "email": "電子信箱格式有誤",
+      "mobile": "手機格式有誤",
+      "password": "密碼格式有誤",
+      "pwNotEqual": "密碼不一致",
+      "taiwanId": "身分證格式有誤"
+   },
+   "http": {
+      "401": "請重新登入",
+      "500": "司服器錯誤"
+   }
+}

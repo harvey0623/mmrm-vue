@@ -1,0 +1,20 @@
+$normalBtn: (
+   ( 
+      class: btnTest, 
+      color: red,
+      backgroundColor: orange,
+      borderColor: yellow,
+   ),
+);
+
+
+//一般button
+@each $item in $normalBtn {
+   $normalClass: map-get($item, class);
+   $normalColor: map-get($item, color);
+   $normalBgColor: map-get($item, backgroundColor);
+   $normalBdColor: map-get($item, borderColor);
+   .#{$normalClass} {
+      @include normalBtn($normalColor, $normalBgColor, $normalBdColor);
+   }
+}

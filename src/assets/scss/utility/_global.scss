@@ -1,0 +1,89 @@
+//=======variable
+
+//圓角
+$radius: (
+   basic: 5px
+);
+
+//字體顏色
+$fontColor: (
+   primary: #b9375e
+);
+
+//元素背景色(不包含按鈕)
+$elBgColor: (
+   primary: #b9375e
+);
+
+//按鈕背景色
+$btnBgColor: (
+   primary: #b9375e
+);
+
+//邊框顏色
+$borderColor: (
+   primary: #b9375e
+);
+
+//======extand
+%centerFlex {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+%bwtFlex {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+%posCenter {
+   position: absolute;
+   left: 50%;
+   top: 50%;
+   transform: translate(-50%, -50%);
+}
+
+%hideTxt {
+   white-space: nowrap;
+   text-overflow: ellipsis;
+   overflow: hidden;
+}
+
+// %textGradient {
+//    -webkit-background-clip: text;
+//    -webkit-text-fill-color: transparent;
+//    color: transparent;
+// }
+
+%resetForm {
+   appearance: none;
+}
+
+%clearFix {
+   &:after {
+      content: "";
+      display: block;
+      clear: both;
+   }
+}
+
+//========mixin
+@mixin size($w, $h: $w) {
+   width: $w;
+   height: $h;
+}
+
+@mixin basicSize($w, $h) {
+   min-width: $w;
+   min-height: $h;
+}
+
+//指有margin padding能用
+@mixin elGutter($key, $value) {
+   #{$key}: $value;
+   &:last-child {
+      #{$key}: 0;
+   }
+}

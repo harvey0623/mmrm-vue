@@ -1,0 +1,60 @@
+//置中區塊
+.mycontainer {
+   max-width: 1200px;
+   margin: 0 auto;
+   padding: 0 15px;
+}
+
+//表單layout
+.formLayout {
+   margin-bottom: 20px;
+   >.formRow {
+      @extend %clearFix;
+      @include elGutter(margin-bottom, 20px);
+      >* {
+         float: left;
+      }
+      >.formTitle {
+         width: 100px;
+      }
+      >.formContent {
+         width: calc(100% - 70px);
+      }
+   }
+}
+
+//按鈕外層
+.btnBox {
+   &.center {
+      text-align: center;
+   }
+   &.right {
+      text-align: right;
+   }
+   &.space_bwtween {
+      display: flex;
+      justify-content: space-between;
+      >button,
+      >a {
+         width: 48%;
+         margin-right: 0;
+      }
+   }
+   >* {
+      @include elGutter(margin-right, 5px);
+   }
+   >button,
+   >a {
+      @include basicSize(100px, 40px);
+   }
+   >a {
+      line-height: 40px;
+   }
+}
+
+
+//表單錯誤樣式
+.errMsg {
+   color: red;
+   font-size: 14px;
+}

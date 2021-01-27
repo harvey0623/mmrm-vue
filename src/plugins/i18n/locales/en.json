@@ -1,0 +1,19 @@
+{
+   "page": {
+      "home": {
+         "title": "Home"
+      }
+   },
+   "validate": {
+      "required": "required",
+      "email": "email format error",
+      "mobile": "mobile format error",
+      "password": "password format error",
+      "pwNotEqual": "password is different",
+      "taiwanId": "taiwanId format error"
+   },
+   "http": {
+      "401": "Please login again",
+      "500": "Server error"
+   }
+}

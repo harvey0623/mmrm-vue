@@ -1,0 +1,45 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "cross-env NODE_ENV=dev vue-cli-service serve --mode dev",
+    "prod": "cross-env NODE_ENV=prod vue-cli-service serve --mode prod",
+    "build": "cross-env NODE_ENV=prod vue-cli-service build --mode prod"
+  },
+  "dependencies": {
+    "@vue/composition-api": "^1.0.0-beta.26",
+    "axios": "^0.20.0",
+    "bootstrap": "^4.5.2",
+    "bootstrap-vue": "^2.21.2",
+    "core-js": "^3.6.5",
+    "cross-env": "^7.0.2",
+    "crypto-js": "^4.0.0",
+    "js-cookie": "^2.2.1",
+    "lodash": "^4.17.20",
+    "swiper": "^5.4.5",
+    "vee-validate": "^3.4.5",
+    "vue": "^2.6.12",
+    "vue-awesome-swiper": "^4.1.1",
+    "vue-cropperjs": "^4.2.0",
+    "vue-i18n": "^8.22.2",
+    "vue-meta": "^2.4.0",
+    "vue-router": "^3.4.9",
+    "vue-slide-up-down": "^2.0.1",
+    "vuex": "^3.6.0",
+    "vuex-persistedstate": "^4.0.0-beta.3"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.2.0",
+    "@vue/cli-plugin-router": "~4.2.0",
+    "@vue/cli-plugin-vuex": "~4.2.0",
+    "@vue/cli-service": "~4.2.0",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 1 versions"
+  ]
+}

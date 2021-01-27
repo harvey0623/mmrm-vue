@@ -1,0 +1,36 @@
+%style {
+   border: 1px solid map-get($borderColor, primary);
+   border-radius: map-get($radius, basic);
+}
+
+//====input
+.myInput {
+   @extend %style;
+   &::placeholder {
+      font-size: 16px;
+   }
+}
+
+//====select
+.mySelect {
+   @extend %style;
+}
+
+//=====textArea
+.txtArea {
+   @extend %style;
+   resize: none;
+}
+
+//====checkbox or radio
+.customRadio {
+   @extend %resetForm;
+   @include size(16px);
+   margin-right: 5px;
+	background-color: #fff;
+	border: 1px solid map-get($borderColor, primary);
+   cursor: pointer;
+   &:checked {
+      background-color: map-get($elBgColor, primary);
+   }
+}
