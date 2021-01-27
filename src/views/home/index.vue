@@ -1,11 +1,19 @@
 <template>
    <div class="home">
-
+      <div class="mycontainer">
+         <EntranceBlock
+            v-for="service in serviceList"
+            :key="service.id"
+            :title="service.title"
+            :lists="service.lists"
+            :isLogin="service.isLogin"
+         ></EntranceBlock>
+      </div>
    </div>
 </template>
 
 <script>
-import httpMethod from '@/api/auth.js';
+import EntranceBlock from '@/components/EntranceBlock/index.vue';
 export default {
    name: 'home',
    metaInfo() {
@@ -14,21 +22,50 @@ export default {
       }
    },
    data: () => ({
-      
+      blockData: [
+         {
+            id: 'a',
+            title: '會員服務',
+            lists: [
+               { iconClass: 'memberCard', path: '/', auth: true, showInLogin: true },
+               { iconClass: 'myCoupon', path: '/', auth: true, showInLogin: true },
+               { iconClass: 'message', path: '/', auth: true, showInLogin: true },
+               { iconClass: 'login', path: '/', auth: true, showInLogin: false },
+               { iconClass: 'maintain', path: '/', auth: true, showInLogin: true },
+               { iconClass: 'loginout', path: '/', auth: true, showInLogin: true },
+            ]
+         },
+         {
+            id: 'a',
+            title: '其他服務',
+            lists: [
+               { iconClass: 'news', path: '/', auth: false, showInLogin: false },
+               { iconClass: 'exchangeCoupon', path: '/', auth: true, showInLogin: true },
+               { iconClass: 'exchangePoint', path: '/', auth: true, showInLogin: true },
+               { iconClass: 'about', path: '/', auth: false, showInLogin: false }
+            ]
+         }
+      ]
    }),
    computed: {
-      
-   },
-   methods: {
-      
-   },
-   mounted() {
-     
+      isLogin() {
+         return this.$store.getters['auth/isLogin'];
+      },
+      serviceList() {
+         return this.blockData.reduce((prev, current) => {
+            prev.push({ ...current, isLogin: this.isLogin });
+            return prev;
+         }, []);
+      }
    },
    components: {
-      
+      EntranceBlock
    }
 }
 </script>
 
-<style lang="scss" src="./index.scss"></style>
+<style lang="scss" scoped>
+   .home {
+      padding-top: 20px;
+   }
+</style>

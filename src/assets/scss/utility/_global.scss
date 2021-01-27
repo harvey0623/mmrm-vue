@@ -1,28 +1,49 @@
 //=======variable
 
+//===高度
+$heightObj: (
+   basic: 45px
+);
+
+//===間距
+$gutter: (
+   basic: 20px,
+   double: 40px
+);
+
 //圓角
 $radius: (
-   basic: 5px
+   basic: 10px
 );
 
 //字體顏色
 $fontColor: (
-   primary: #b9375e
+   input: #797979,
+   placeholder: #c9c9c9,
+   formTitle: #292929,
+   modalCancel: #288efb,
+   search:#528fff,
 );
 
 //元素背景色(不包含按鈕)
 $elBgColor: (
-   primary: #b9375e
+   body: #f0f0f0,
+   input: #797979,
+   placeholder: #c9c9c9,
+   modal: #e7e7e7,
+   panel: #f8f8f8,
+   variationSub: #4a4a4a
 );
 
 //按鈕背景色
-$btnBgColor: (
-   primary: #b9375e
+$btnBgColor:(
+   placeholder: #C9C9C9,
 );
 
 //邊框顏色
 $borderColor: (
-   primary: #b9375e
+   placeholder: #C9C9C9,
+   primary: #979797,
 );
 
 //======extand
@@ -51,26 +72,26 @@ $borderColor: (
    overflow: hidden;
 }
 
-// %textGradient {
-//    -webkit-background-clip: text;
-//    -webkit-text-fill-color: transparent;
-//    color: transparent;
-// }
-
 %resetForm {
    appearance: none;
 }
 
 %clearFix {
    &:after {
-      content: "";
+      content: '';
       display: block;
       clear: both;
    }
 }
 
+%bgImgCenter {
+   background-size: contain;
+   background-position: center center;
+   background-repeat: no-repeat;
+}
+
 //========mixin
-@mixin size($w, $h: $w) {
+@mixin size($w, $h:$w) {
    width: $w;
    height: $h;
 }

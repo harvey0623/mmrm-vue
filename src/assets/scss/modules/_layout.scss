@@ -1,3 +1,7 @@
+body {
+   background-color: map-get($elBgColor, body);
+}
+
 //置中區塊
 .mycontainer {
    max-width: 1200px;
