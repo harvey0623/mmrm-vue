@@ -71,8 +71,8 @@ export default {
    data: () => ({
       visible: false,
       user: {
-         account: '0986104667',
-         password: 'abc123',
+         account: '0999803025',
+         password: '1qaz2wsx',
       },
       isLoading: false
    }),
@@ -87,7 +87,7 @@ export default {
       async submitHandler() {
          let isValid = await this.$refs.form.validate();
          if (!isValid) return;
-         let result = await this.$store.dispatch('auth/login', { ...this.user })
+         let loginResult = await this.$store.dispatch('auth/login', { ...this.user });
       },
    },
    mounted() {

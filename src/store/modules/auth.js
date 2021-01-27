@@ -19,9 +19,9 @@ export const authStore = {
    },
    actions: {
       async login({ commit }, payload) {
-         let loginResult = await authApi.login(payload);
-      },
-      decodeUserInfo({ commit }) {
+         let loginResult = await authApi.login(payload).then(res => res)
+            .catch(err => err.response.data);
+         console.log(loginResult)
          
       },
       doLoginout({ commit }) {
