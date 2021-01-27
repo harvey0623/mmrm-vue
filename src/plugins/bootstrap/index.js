@@ -6,5 +6,5 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 Vue.use(BootstrapVue);
-Vue.component('b-modal', BModal);
-Vue.component('b-dropdown', BDropdown);
+// Vue.component('b-modal', BModal);
+// Vue.component('b-dropdown', BDropdown);

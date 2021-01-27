@@ -2,63 +2,49 @@ body {
    background-color: map-get($elBgColor, body);
 }
 
-//置中區塊
+//===置中區塊
 .mycontainer {
-   max-width: 1200px;
+   max-width: 576px;
    margin: 0 auto;
-   padding: 0 15px;
-}
-
-//表單layout
-.formLayout {
-   margin-bottom: 20px;
-   >.formRow {
-      @extend %clearFix;
-      @include elGutter(margin-bottom, 20px);
-      >* {
-         float: left;
-      }
-      >.formTitle {
-         width: 100px;
-      }
-      >.formContent {
-         width: calc(100% - 70px);
-      }
+   padding: 0px 20px 20px 20px;
+   @media (min-width: 750px) {
+      max-width: 100%;
    }
 }
 
-//按鈕外層
-.btnBox {
-   &.center {
-      text-align: center;
-   }
-   &.right {
-      text-align: right;
-   }
-   &.space_bwtween {
-      display: flex;
-      justify-content: space-between;
-      >button,
-      >a {
-         width: 48%;
-         margin-right: 0;
-      }
-   }
-   >* {
-      @include elGutter(margin-right, 5px);
-   }
-   >button,
-   >a {
-      @include basicSize(100px, 40px);
-   }
-   >a {
-      line-height: 40px;
+//===logobox
+#logoBox {
+   >img {
+      display: block;
+      @include size(100%, 150px);
+      object-fit: contain;
    }
 }
 
-
-//表單錯誤樣式
+//===validate error
 .errMsg {
+   margin-top: 2px;
    color: red;
    font-size: 14px;
+}
+
+//===按鈕外層
+.btnBox {
+   padding-left: 20px;
+   padding-right: 20px;
+   >button,
+   >a {
+      @include basicSize(100%, map-get($heightObj, basic));
+      @include elGutter(margin-bottom, map-get($gutter, basic));
+      border-radius: map-get($radius, basic);
+      text-align: center;
+   }
+   >a {
+      line-height: map-get($heightObj, basic);
+   }
+   >.variation {
+      color: #fff;
+      border: none;
+      background-color: var(--variationMain);
+   }
 }

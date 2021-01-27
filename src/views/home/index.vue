@@ -24,19 +24,19 @@ export default {
    data: () => ({
       blockData: [
          {
-            id: 'a',
+            id: 'member-service',
             title: '會員服務',
             lists: [
                { iconClass: 'memberCard', path: '/', auth: true, showInLogin: true },
                { iconClass: 'myCoupon', path: '/', auth: true, showInLogin: true },
                { iconClass: 'message', path: '/', auth: true, showInLogin: true },
-               { iconClass: 'login', path: '/', auth: true, showInLogin: false },
+               { iconClass: 'login', path: '/login', auth: true, showInLogin: false },
                { iconClass: 'maintain', path: '/', auth: true, showInLogin: true },
                { iconClass: 'loginout', path: '/', auth: true, showInLogin: true },
             ]
          },
          {
-            id: 'a',
+            id: 'other-service',
             title: '其他服務',
             lists: [
                { iconClass: 'news', path: '/', auth: false, showInLogin: false },
@@ -68,5 +68,8 @@ export default {
 <style lang="scss" scoped>
    .home {
       padding-top: 20px;
+      >.mycontainer {
+         padding-top: 0;
+      }
    }
 </style>

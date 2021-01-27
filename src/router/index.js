@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from '@/store/index.js';
 import Home from '@/views/home/index.vue';
+import Login from '@/views/login/index.vue';
 import { webCrypto } from '@/plugins/crypto/webCrypto.js';
 import { storage } from '@/plugins/storage/index.js';
 Vue.use(VueRouter);
@@ -11,6 +12,11 @@ const routes = [
 		path: '/',
 		name: 'home',
 		component: Home
+	},
+	{
+		path: '/login',
+		name: 'login',
+		component: Login
 	},
 	{
 		path: '*',

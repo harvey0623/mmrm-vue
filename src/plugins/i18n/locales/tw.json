@@ -8,7 +8,7 @@
       "required": "必填",
       "email": "電子信箱格式有誤",
       "mobile": "手機格式有誤",
-      "password": "密碼格式有誤",
+      "password": "密碼長度或格式不符：英數字混合 6~12碼",
       "pwNotEqual": "密碼不一致",
       "taiwanId": "身分證格式有誤"
    },

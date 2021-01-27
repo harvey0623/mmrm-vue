@@ -1,36 +1,62 @@
-%style {
-   border: 1px solid map-get($borderColor, primary);
-   border-radius: map-get($radius, basic);
-}
-
-//====input
-.myInput {
-   @extend %style;
-   &::placeholder {
-      font-size: 16px;
+input {
+   &:focus {
+      outline: none;
    }
 }
 
-//====select
-.mySelect {
-   @extend %style;
+select {
+   background-color: #fff;
+   &:focus {
+      outline: none;
+   }
 }
 
-//=====textArea
-.txtArea {
-   @extend %style;
+textarea {
    resize: none;
 }
 
-//====checkbox or radio
-.customRadio {
+//===input
+.form-control {
+   height: map-get($heightObj, basic);
+   color: map-get($fontColor, input);
+   border-radius: map-get($radius, basic);
+   background-color: #fff;
+   &::placeholder {
+      color: map-get($fontColor, placeholder);
+   }
+   &:focus {
+      box-shadow: none;
+   }
+   &:disabled,
+   &[readonly] {
+      background-color: #fff;
+   }
+}
+
+//===date
+[type=date] {
    @extend %resetForm;
-   @include size(16px);
-   margin-right: 5px;
-	background-color: #fff;
-	border: 1px solid map-get($borderColor, primary);
-   cursor: pointer;
+   text-align-last: right;
+}
+
+[type=date]::-webkit-calendar-picker-indicator {
+   background-color: gray;
+   @media(max-width: 768px) {
+      display: none;
+   }
+}
+
+//===checkbox or radio
+.hookCheckbox {
+   @extend %resetForm;
+   @include size(18px);
+   background-color: #fff;
+   border-radius: 50%;
+   border: 1px solid map-get($borderColor, placeholder);
+   @extend %bgImgCenter;
+   background-image: url("~@/assets/img/page/btn_filter_check_n_n@3x.png");
+   border: none;
    &:checked {
-      background-color: map-get($elBgColor, primary);
+      background-image: url("~@/assets/img/page/btn_filter_check_n_h@3x.png");
    }
 }

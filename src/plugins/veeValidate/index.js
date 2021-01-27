@@ -19,7 +19,7 @@ export default {
          message: i18n.t('validate.email')
       });
 
-      extend('mobileTw', {
+      extend('phone', {
          message: i18n.t('validate.mobile'),
          validate: value => value.length === 10 && /^09\d{8}$/.test(value)
       });
@@ -27,7 +27,8 @@ export default {
       extend('password', {
          message: i18n.t('validate.password'),
          validate(value) {
-            return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{1,10}$/.test(value);
+            let rule = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/
+            return rule.test(value);
          }
       });
 

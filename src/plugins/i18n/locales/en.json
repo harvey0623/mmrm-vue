@@ -8,7 +8,7 @@
       "required": "required",
       "email": "email format error",
       "mobile": "mobile format error",
-      "password": "password format error",
+      "password": "Password length or format does not match: mixed 6~12 codes",
       "pwNotEqual": "password is different",
       "taiwanId": "taiwanId format error"
    },

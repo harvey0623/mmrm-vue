@@ -1,0 +1,17 @@
+.btnBox.login {
+   margin-bottom: map-get($gutter, double);
+}
+.linkBox {
+   display: flex;
+   >div {
+      flex: 1;
+      text-align: center;
+      border-right: 1px solid map-get($borderColor, primary);
+      &:last-child {
+         border-right: none;
+      }
+      >a {
+         color: map-get($fontColor, input);
+      }
+   }
+}

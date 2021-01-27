@@ -15,7 +15,7 @@ import '@/components/global/index.js';
 import '@/filter/index.js';
 
 //====plugin
-// import '@/plugins/bootstrap/index.js';
+import '@/plugins/bootstrap/index.js';
 import '@/plugins/storage/index.js';
 import '@/plugins/cookie/index.js';
 
