@@ -15,8 +15,7 @@ export const authStore = {
    },
    getters: {
       isLogin(state) {
-         // return state.userInfo.token !== undefined;
-         return true;
+         return state.userInfo.token !== undefined;
       }
    },
    actions: {

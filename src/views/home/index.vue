@@ -42,7 +42,8 @@ export default {
                { iconClass: 'news', path: '/', auth: false, showInLogin: false },
                { iconClass: 'exchangeCoupon', path: '/', auth: true, showInLogin: true },
                { iconClass: 'exchangePoint', path: '/', auth: true, showInLogin: true },
-               { iconClass: 'about', path: '/', auth: false, showInLogin: false }
+               { iconClass: 'menu', path: '/', auth: false, showInLogin: false },
+               { iconClass: 'about', path: '/', auth: false, showInLogin: false },
             ]
          }
       ]
