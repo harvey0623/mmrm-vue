@@ -2,6 +2,9 @@
    "page": {
       "home": {
          "title": "首頁"
+      },
+      "login": {
+         "title": "登入"
       }
    },
    "validate": {

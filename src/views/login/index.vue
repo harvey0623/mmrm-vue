@@ -56,17 +56,25 @@
             </div>
 			</div>
       </div>
+      <Loading v-show="isLoading"></Loading>
    </div>
 </template>
 
 <script>
 export default {
+   name: 'login',
+   metaInfo() {
+      return { 
+         title: this.$i18n.t('page.login.title'),
+      }
+   },
    data: () => ({
       visible: false,
       user: {
-         account: "",
-         password: "",
+         account: '0986104667',
+         password: 'abc123',
       },
+      isLoading: false
    }),
    methods: {
       seeHandler() {
@@ -77,8 +85,9 @@ export default {
          this.$refs.pwInput.type = inputType;
       },
       async submitHandler() {
-         let isValid = await this.$refs.form.validate().then((res) => res);
+         let isValid = await this.$refs.form.validate();
          if (!isValid) return;
+         let result = await this.$store.dispatch('auth/login', { ...this.user })
       },
    },
    mounted() {
