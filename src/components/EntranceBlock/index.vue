@@ -3,13 +3,10 @@
       <h2>{{ title }}</h2>
       <div class="serviceBox">
          <ServiceItem
-            v-for="list in lists"
+            v-for="list in serviceList"
             :key="list.iconClass"
             :iconClass="list.iconClass"
             :path="list.path"
-            :auth="list.auth"
-            :showInLogin="list.showInLogin"
-            :isLogin="isLogin"
             @logout="$emit('logout')"
          ></ServiceItem>
       </div>
@@ -36,14 +33,19 @@ export default {
       }
    },
    computed: {
+      serviceList() {
+         let notAuth = this.lists.filter(list => !list.auth); //一定要顯示
+         let needLogin = this.lists.filter(list => { //必須要再登入才顯示
+            return list.showInLogin && this.isLogin;
+         });
+         let notNeedLogin = this.lists.filter(list => { //登出狀態下才顯示
+            return !list.showInLogin && !this.isLogin;
+         });
+         let result = notAuth.concat(needLogin, notNeedLogin);
+         return Array.from(new Set(result));
+      },
       showBlock() {
-         let isAllAuth = this.lists.every(list => list.auth);
-         let isAllNeedLogin = this.lists.every(list => list.showInLogin);
-         if (!isAllAuth) return true;
-         if (isAllNeedLogin && this.isLogin) return true;
-         if (!isAllNeedLogin && !this.isLogin) return true;
-         if (!isAllNeedLogin && this.isLogin) return true;
-         return false;
+         return this.serviceList.length !== 0;
       }
    },
    components: {
@@ -64,10 +66,11 @@ export default {
          text-align: center;
          color: var(--variationMain);
          font-weight: 400;
+         font-size: 25px;
       }
-   }
-   .serviceBox {
-      display: flex;
-      flex-wrap: wrap;
+      >.serviceBox {
+         display: flex;
+         flex-wrap: wrap;
+      }
    }
 </style>
