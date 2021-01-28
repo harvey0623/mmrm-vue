@@ -50,7 +50,7 @@ export default {
    }),
    computed: {
       isLogin() {
-         return this.$store.getters['auth/isLogin'];
+         return this.$store.state.auth.isLogin;
       },
       serviceList() {
          return this.blockData.reduce((prev, current) => {

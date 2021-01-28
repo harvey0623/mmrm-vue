@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import store from '@/store/index.js';
 import Home from '@/views/home/index.vue';
 import Login from '@/views/login/index.vue';
-import { storage } from '@/plugins/storage/index.js';
+import { cookie } from '@/plugins/cookie/index.js';
 Vue.use(VueRouter);
 
 const routes = [
@@ -40,13 +40,13 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	// if (to.matched.some(item => item.meta.auth === true)) {
-	// 	let storageData = storage.getItem('userInfo');
-	// 	if (storageData === null) return next('/login');
-	// 	let storageAuthToken = webCrypto.decodeUserInfo(storageData.data).token;
-	// 	let storeAuthToken = store.state.auth.userInfo.token;
-	// 	if (storageAuthToken !== storeAuthToken) return next('/login');
-	// }
+	if (to.matched.some(item => item.meta.auth === true)) {
+		let mmrmToken = cookie.get('mmrmToken');
+		if (mmrmToken === undefined) {
+			store.commit('auth/setLogin', false);
+			return next('/login');
+		}
+	}
 	return next();
 });
 
