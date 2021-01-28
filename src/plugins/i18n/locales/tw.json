@@ -5,6 +5,9 @@
       },
       "login": {
          "title": "登入"
+      },
+      "register": {
+         "title": "註冊"
       }
    },
    "validate": {

@@ -49,7 +49,7 @@
 			</div>
          <div class="linkBox">
 				<div>
-               <router-link to="/">會員註冊</router-link>
+               <router-link to="/register">會員註冊</router-link>
             </div>
 				<div>
                <router-link to="/">忘記密碼</router-link>

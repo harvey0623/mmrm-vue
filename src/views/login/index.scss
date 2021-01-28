@@ -1,6 +1,11 @@
+.mycontainer {
+   padding-top: 0;
+}
+
 .btnBox.login {
    margin-bottom: map-get($gutter, double);
 }
+
 .linkBox {
    display: flex;
    >div {

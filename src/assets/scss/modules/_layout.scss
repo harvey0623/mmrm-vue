@@ -6,7 +6,7 @@ body {
 .mycontainer {
    max-width: 576px;
    margin: 0 auto;
-   padding: 0px 20px 20px 20px;
+   padding: 20px 20px 20px 20px;
    @media (min-width: 750px) {
       max-width: 100%;
    }
@@ -26,6 +26,34 @@ body {
    margin-top: 2px;
    color: red;
    font-size: 14px;
+}
+
+#processBox {
+   height: 270px;
+   margin-bottom: 10px;
+   background-size: 1125px 270px;
+   background-position: center top;
+   background-repeat: no-repeat;
+   &.none {
+      display: none;
+   }
+   &.step1 {
+      background-image: url("~@/assets/img/page/img_register_step_01_n@3x.png");
+   }
+   &.step2 {
+      background-image: url("~@/assets/img/page/img_register_step_02_n@3x.png");
+   }
+   &.step3 {
+      background-image: url("~@/assets/img/page/img_register_step_03_n@3x.png");
+   }
+   @media (max-width: 900px) {
+      height: 135px;
+      background-size: 100% 100%;
+   }
+   @media (max-width: 576px) {
+      height: 90px;
+      background-size: contain;
+   }
 }
 
 //===按鈕外層
