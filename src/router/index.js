@@ -4,6 +4,8 @@ import store from '@/store/index.js';
 import Home from '@/views/home/index.vue';
 import Login from '@/views/login/index.vue';
 import { cookie } from '@/plugins/cookie/index.js';
+import { checkIsLogin }  from '../middleware/checkIsLogin.js';
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -15,7 +17,8 @@ const routes = [
 	{
 		path: '/login',
 		name: 'login',
-		component: Login
+		component: Login,
+		beforeEnter: checkIsLogin
 	},
 	{
 		path: '*',
@@ -45,7 +48,7 @@ router.beforeEach((to, from, next) => {
 		if (mmrmToken === undefined) {
 			store.commit('auth/setLogin', false);
 			return next('/login');
-		} 
+		}
 	}
 	return next();
 });
