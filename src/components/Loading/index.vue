@@ -13,7 +13,7 @@ export default {};
       top: 0;
       @include size(100%);
       background-color: rgba(#000, 0.5);
-      z-index: 1200;
+      z-index: 30;
       &:after {
          content: "";
          position: absolute;

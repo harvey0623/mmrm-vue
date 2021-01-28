@@ -56,7 +56,17 @@
             </div>
 			</div>
       </div>
+
       <Loading v-show="isLoading"></Loading>
+
+      <MessagePopup
+         :isOpen.sync="openLoginPopup"
+         :showCancel="false"
+         :message="loginMsg"
+         :eventName="'loginSure'"
+         @loginSure="loginHandler"
+      ></MessagePopup>
+
    </div>
 </template>
 
@@ -74,7 +84,10 @@ export default {
          account: '0999803025',
          password: '1qaz2wsx',
       },
-      isLoading: false
+      isLoading: false,
+      openLoginPopup: false,
+      successLogin: false,
+      loginMsg: ''
    }),
    methods: {
       seeHandler() {
@@ -84,10 +97,19 @@ export default {
          let inputType = this.visible ? 'text' : 'password';
          this.$refs.pwInput.type = inputType;
       },
+      loginHandler() {
+         if (this.successLogin) this.$router.replace('/');
+         else this.openLoginPopup = false;
+      },
       async submitHandler() {
          let isValid = await this.$refs.form.validate();
          if (!isValid) return;
-         let loginResult = await this.$store.dispatch('auth/login', { ...this.user });
+         this.isLoading = true;
+         let { status, info } = await this.$store.dispatch('auth/login', { ...this.user });
+         this.successLogin = status;
+         this.loginMsg = status ? '登入成功' : info.rcrm.RM;
+         this.openLoginPopup = true;
+         this.isLoading = false;
       },
    },
    mounted() {

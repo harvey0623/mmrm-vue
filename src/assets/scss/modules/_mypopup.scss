@@ -1,0 +1,45 @@
+$modalBorderColor: map-get($borderColor, placeholder);
+
+.mypopup {
+   position: fixed;
+   left: 0;
+   top: 0;
+   @include size(100%, 100vh);
+   background-color: rgba(#000, 0.75);
+   z-index: 20;
+}
+
+.popup-content {
+   @extend %posCenter;
+   width: 85%;
+   max-width: 450px;
+   background-color: map-get($elBgColor, modal);
+   border-radius: 3px;
+   overflow: hidden;
+   >.popup-header,
+   >.popup-body {
+      padding: 12px;
+      color: map-get($fontColor, formTitle);
+      text-align: center;
+   }
+   >.popup-header {
+      font-size: 16px;
+      border-bottom: 1px solid $modalBorderColor;
+   }
+   >.popup-footer {
+      display: flex;
+      border-top: 1px solid $modalBorderColor;
+      text-align: center;
+      color: map-get($fontColor, modalCancel);
+      >* {
+         flex: 1;
+         padding: 12px;
+         &:first-child {
+            border-right: 1px solid $modalBorderColor;
+         }
+         &:last-child {
+            border-right: none;
+         }
+      }
+   }
+}

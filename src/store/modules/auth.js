@@ -22,9 +22,9 @@ export const authStore = {
          let loginResult = await authApi.login(payload).then(res => res)
             .catch(err => err.response.data);
          console.log(loginResult)
-         
+         return loginResult;
       },
-      doLoginout({ commit }) {
+      loginout({ commit }) {
          
       }
    }
