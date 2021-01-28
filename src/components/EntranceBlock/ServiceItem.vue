@@ -3,6 +3,7 @@
       :to="path" 
       :class="['serviceItem', iconClass]"
       v-show="showIcon"
+      @click.native="clickHandler"
    ></router-link>
 </template>
 
@@ -28,6 +29,13 @@ export default {
       isLogin: {
          type: Boolean,
          required: true
+      }
+   },
+   methods: {
+      async clickHandler(evt) {
+         if (this.iconClass !== 'logout') return;
+         evt.preventDefault();
+         this.$emit('logout');
       }
    },
    computed: {

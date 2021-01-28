@@ -45,7 +45,7 @@ router.beforeEach((to, from, next) => {
 		if (mmrmToken === undefined) {
 			store.commit('auth/setLogin', false);
 			return next('/login');
-		}
+		} 
 	}
 	return next();
 });

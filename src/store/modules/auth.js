@@ -25,8 +25,10 @@ export const authStore = {
          if (loginResult.status) commit('setLogin', true);
          return loginResult;
       },
-      loginout({ commit }) {
-         
+      async logout({ commit }) {
+         let logoutResult = await authApi.logout().then(res => res)
+            .catch(err => err.response.data)
+         return logoutResult;
       }
    }
 }

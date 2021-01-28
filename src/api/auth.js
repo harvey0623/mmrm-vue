@@ -12,5 +12,13 @@ export const authApi = {
          }
       }).then(res => res.data);
       return result;
-   }
+   },
+   async logout() {
+      let result = await httpConfig({
+         url: '/member/logout',
+         method: 'post',
+         data: {}
+      }).then(res => res.data);
+      return result;
+   },
 }

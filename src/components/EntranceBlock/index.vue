@@ -10,6 +10,7 @@
             :auth="list.auth"
             :showInLogin="list.showInLogin"
             :isLogin="isLogin"
+            @logout="$emit('logout')"
          ></ServiceItem>
       </div>
    </div>

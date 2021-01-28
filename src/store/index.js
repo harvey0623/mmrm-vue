@@ -8,11 +8,15 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	strict: process.env.NODE_ENV === 'dev',
 	state: {
-		
+		openExpirePopup: false,
+		openLogoutPopup: false,
 	},
 	mutations: {
-		setLoading(state, value) {
-			
+		setExpirePopup(state, value) {
+			state.openExpirePopup = value;
+		},
+		setLogoutPopup(state, value) {
+			state.openLogoutPopup = value;
 		}
 	},
 	actions: {

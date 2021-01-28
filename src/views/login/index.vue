@@ -61,7 +61,6 @@
 
       <MessagePopup
          :isOpen.sync="openLoginPopup"
-         :showCancel="false"
          :message="loginMsg"
          :eventName="'loginSure'"
          @loginSure="loginHandler"
@@ -71,7 +70,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 export default {
    name: 'login',
    metaInfo() {

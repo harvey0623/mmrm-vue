@@ -7,8 +7,10 @@
             :title="service.title"
             :lists="service.lists"
             :isLogin="service.isLogin"
+            @logout="logoutHandler"
          ></EntranceBlock>
       </div>
+      <Loading v-show="isLoading"></Loading>
    </div>
 </template>
 
@@ -32,7 +34,7 @@ export default {
                { iconClass: 'message', path: '/', auth: true, showInLogin: true },
                { iconClass: 'login', path: '/login', auth: true, showInLogin: false },
                { iconClass: 'maintain', path: '/', auth: true, showInLogin: true },
-               { iconClass: 'loginout', path: '/', auth: true, showInLogin: true },
+               { iconClass: 'logout', path: '/', auth: true, showInLogin: true },
             ]
          },
          {
@@ -46,7 +48,8 @@ export default {
                { iconClass: 'about', path: '/', auth: false, showInLogin: false },
             ]
          }
-      ]
+      ],
+      isLoading: false
    }),
    computed: {
       isLogin() {
@@ -57,6 +60,17 @@ export default {
             prev.push({ ...current, isLogin: this.isLogin });
             return prev;
          }, []);
+      }
+   },
+   methods: {
+      async logoutHandler() {
+         this.isLoading = true;
+         let logoutResult = await this.$store.dispatch('auth/logout');
+         if (logoutResult.status) {
+            this.$store.commit('auth/setLogin', false);
+            this.$store.commit('setLogoutPopup', true);
+         }
+         this.isLoading = false;
       }
    },
    components: {
