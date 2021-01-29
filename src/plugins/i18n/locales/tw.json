@@ -8,6 +8,9 @@
       },
       "register": {
          "title": "註冊"
+      },
+      "register-1": {
+         "title": "註冊第一步"
       }
    },
    "validate": {

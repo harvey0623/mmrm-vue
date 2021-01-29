@@ -8,22 +8,18 @@ export default {
       Vue.component('ValidationObserver', ValidationObserver);
       Vue.component('ValidationProvider', ValidationProvider);
       setInteractionMode('eager');
-
       extend('required', {
          ...required,
          message: i18n.t('validate.required')
       });
-      
       extend('email', {
          ...email,
          message: i18n.t('validate.email')
       });
-
       extend('phone', {
          message: i18n.t('validate.mobile'),
          validate: value => value.length === 10 && /^09\d{8}$/.test(value)
       });
-
       extend('password', {
          message: i18n.t('validate.password'),
          validate(value) {
@@ -31,16 +27,18 @@ export default {
             return rule.test(value);
          }
       });
-
-      extend('samePw', {
-         ...confirmed,
-         message: i18n.t('validate.pwNotEqual')
+      extend('confirmPw', {
+         params: ['target'],
+         message: '確認密碼不一致',
+         validate(value, { target }) {
+            return value === target;
+         }
       });
-
-      extend('twId', {
-         message: i18n.t('validate.taiwanId'),
-         validate: value => checkTwId(value)
+      extend('term', {
+         message: '請同意條款',
+         validate(value) {
+            return value;
+         }
       });
-
    }
 }

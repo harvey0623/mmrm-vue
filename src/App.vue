@@ -22,7 +22,7 @@ export default {
    metaInfo() {
       return {
          title: "",
-         titleTemplate: "%s",
+         titleTemplate: "%s | mmrm",
          meta: [
             { property: "og:image", content: "" },
             { property: "og:description", content: "project" },

@@ -15,9 +15,6 @@ export default {
          title: this.$i18n.t('page.register.title'),
       }
    },
-   data: () => ({
-      currentStep: ''
-   }),
    computed: {
       routeStep() {
          return this.$route.meta.step;
