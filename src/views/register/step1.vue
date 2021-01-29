@@ -14,14 +14,16 @@ export default {
    data: () => ({
       visible1: false,
       visible2: false,
+      termsList: [],
+      stepSuccess: false,
       user: {
-         mobile: '',
-         password: '',
-         confirmedPw: '',
-         name: '',
-         gender: '',
-         security_question: '',
-         security_answer: '',
+         mobile: '0986104667',
+         password: 'abc123',
+         confirmedPw: 'abc123',
+         name: 'harvey',
+         gender: 'M',
+         security_question: 'sq01',
+         security_answer: 'aaa',
       },
       genderList: [
          { title: '男性', value: 'M' },
@@ -35,7 +37,11 @@ export default {
          { title: '您最好朋友的名字', value: 'sq04' },
          { title: '您最愛的電影', value: 'sq05' }
       ],
-      termsList: [],
+      stepOption: {
+         isOpen: false,
+         message: '欄位填寫有誤，請重新填寫',
+         eventName: 'stepFeedBack',
+      }
    }),
    methods: {
       see1Handler() {
@@ -51,7 +57,7 @@ export default {
          this.setInputType({ status: this.visible1, el: this.$refs.pwInput });
          this.setInputType({ status: this.visible2, el: this.$refs.confirmInput });
       },
-      async getTermData() {
+      async getTermData() { //取得條款資料
          return await termApi.brefTerm({ type: ['register']})
             .then(res => {
                let termInfo = res.info.results.term_information;
@@ -63,7 +69,7 @@ export default {
             prev.push({ 
                ...current, 
                show: false, 
-               checked: false
+               checked: true
             });
             return prev;
          }, []);
@@ -81,7 +87,19 @@ export default {
          let isFormValid = await this.$refs.form.validate();
          let isAgreeValid = await this.$refs.term.validate();
          if (!(isFormValid && isAgreeValid)) return;
+         this.$emit('loading', true);
+         let { status:stepStatus } = await this.$store.dispatch('auth/register_step1', this.user);
+         this.stepSuccess = stepStatus;
+         this.stepOption.message = stepStatus ? '填寫成功' : '欄位填寫有誤，請重新填寫';
+         this.stepOption.isOpen = true;
+         this.$emit('loading', false);
       },
+      stepFeedBack() {
+         if (this.stepSuccess) {
+            
+         }
+         this.stepOption.isOpen = false;
+      }
    },
    async mounted() {
       this.$emit('loading', true);
@@ -105,13 +123,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-   .termOuter {
-      margin-bottom: map-get($gutter, double);
-      >.termTitle {
-         padding-left: 15px;
-         margin-bottom: map-get($gutter, basic);
-         color: map-get($fontColor, formTitle);
-      }
-   }
-</style>
+<style lang="scss" src="./scss/step1.scss" scoped></style>

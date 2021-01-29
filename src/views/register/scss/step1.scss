@@ -1,0 +1,8 @@
+.termOuter {
+   margin-bottom: map-get($gutter, double);
+   >.termTitle {
+      padding-left: 15px;
+      margin-bottom: map-get($gutter, basic);
+      color: map-get($fontColor, formTitle);
+   }
+}

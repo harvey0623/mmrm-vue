@@ -29,6 +29,11 @@ export const authStore = {
          let logoutResult = await authApi.logout().then(res => res)
             .catch(err => err.response.data)
          return logoutResult;
+      },
+      async register_step1({ commit }, payload) {
+         let result = await authApi.register_check(payload).then(res => res)
+               .catch(err => err.response.data)
+         return result
       }
    }
 }
