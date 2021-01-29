@@ -35,5 +35,13 @@ export const authApi = {
          }
       }).then(res => res.data);
       return result;
-   }   
+   },
+   async register(payload) {
+      let result = await httpConfig({
+         url: '/member/register',
+         method: 'post',
+         data: payload
+      }).then(res => res.data);
+      return result;
+   },
 }

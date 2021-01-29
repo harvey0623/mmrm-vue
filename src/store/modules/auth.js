@@ -1,5 +1,6 @@
 import { authApi } from '@/api/auth.js';
 import { cookie } from '@/plugins/cookie/index.js';
+import { storage } from '@/plugins/storage/index.js';
 
 export const authStore = {
    namespaced: true,
@@ -27,13 +28,23 @@ export const authStore = {
       },
       async logout({ commit }) {
          let logoutResult = await authApi.logout().then(res => res)
-            .catch(err => err.response.data)
+            .catch(err => err.response.data);
          return logoutResult;
       },
       async register_step1({ commit }, payload) {
-         let result = await authApi.register_check(payload).then(res => res)
-               .catch(err => err.response.data)
-         return result
+         let loginResult = await authApi.register_check(payload).then(res => res)
+            .catch(err => err.response.data);
+         if (loginResult.status) {
+            console.log(payload);
+         }
+
+
+         return loginResult;
+      },
+      async register({ commit }, payload) {
+         let result = await authApi.register(payload).then(res => res)
+            .catch(err => err.response.data);
+         return result;
       }
    }
 }

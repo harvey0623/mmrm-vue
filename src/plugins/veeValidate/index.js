@@ -40,5 +40,14 @@ export default {
             return value;
          }
       });
+      extend('birthday', {
+         message: '生日不能是今天',
+         validate(value) {
+            let today = new Date();
+            today = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+            let birthday = new Date(value).getTime();
+            return birthday < today;
+         }
+      });
    }
 }

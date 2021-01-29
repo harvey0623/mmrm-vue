@@ -1,0 +1,90 @@
+<div class="stepWrap">
+   <validation-observer tag="div" class="dataOuter" ref="form">
+      <div class="dataBox">
+         <p class="dataTitle">選填資料</p>
+         <div class="dataBody">
+            <validation-provider 
+               tag="div" 
+               class="dataRow" 
+               rules="required"
+               v-slot="{ errors }">
+               <input
+                  type="email" 
+                  class="form-control"
+                  placeholder="請輸入電子信箱" 
+                  v-model.trim="user.email">
+               <p class="dataName">電子信箱</p>
+               <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
+            </validation-provider>
+            <validation-provider
+               tag="div" 
+               class="dataRow"
+               rules="birthday"
+               v-slot="{ errors }">
+               <input
+                  type="date"
+                  class="form-control dateInput"
+                  :class="{ hide: user.birthday !== '' }"
+                  v-model.trim="user.birthday">
+               <p class="dataName">出生日期</p>
+               <div class="dateDown" :class="{ hide: user.birthday !== '' }"></div>
+               <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
+            </validation-provider>
+            <validation-provider 
+               tag="div" 
+               class="dataRow" 
+               rules="required"
+               v-slot="{ errors }">
+               <select 
+                  class="form-control"
+                  :class="{selectDown: user.city === ''}"
+                  v-model="user.city">
+                  <option value=""></option>
+                  <option 
+                     v-for="city in cityList" :key="city"
+                     :value="city"
+                  >{{ city }}</option>
+               </select>
+               <p class="dataName">縣市</p>
+               <div class="downIcon" :class="{ hide: user.city !== '' }"></div>
+               <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
+            </validation-provider>
+            <validation-provider 
+               tag="div" 
+               class="dataRow" 
+               rules="required"
+               v-slot="{ errors }">
+               <select 
+                  class="form-control"
+                  :class="{selectDown: user.district === ''}"
+                  v-model="user.district">
+                  <option value=""></option>
+                  <option 
+                     v-for="area in areaList" :key="area"
+                     :value="area"
+                  >{{ area }}</option>
+               </select>
+               <p class="dataName">地區</p>
+               <div class="downIcon" :class="{ hide: user.district !== '' }"></div>
+               <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
+            </validation-provider>
+            <validation-provider 
+               tag="div" 
+               class="dataRow" 
+               rules=""
+               v-slot="{ errors }">
+               <input
+                  type="text" 
+                  class="form-control"
+                  placeholder="請輸入地址" 
+                  v-model.trim="user.address">
+               <p class="dataName">詳細地址</p>
+               <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
+            </validation-provider>
+         </div>
+      </div>
+   </validation-observer>
+   <div class="btnBox">
+      <button @click="submitHandler" class="variation">下一步</button>
+   </div>
+</div>
