@@ -2,8 +2,9 @@
    <div class="register">
       <div class="mycontainer">
          <div id="processBox" :class="stepClass"></div>
-         <router-view></router-view>
+         <router-view @loading="loadingHandler"></router-view>
       </div>
+      <Loading v-show="isLoading"></Loading>
    </div>
 </template>
 
@@ -15,6 +16,9 @@ export default {
          title: this.$i18n.t('page.register.title'),
       }
    },
+   data: () => ({
+      isLoading: false
+   }),
    computed: {
       routeStep() {
          return this.$route.meta.step;
@@ -25,6 +29,11 @@ export default {
          } else {
             return 'none';
          }
+      }
+   },
+   methods: {
+      loadingHandler(value) {
+         this.isLoading = value;
       }
    }
 }

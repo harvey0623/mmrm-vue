@@ -39,4 +39,40 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+   .termRow {
+      @extend %bwtFlex;
+      padding: 15px;
+      margin-bottom: map-get($gutter, basic);
+      border-radius: map-get($radius, basic);
+      background-color: #fff;
+      >label {
+         input {
+            @extend %resetForm;
+            @include size(15px);
+            @extend %bgImgCenter;
+            vertical-align: middle;
+            transform: translateY(-1px);
+            border: none;
+            background-image: url("~@/assets/img/page/btn_listcore_checkmark_n_n@2x.png");
+            &.checked {
+               background-image: url("~@/assets/img/page/btn_listcore_checkmark_n_h@2x.png");
+            }
+         }
+         >span {
+            margin-left: 7.5px;
+            color: map-get($fontColor, input);
+         }
+         >.errMsg {
+            padding-left: 26px;
+            text-align: left;
+         }
+      }
+      >.leftIcon {
+         @include size(15px);
+         background-image: url("~@/assets/img/page/btn_listcore_indicatorright_std_n@2x.png");
+         @extend %bgImgCenter;
+         cursor: pointer;
+      }
+   }
+</style>

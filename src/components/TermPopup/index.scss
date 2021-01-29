@@ -1,0 +1,77 @@
+$inputColor: map-get($fontColor, input);
+$basicHeight: map-get($heightObj, basic);
+$basicRadius: map-get($radius, basic);
+
+.termPopup {
+   position: fixed;
+   left: 0;
+   top: 0;
+   @include size(100%, 100vh);
+   background-color: #fff;
+   opacity: 0;
+   pointer-events: none;
+   z-index: 10;
+   &.show {
+      opacity: 1;
+      pointer-events: auto;
+   }
+}
+
+.termHeader {
+   position: relative;
+   height: $basicHeight;
+   line-height: $basicHeight;
+   background-color: map-get($elBgColor, input);
+   color: #fff;
+   text-align: center;
+   >span {
+      font-size: 18px;
+   }
+   >.popupClose {
+      position: absolute;
+      left: 15px;
+      top: 7px;
+      @include size(30px);
+      background-image: url("~@/assets/img/page/btn_nav_close_darkbg_n@2x.png");
+      @extend %bgImgCenter;
+      cursor: pointer;
+   }
+}
+
+.termBody {
+   height: calc(100vh - #{$basicHeight});
+   padding: 20px 20px ($basicHeight + 10px);
+   background-color: map-get($elBgColor, body);
+   overflow: auto;
+   > .termContent {
+      padding: 15px;
+      line-height: 1.8;
+      background-color: #fff;
+      border-radius: $basicRadius;
+      color: map-get($fontColor, formTitle);
+      text-align: justify;
+      ol, ul {
+         padding-left: 40px;
+         list-style: disc;
+      }
+      img, iframe {
+         max-width: 100%;
+      }
+   }
+}
+
+.termFooter {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   @include size(100%, $basicHeight);
+   line-height: $basicHeight;
+   background-color: map-get($elBgColor, placeholder);
+   color: $inputColor;
+   text-align: center;
+   cursor: pointer;
+   &.termActiveButton {
+      background-color: var(--variationMain);
+      color: #fff;
+   }
+}

@@ -1,0 +1,159 @@
+<div class="stepWarp">
+   <validation-observer tag="div" class="dataOuter" ref="form">
+      <div class="dataBox">
+         <p class="dataTitle">必填資料</p>
+         <div class="dataBody">
+            <validation-provider 
+               tag="div" 
+               class="dataRow" 
+               rules="required|phone"
+               v-slot="{ errors }">
+               <input
+                  type="number" 
+                  class="form-control"
+                  placeholder="為您的帳號，共 10 碼" 
+                  v-model.trim="user.mobile">
+               <p class="dataName">手機號碼</p>
+               <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
+            </validation-provider>
+            <validation-provider 
+               tag="div" 
+               class="dataRow" 
+               rules="required|password"
+               vid="a"
+               v-slot="{ errors }">
+               <input
+                  type="password" 
+                  class="form-control pwInput"
+                  placeholder="6 - 12 碼英數字"
+                  ref="pwInput"
+                  v-model.trim="user.password">
+               <p class="dataName">密碼</p>
+               <div 
+                  class="visibleBox" @click="see1Handler"
+                  :class="{ show: visible1, hide: !visible1 }"
+               ></div>
+               <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
+            </validation-provider>
+            <validation-provider
+               tag="div" 
+               class="dataRow" 
+               rules="required|confirmPw:@a"
+               v-slot="{ errors }">
+               <input
+                  type="password" 
+                  class="form-control pwInput"
+                  placeholder="6 - 12 碼英數字"
+                  ref="confirmInput"
+                  v-model.trim="user.confirmedPw">
+               <p class="dataName">密碼確認</p>
+               <div 
+                  class="visibleBox" @click="see2Handler"
+                  :class="{ show: visible2, hide: !visible2 }"
+               ></div>
+               <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
+            </validation-provider>
+         </div>
+      </div>
+      <div class="dataBox">
+         <div class="dataBody">
+            <validation-provider 
+               tag="div" 
+               class="dataRow" 
+               rules="required"
+               v-slot="{ errors }">
+               <input
+                  type="text" 
+                  class="form-control"
+                  placeholder="請輸入您的姓名" 
+                  v-model.trim="user.name">
+               <p class="dataName">姓名</p>
+               <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
+            </validation-provider>
+            <validation-provider 
+               tag="div" 
+               class="dataRow" 
+               rules="required"
+               v-slot="{ errors }">
+               <select 
+                  class="form-control"
+                  :class="{selectDown: user.gender === ''}"
+                  v-model="user.gender">
+                  <option value="" disabled></option>
+                  <option 
+                     v-for="item in genderList"
+                     :key="item.value"
+                     :value="item.value"
+                  >{{ item.title }}</option>
+               </select>
+               <p class="dataName">性別</p>
+               <div class="downIcon" :class="{ hide: user.gender !== '' }"></div>
+               <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
+            </validation-provider>
+         </div>
+      </div>
+      <div class="dataBox">
+         <div class="dataBody">
+            <validation-provider 
+               tag="div" 
+               class="dataRow" 
+               rules="required"
+               v-slot="{ errors }">
+               <select 
+                  class="form-control eigthInput"
+                  :class="{selectDown: user.security_question === ''}"
+                  v-model="user.security_question">
+                  <option value="" disabled></option>
+                  <option 
+                     v-for="item in questionList"
+                     :key="item.value"
+                     :value="item.value"
+                  >{{ item.title }}</option>
+               </select>
+               <p class="dataName">忘記密碼安全問題</p>
+               <div class="downIcon" :class="{ hide: user.security_question !== '' }"></div>
+               <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
+            </validation-provider>
+            <validation-provider 
+               tag="div" 
+               class="dataRow" 
+               rules="required"
+               v-slot="{ errors }">
+               <input
+                  type="text" 
+                  class="form-control sixInput"
+                  placeholder="請輸入答案" 
+                  v-model.trim="user.security_answer">
+               <p class="dataName">安全問題答案</p>
+               <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
+            </validation-provider>
+         </div>
+      </div>
+   </validation-observer>
+   <validation-observer tag="div" class="termOuter" ref="term">
+      <p class="termTitle" v-show="termsList.length !== 0">其他</p>
+      <div class="termContent">
+         <TermRow
+            v-for="term in termsList"
+            :key="term.id"
+            :termId="term.id"
+            :termTitle="term.title"
+            :termChecked="term.checked"
+            @showContent="showTermContent"
+         ></TermRow>
+      </div>
+   </validation-observer>
+   <TermPopup
+      v-for="term in termsList"
+      :key="term.id"
+      :termId="term.id"
+      :termTitle="term.title"
+      :termContent="term.content"
+      :termChecked="term.checked"
+      :showPopup.sync="term.show"
+      @agree="agreeHandler"
+   ></TermPopup>
+   <div class="btnBox">
+      <button @click="submitHandler" class="variation">下一步</button>
+   </div>
+</div>

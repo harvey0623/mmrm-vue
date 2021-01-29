@@ -1,160 +1,9 @@
-<template>
-   <div class="stepWarp">
-      <validation-observer tag="div" class="dataOuter" ref="form">
-         <div class="dataBox">
-            <p class="dataTitle">必填資料</p>
-            <div class="dataBody">
-               <validation-provider 
-                  tag="div" 
-                  class="dataRow" 
-                  rules="required|phone"
-                  v-slot="{ errors }">
-                  <input
-                     type="number" 
-                     class="form-control"
-                     placeholder="為您的帳號，共 10 碼" 
-                     v-model.trim="user.mobile">
-                  <p class="dataName">手機號碼</p>
-                  <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
-               </validation-provider>
-               <validation-provider 
-                  tag="div" 
-                  class="dataRow" 
-                  rules="required|password"
-                  vid="a"
-                  v-slot="{ errors }">
-                  <input
-                     type="password" 
-                     class="form-control pwInput"
-                     placeholder="6 - 12 碼英數字"
-                     ref="pwInput"
-                     v-model.trim="user.password">
-                  <p class="dataName">密碼</p>
-                  <div 
-                     class="visibleBox" @click="see1Handler"
-                     :class="{ show: visible1, hide: !visible1 }"
-                  ></div>
-                  <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
-               </validation-provider>
-               <validation-provider
-                  tag="div" 
-                  class="dataRow" 
-                  rules="required|confirmPw:@a"
-                  v-slot="{ errors }">
-                  <input
-                     type="password" 
-                     class="form-control pwInput"
-                     placeholder="6 - 12 碼英數字"
-                     ref="confirmInput"
-                     v-model.trim="user.confirmedPw">
-                  <p class="dataName">密碼確認</p>
-                  <div 
-                     class="visibleBox" @click="see2Handler"
-                     :class="{ show: visible2, hide: !visible2 }"
-                  ></div>
-                  <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
-               </validation-provider>
-            </div>
-         </div>
-         <div class="dataBox">
-            <div class="dataBody">
-               <validation-provider 
-                  tag="div" 
-                  class="dataRow" 
-                  rules="required"
-                  v-slot="{ errors }">
-                  <input
-                     type="text" 
-                     class="form-control"
-                     placeholder="請輸入您的姓名" 
-                     v-model.trim="user.name">
-                  <p class="dataName">姓名</p>
-                  <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
-               </validation-provider>
-               <validation-provider 
-                  tag="div" 
-                  class="dataRow" 
-                  rules="required"
-                  v-slot="{ errors }">
-                  <select 
-                     class="form-control"
-                     :class="{selectDown: user.gender === ''}"
-                     v-model="user.gender">
-                     <option value="" disabled></option>
-                     <option 
-                        v-for="item in genderList"
-                        :key="item.value"
-                        :value="item.value"
-                     >{{ item.title }}</option>
-                  </select>
-                  <p class="dataName">性別</p>
-                  <div class="downIcon" :class="{ hide: user.gender !== '' }"></div>
-                  <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
-               </validation-provider>
-            </div>
-         </div>
-         <div class="dataBox">
-            <div class="dataBody">
-               <validation-provider 
-                  tag="div" 
-                  class="dataRow" 
-                  rules="required"
-                  v-slot="{ errors }">
-                  <select 
-                     class="form-control eigthInput"
-                     :class="{selectDown: user.security_question === ''}"
-                     v-model="user.security_question">
-                     <option value="" disabled></option>
-                     <option 
-                        v-for="item in questionList"
-                        :key="item.value"
-                        :value="item.value"
-                     >{{ item.title }}</option>
-                  </select>
-                  <p class="dataName">忘記密碼安全問題</p>
-                  <div class="downIcon" :class="{ hide: user.security_question !== '' }"></div>
-                  <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
-               </validation-provider>
-               <validation-provider 
-                  tag="div" 
-                  class="dataRow" 
-                  rules="required"
-                  v-slot="{ errors }">
-                  <input
-                     type="text" 
-                     class="form-control sixInput"
-                     placeholder="請輸入答案" 
-                     v-model.trim="user.security_answer">
-                  <p class="dataName">安全問題答案</p>
-                  <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
-               </validation-provider>
-            </div>
-         </div>
-		</validation-observer>
-
-      <validation-observer tag="div" class="termOuter" ref="term">
-         <p class="termTitle" v-show="termsList.length !== 0">其他</p>
-         <div class="termContent">
-            <TermRow
-               v-for="term in termsList"
-               :key="term.id"
-               :termId="term.id"
-               :termTitle="term.title"
-               :termChecked="term.checked"
-               @showContent="showTermContent"
-            ></TermRow>
-         </div>
-      </validation-observer>
-
-      <div class="btnBox">
-			<button @click="submitHandler" class="variation">下一步</button>
-		</div>
-   </div>
-</template>
+<template src="./html/step1.html"></template>
 
 <script>
 import { termApi } from '@/api/term.js';
 import TermRow from '@/components/TermRow/index.vue';
+import TermPopup from '@/components/TermPopup/index.vue';
 export default {
    name: 'register-1',
    metaInfo() {
@@ -223,14 +72,23 @@ export default {
          let obj = this.termsList.find(item => item.id === id);
          obj.show = true;
       },
+      agreeHandler(id) {
+         let obj = this.termsList.find(item => item.id === id);
+         obj.checked = true;
+         obj.show = false;
+      },
       async submitHandler() {
-         let isValid = await this.$refs.form.validate().then(res => res);
+         let isFormValid = await this.$refs.form.validate();
+         let isAgreeValid = await this.$refs.term.validate();
+         if (!(isFormValid && isAgreeValid)) return;
       },
    },
    async mounted() {
+      this.$emit('loading', true);
       this.initInputType();
       let termData = await this.getTermData();
       this.termsList = this.convertTerms(termData);
+      this.$emit('loading', false);
    },
    watch: {
       visible1(to) {
@@ -241,9 +99,19 @@ export default {
       }
    },
    components: {
-      TermRow
+      TermRow,
+      TermPopup
    }
 }
 </script>
 
-<style lang="scss" src="./scss/step1.scss"></style>
+<style lang="scss" scoped>
+   .termOuter {
+      margin-bottom: map-get($gutter, double);
+      >.termTitle {
+         padding-left: 15px;
+         margin-bottom: map-get($gutter, basic);
+         color: map-get($fontColor, formTitle);
+      }
+   }
+</style>
