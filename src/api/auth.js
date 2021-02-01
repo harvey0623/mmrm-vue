@@ -36,12 +36,17 @@ export const authApi = {
       }).then(res => res.data);
       return result;
    },
-   async register(payload) {
-      let result = await httpConfig({
-         url: '/member/register',
-         method: 'post',
-         data: payload
-      }).then(res => res.data);
-      return result;
+   async register({ step1, step2 }) {
+      console.log(step1, step2)
+      // let result = await httpConfig({
+      //    url: '/member/register',
+      //    method: 'post',
+      //    data: {
+      //       ...payload,
+      //       mobile: crypto.wm_aes(payload.mobile),
+      //       password: crypto.wm_aes(payload.password),
+      //    }
+      // }).then(res => res.data);
+      // return result;
    },
 }

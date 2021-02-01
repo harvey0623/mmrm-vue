@@ -1,6 +1,9 @@
 import { authApi } from '@/api/auth.js';
 import { cookie } from '@/plugins/cookie/index.js';
 import { storage } from '@/plugins/storage/index.js';
+import { crypto } from '@/plugins/crypto/index.js';
+
+const signUpSessionKey = 'signUp';
 
 export const authStore = {
    namespaced: true,
@@ -32,19 +35,32 @@ export const authStore = {
          return logoutResult;
       },
       async register_step1({ commit }, payload) {
-         let loginResult = await authApi.register_check(payload).then(res => res)
+         let stepResult = await authApi.register_check(payload).then(res => res)
             .catch(err => err.response.data);
-         if (loginResult.status) {
-            console.log(payload);
+         if (stepResult.status) {
+            let signUpData = storage.getSessionItem(signUpSessionKey);
+            if (signUpData === null) {
+               let encodeText = crypto.encodeSignUp({ step1: payload });
+               storage.setSessionItem(signUpSessionKey, encodeText);
+            } else {
+               let decodeData = crypto.decodeSignUp(signUpData);
+               decodeData.step1 = payload;
+               let encodeText = crypto.encodeSignUp(decodeData);
+               storage.setSessionItem(signUpSessionKey, encodeText);
+            }
          }
-
-
-         return loginResult;
+         return stepResult;
       },
       async register({ commit }, payload) {
-         let result = await authApi.register(payload).then(res => res)
+         let step2Data = JSON.parse(JSON.stringify(payload));
+         let signUpData = storage.getSessionItem(signUpSessionKey);
+         step2Data.birthday = step2Data.birthday.replace(/-/g, '/');
+         let stepResult = await authApi.register({
+            step1: crypto.decodeSignUp(signUpData).step1,
+            step2: step2Data
+         }).then(res => res)
             .catch(err => err.response.data);
-         return result;
+         return stepResult;
       }
    }
 }

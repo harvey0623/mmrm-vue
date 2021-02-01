@@ -96,7 +96,7 @@ export default {
       },
       stepFeedBack() {
          if (this.stepSuccess) {
-            // this.$router.push('/register/step2');
+            this.$router.push('/register/step2');
          }
          this.stepOption.isOpen = false;
       }

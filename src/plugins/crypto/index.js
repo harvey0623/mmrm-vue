@@ -43,12 +43,12 @@ export const crypto = {
       let encrypted = CryptoJS.AES.encrypt(input, key, { iv: iv });
       return encrypted.toString();
    },
-   encodeUserInfo(payload) {
+   encodeSignUp(payload) {
       let text = JSON.stringify(payload);
       let aes = crypto.encodeAes(text);
       return crypto.encodeBase64(aes);
    },
-   decodeUserInfo(text) {
+   decodeSignUp(text) {
       let aes = crypto.decodeBase64(text);
       let decodeText = crypto.decodeAes(aes);
       return JSON.parse(decodeText);
