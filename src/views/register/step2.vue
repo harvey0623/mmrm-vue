@@ -47,9 +47,7 @@ export default {
          this.$emit('loading', false);
       },
       stepFeedBack() {
-         if (this.stepSuccess) {
-            this.$router.push('/');
-         }
+         if (this.stepSuccess) this.$router.push('/');
          this.stepOption.isOpen = false;
       }
    },

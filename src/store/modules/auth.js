@@ -70,25 +70,26 @@ export const authStore = {
          }
          return stepResult;
       },
-      checkHasSignupData({ commit }) { //確認註冊時間是否超時
-         return new Promise(resolve => {
-            let limitTime = 5 * 60 * 1000;
-            let startTime = storage.getSessionItem('startTime');
-            if (startTime === null) return resolve(false);
-            let diffTime = Date.now() - startTime.data;
-            if (diffTime >= limitTime) {
-               storage.removeSessionItem(timeSessionKey);
-               storage.removeSessionItem(signUpSessionKey);
-               return resolve(false);
-            }
-            let signUpData = storage.getSessionItem(signUpSessionKey);
-            if (signUpData === null) return resolve(false);
-            resolve(true);
-         });
+      async checkHasSignupData({ dispatch }) { //確認註冊時間是否超時
+         let limitTime = 1 * 60 * 1000;
+         let startTime = storage.getSessionItem('startTime');
+         if (startTime === null) return false;
+         let diffTime = Date.now() - startTime.data;
+         if (diffTime >= limitTime) {
+            dispatch('clearAllRegister');
+            return false;
+         }
+         let signUpData = storage.getSessionItem(signUpSessionKey);
+         if (signUpData === null) return false;
+         return true;
       },
       getStepData({ commit }, key) { //取得階段資料
          let signUpData = storage.getSessionItem(signUpSessionKey);
          return crypto.decodeSignUp(signUpData)[key];
+      },
+      clearAllRegister() { //清除所有註冊資料
+         storage.removeSessionItem(timeSessionKey);
+         storage.removeSessionItem(signUpSessionKey);
       }
    }
 }

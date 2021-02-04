@@ -37,21 +37,24 @@ const routes = [
 				path: 'step1',
 				component: Register_step1,
 				meta: {
-					step: 1
+					step: 1,
+					register: true,
 				}
 			},
 			{ 
 				path: 'step2',
 				component: Register_step2,
 				meta: {
-					step: 2
+					step: 2,
+					register: true,
 				}
 			},
 			{ 
 				path: 'step3',
 				component: Register_step3,
 				meta: {
-					step: 3
+					step: 3,
+					register: true,
 				}
 			},
 		]

@@ -92,9 +92,7 @@ export default {
          this.$emit('loading', false);
       },
       stepFeedBack() {
-         if (this.stepSuccess) {
-            this.$router.push('/register/step2');
-         }
+         if (this.stepSuccess) this.$router.push('/register/step2');
          this.stepOption.isOpen = false;
       }
    },

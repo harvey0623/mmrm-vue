@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import store from '@/store/index.js';
 export default {
    name: 'register',
    metaInfo() {
@@ -22,6 +23,10 @@ export default {
    data: () => ({
       isLoading: false
    }),
+   beforeRouteLeave(to, from, next) {
+      if (!to.meta.register) this.$store.dispatch('auth/clearAllRegister');
+      return next();
+   },
    computed: {
       routeStep() {
          return this.$route.meta.step;
@@ -39,8 +44,9 @@ export default {
          this.isLoading = value;
       },
       async checkSignup(callback) {
-         let result = await this.$store.dispatch('auth/checkHasSignupData');
-         callback(result);
+         let status = await this.$store.dispatch('auth/checkHasSignupData');
+         if (status) callback(status);
+         else this.$router.push('/register').catch(err => err);
       }
    }
 }
