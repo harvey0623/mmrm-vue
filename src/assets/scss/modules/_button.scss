@@ -1,9 +1,9 @@
 $normalBtn: (
    ( 
-      class: btnTest, 
-      color: red,
-      backgroundColor: orange,
-      borderColor: yellow,
+      class: btnAgain, 
+      color: map-get($fontColor, input),
+      backgroundColor: map-get($btnBgColor, placeholder),
+      borderColor: none,
    ),
 );
 

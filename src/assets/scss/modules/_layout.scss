@@ -56,6 +56,19 @@ body {
    }
 }
 
+//===提示說明文字
+.tipBox {
+   padding: 0 30px;
+   margin-bottom: map-get($gutter, basic);
+   color: map-get($fontColor, input);
+   font-size: 14px;
+   line-height: 22px;
+   text-align: justify;
+   &.center {
+      text-align: center;
+   }
+}
+
 //===按鈕外層
 .btnBox {
    padding-left: 20px;

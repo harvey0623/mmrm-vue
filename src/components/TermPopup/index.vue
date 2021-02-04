@@ -42,7 +42,7 @@ export default {
    },
    data() {
       return {
-         isReach: this.checked,
+         isReach: this.termChecked,
       }
    },
    methods: {

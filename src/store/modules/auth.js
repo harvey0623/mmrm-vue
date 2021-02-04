@@ -22,13 +22,13 @@ export const authStore = {
          let mmrmToken = cookie.get('mmrmToken');
          commit('setLogin', mmrmToken !== undefined);
       },
-      async login({ commit }, payload) {
+      async login({ commit }, payload) { //登入
          let loginResult = await authApi.login(payload).then(res => res)
             .catch(err => err.response.data);
          if (loginResult.status) commit('setLogin', true);
          return loginResult;
       },
-      async logout({ commit }) {
+      async logout({ commit }) { //登出
          let logoutResult = await authApi.logout().then(res => res)
             .catch(err => err.response.data);
          return logoutResult;
@@ -70,8 +70,18 @@ export const authStore = {
          }
          return stepResult;
       },
+      async registerVerify({ dispatch }, payload) { //註冊第三步
+         let token = await dispatch('getStepData', 'temp_access_token');
+         let stepResult = await authApi.registerVerify({
+            temp_access_token: token,
+            verify_code: payload.verify_code
+         }).then(res => res)
+            .catch(err => err.response.data);
+         if (stepResult.status) dispatch('clearAllRegister');
+         return stepResult;
+      },
       async checkHasSignupData({ dispatch }) { //確認註冊時間是否超時
-         let limitTime = 1 * 60 * 1000;
+         let limitTime = 10 * 60 * 1000;
          let startTime = storage.getSessionItem('startTime');
          if (startTime === null) return false;
          let diffTime = Date.now() - startTime.data;

@@ -3,6 +3,12 @@
 <script>
 import zipCodeData from '@/assets/json/zipcode.json';
 export default {
+   name: 'register2',
+   metaInfo() {
+      return { 
+         title: this.$i18n.t('page.register-2.title'),
+      }
+   },
    data: () => ({
       zipCodeData,
       user: {
@@ -40,14 +46,15 @@ export default {
       },
       async registerHandler() {
          this.$emit('loading', true);
-         let { status:stepStatus } = await this.$store.dispatch('auth/register', this.user);
-         this.stepSuccess = stepStatus;
-         this.stepOption.message = stepStatus ? '填寫成功' : '欄位填寫有誤，請重新填寫';
+         let { status, info } = await this.$store.dispatch('auth/register', this.user);
+         this.stepSuccess = status;
+         this.stepOption.message = status ? '填寫成功' : info.rcrm.RM;
          this.stepOption.isOpen = true;
          this.$emit('loading', false);
       },
       stepFeedBack() {
-         if (this.stepSuccess) this.$router.push('/');
+         if (this.stepSuccess) this.$router.push('/register/step3');
+         this.canNext = false;
          this.stepOption.isOpen = false;
       }
    },

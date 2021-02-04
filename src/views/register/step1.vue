@@ -5,7 +5,7 @@ import { termApi } from '@/api/term.js';
 import TermRow from '@/components/TermRow/index.vue';
 import TermPopup from '@/components/TermPopup/index.vue';
 export default {
-   name: 'register-1',
+   name: 'register-step-1',
    metaInfo() {
       return { 
          title: this.$i18n.t('page.register-1.title'),
@@ -85,9 +85,9 @@ export default {
          let isAgreeValid = await this.$refs.term.validate();
          if (!(isFormValid && isAgreeValid)) return;
          this.$emit('loading', true);
-         let { status:stepStatus } = await this.$store.dispatch('auth/register_step1', this.user);
-         this.stepSuccess = stepStatus;
-         this.stepOption.message = stepStatus ? '填寫成功' : '欄位填寫有誤，請重新填寫';
+         let { status, info } = await this.$store.dispatch('auth/register_step1', this.user);
+         this.stepSuccess = status;
+         this.stepOption.message = status ? '填寫成功' : info.rcrm.RM;
          this.stepOption.isOpen = true;
          this.$emit('loading', false);
       },

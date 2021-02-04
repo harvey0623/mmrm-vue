@@ -11,6 +11,12 @@
       },
       "register-1": {
          "title": "註冊第一步"
+      },
+      "register-2": {
+         "title": "註冊第二步"
+      },
+      "register-3": {
+         "title": "註冊第三步"
       }
    },
    "validate": {

@@ -2,6 +2,21 @@
    "page": {
       "home": {
          "title": "Home"
+      },
+      "login": {
+         "title": "login"
+      },
+      "register": {
+         "title": "register"
+      },
+      "register-1": {
+         "title": "register-1"
+      },
+      "register-2": {
+         "title": "register-2"
+      },
+      "register-3": {
+         "title": "register-3"
       }
    },
    "validate": {

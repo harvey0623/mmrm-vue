@@ -2,7 +2,7 @@ import { httpConfig } from './config.js';
 import { crypto } from '@/plugins/crypto/index.js';
 
 export const authApi = {
-   async login(payload) {
+   async login(payload) { //登入
       let result = await httpConfig({
          url: '/member/login',
          method: 'post',
@@ -13,7 +13,7 @@ export const authApi = {
       }).then(res => res.data);
       return result;
    },
-   async logout() {
+   async logout() { //登出
       let result = await httpConfig({
          url: '/member/logout',
          method: 'post',
@@ -21,7 +21,7 @@ export const authApi = {
       }).then(res => res.data);
       return result;
    },
-   async register_check(payload) {
+   async register_check(payload) { //註冊第一步
       let result = await httpConfig({
          url: '/member/register_check',
          method: 'post',
@@ -36,7 +36,7 @@ export const authApi = {
       }).then(res => res.data);
       return result;
    },
-   async register({ step1, step2 }) {
+   async register({ step1, step2 }) { //註冊第二步
       let result = await httpConfig({
          url: '/member/register',
          method: 'post',
@@ -46,6 +46,14 @@ export const authApi = {
             mobile: crypto.wm_aes(step1.mobile),
             password: crypto.wm_aes(step1.password),
          }
+      }).then(res => res.data);
+      return result;
+   },
+   async registerVerify(payload) { //註冊第三步
+      let result = await httpConfig({
+         url: '/member/register_verify',
+         method: 'post',
+         data: payload
       }).then(res => res.data);
       return result;
    },
