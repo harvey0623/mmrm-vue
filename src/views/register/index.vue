@@ -2,7 +2,10 @@
    <div class="register">
       <div class="mycontainer">
          <div id="processBox" :class="stepClass"></div>
-         <router-view @loading="loadingHandler"></router-view>
+         <router-view 
+            @loading="loadingHandler"
+            @checkSignup="checkSignup"
+         ></router-view>
       </div>
       <Loading v-show="isLoading"></Loading>
    </div>
@@ -34,6 +37,10 @@ export default {
    methods: {
       loadingHandler(value) {
          this.isLoading = value;
+      },
+      async checkSignup(callback) {
+         let result = await this.$store.dispatch('auth/checkHasSignupData');
+         callback(result);
       }
    }
 }

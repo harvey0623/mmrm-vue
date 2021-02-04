@@ -4,6 +4,7 @@ import { storage } from '@/plugins/storage/index.js';
 import { crypto } from '@/plugins/crypto/index.js';
 import _ from 'lodash';
 
+const timeSessionKey = 'startTime';
 const signUpSessionKey = 'signUp';
 
 export const authStore = {
@@ -15,9 +16,6 @@ export const authStore = {
       setLogin(state, value) {
          state.isLogin = value;
       }
-   },
-   getters: {
-      
    },
    actions: {
       checkAuthCookie({ commit }) {
@@ -35,7 +33,7 @@ export const authStore = {
             .catch(err => err.response.data);
          return logoutResult;
       },
-      async register_step1({ commit }, payload) {
+      async register_step1({ commit }, payload) { //註冊第一步
          let stepResult = await authApi.register_check(payload).then(res => res)
             .catch(err => err.response.data);
          if (stepResult.status) {
@@ -49,13 +47,12 @@ export const authStore = {
                let encodeText = crypto.encodeSignUp(decodeData);
                storage.setSessionItem(signUpSessionKey, encodeText);
             }
+            storage.setSessionItem(timeSessionKey, { data: Date.now() });
          }
          return stepResult;
       },
-      async register({ commit }, payload) {
-         let signUpData = storage.getSessionItem(signUpSessionKey);
-         console.log(crypto.decodeSignUp(signUpData));
-         let step1Data = crypto.decodeSignUp(signUpData).step1;
+      async register({ dispatch }, payload) { //註冊第二步
+         let step1Data = await dispatch('getStepData', 'step1');
          let step2Data = _.cloneDeep(payload);
          step2Data.birthday = step2Data.birthday.replace(/-/g, '/');
          let stepResult = await authApi.register({
@@ -72,6 +69,26 @@ export const authStore = {
             storage.setSessionItem(signUpSessionKey, encodeText);
          }
          return stepResult;
+      },
+      checkHasSignupData({ commit }) { //確認註冊時間是否超時
+         return new Promise(resolve => {
+            let limitTime = 5 * 60 * 1000;
+            let startTime = storage.getSessionItem('startTime');
+            if (startTime === null) return resolve(false);
+            let diffTime = Date.now() - startTime.data;
+            if (diffTime >= limitTime) {
+               storage.removeSessionItem(timeSessionKey);
+               storage.removeSessionItem(signUpSessionKey);
+               return resolve(false);
+            }
+            let signUpData = storage.getSessionItem(signUpSessionKey);
+            if (signUpData === null) return resolve(false);
+            resolve(true);
+         });
+      },
+      getStepData({ commit }, key) { //取得階段資料
+         let signUpData = storage.getSessionItem(signUpSessionKey);
+         return crypto.decodeSignUp(signUpData)[key];
       }
    }
 }

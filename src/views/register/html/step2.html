@@ -87,4 +87,10 @@
    <div class="btnBox">
       <button @click="submitHandler" class="variation">下一步</button>
    </div>
+   <MessagePopup
+      :isOpen="stepOption.isOpen"
+      :message="stepOption.message"
+      :eventName="stepOption.eventName"
+      @stepFeedBack="stepFeedBack"
+   ></MessagePopup>
 </div>

@@ -11,7 +11,15 @@ export default {
          city: '新北市',
          district: '土城區',
          address: '中央路'
-      }
+      },
+      stepOption: {
+         isOpen: false,
+         message: '',
+         eventName: 'stepFeedBack',
+      },
+      canRetrive: false,
+      canNext: false,
+      stepSuccess: false,
    }),
    computed: {
       cityList() {
@@ -28,13 +36,38 @@ export default {
       async submitHandler() {
          let isValid = await this.$refs.form.validate();
          if (!isValid) return;
+         this.$emit('checkSignup', (value) => this.canNext = value);
+      },
+      async registerHandler() {
          this.$emit('loading', true);
-         await this.$store.dispatch('auth/register', this.user);
+         let { status:stepStatus } = await this.$store.dispatch('auth/register', this.user);
+         this.stepSuccess = stepStatus;
+         this.stepOption.message = stepStatus ? '填寫成功' : '欄位填寫有誤，請重新填寫';
+         this.stepOption.isOpen = true;
          this.$emit('loading', false);
       },
+      stepFeedBack() {
+         if (this.stepSuccess) {
+            this.$router.push('/');
+         }
+         this.stepOption.isOpen = false;
+      }
    },
-   async mounted() {
-   
+   mounted() {
+      this.$emit('checkSignup', (value) => this.canRetrive = value);
+   },
+   watch: {
+      async canRetrive(val) {
+         if (val) {
+            let stepData = await this.$store.dispatch('auth/getStepData', 'step2');
+            if (stepData === undefined) return;
+            this.user = stepData;
+            this.user.birthday = this.user.birthday.replace(/\//g, '-');
+         }
+      },
+      async canNext(val) {
+         if (val) this.registerHandler();
+      }
    }
 }
 </script>

@@ -41,7 +41,8 @@ export default {
          isOpen: false,
          message: '欄位填寫有誤，請重新填寫',
          eventName: 'stepFeedBack',
-      }
+      },
+      canRetrive: false,
    }),
    methods: {
       see1Handler() {
@@ -66,11 +67,7 @@ export default {
       },
       convertTerms(data) { //條款資料轉換
          return data.reduce((prev, current, index) => {
-            prev.push({ 
-               ...current, 
-               show: false, 
-               checked: true
-            });
+            prev.push({ ...current, show: false, checked: true });
             return prev;
          }, []);
       },
@@ -106,6 +103,7 @@ export default {
       this.initInputType();
       let termData = await this.getTermData();
       this.termsList = this.convertTerms(termData);
+      this.$emit('checkSignup', (value) => this.canRetrive = value);
       this.$emit('loading', false);
    },
    watch: {
@@ -114,6 +112,12 @@ export default {
       },
       visible2(to) {
          this.setInputType({ status: to, el: this.$refs.confirmInput });
+      },
+      async canRetrive(val) {
+         if (val) {
+            this.user = await this.$store.dispatch('auth/getStepData', 'step1');
+            this.termsList.forEach(term => term.checked = true);
+         }
       }
    },
    components: {
