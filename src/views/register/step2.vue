@@ -28,9 +28,9 @@ export default {
       async submitHandler() {
          let isValid = await this.$refs.form.validate();
          if (!isValid) return;
-         this.$emit('setLoading', true);
-         this.$store.dispatch('auth/register', this.user);
-         this.$emit('setLoading', false);
+         this.$emit('loading', true);
+         await this.$store.dispatch('auth/register', this.user);
+         this.$emit('loading', false);
       },
    },
    async mounted() {
