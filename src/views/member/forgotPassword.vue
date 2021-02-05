@@ -48,7 +48,7 @@ export default {
          return { status, token: info.results.temp_access_token };
       },
       forgotFeedBack() {
-         if (this.forgotSuccess) return;
+         if (this.forgotSuccess) this.$router.push('/member/verifyPassword')
          this.msgOption.isOpen = false;
       }
    }

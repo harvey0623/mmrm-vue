@@ -20,6 +20,9 @@
       },
       "forgotPassword": {
          "title": "忘記密碼"
+      },
+      "verifyPassword": {
+         "title": "手機驗證碼"
       }
    },
    "validate": {

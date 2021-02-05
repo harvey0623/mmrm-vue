@@ -20,6 +20,9 @@
       },
       "forgotPassword": {
          "title": "forgotPassword"
+      },
+      "verifyPassword": {
+         "title": "verifyPassword mobile"
       }
    },
    "validate": {

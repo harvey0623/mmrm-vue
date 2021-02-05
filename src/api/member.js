@@ -13,5 +13,13 @@ export const memberApi = {
          }
       }).then(res => res.data);
       return result;
+   },
+   async forget_password_verify(payload) { //忘記密-簡訊驗證
+      let result = await httpConfig({
+         url: '/member/forget_password_verify',
+         method: 'post',
+         data: payload
+      }).then(res => res.data);
+      return result;
    }
 }
