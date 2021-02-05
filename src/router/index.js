@@ -7,6 +7,8 @@ import Register from '@/views/register/index.vue';
 import Register_step1 from '@/views/register/step1.vue';
 import Register_step2 from '@/views/register/step2.vue';
 import Register_step3 from '@/views/register/step3.vue';
+import Member from '@/views/member/index.vue';
+import ForgotPassword from '@/views/member/forgotPassword.vue';
 import { cookie } from '@/plugins/cookie/index.js';
 import { checkIsLogin }  from '../middleware/checkIsLogin.js';
 
@@ -56,6 +58,20 @@ const routes = [
 					step: 3,
 					register: true,
 				}
+			},
+		]
+	},
+	{
+		path: '/member',
+		component: Member,
+		children: [
+			{
+				path: '',
+				redirect: '/'
+			},
+			{
+				path: 'forgotPassword',
+				component: ForgotPassword
 			},
 		]
 	},

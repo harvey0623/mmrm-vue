@@ -11,10 +11,14 @@ export const authStore = {
    namespaced: true,
    state: () => ({
       isLogin: false,
+      passwordToken: ''
    }),
    mutations: {
       setLogin(state, value) {
          state.isLogin = value;
+      },
+      setPasswordToken(state, value) {
+         state.passwordToken = value;
       }
    },
    actions: {

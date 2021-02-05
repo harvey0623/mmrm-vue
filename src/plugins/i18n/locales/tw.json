@@ -17,6 +17,9 @@
       },
       "register-3": {
          "title": "註冊第三步"
+      },
+      "forgotPassword": {
+         "title": "忘記密碼"
       }
    },
    "validate": {

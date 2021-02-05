@@ -17,6 +17,9 @@
       },
       "register-3": {
          "title": "register-3"
+      },
+      "forgotPassword": {
+         "title": "forgotPassword"
       }
    },
    "validate": {
