@@ -52,7 +52,7 @@
                <router-link to="/register">會員註冊</router-link>
             </div>
 				<div>
-               <router-link to="/">忘記密碼</router-link>
+               <router-link to="/member/forgotPassword">忘記密碼</router-link>
             </div>
 			</div>
       </div>
