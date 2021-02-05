@@ -40,8 +40,7 @@ export default {
          this.isLoading = false;
       },
       async verifyHandler() {
-         let { status, info } = await memberApi.forget_password(this.user).then(res => res)
-            .catch(err => err.response.data);
+         let { status, info } = await memberApi.forget_password(this.user);
          this.forgotSuccess = status;
          this.msgOption.message = status ? '填寫成功' : info.rcrm.RM;
          this.msgOption.isOpen = true;

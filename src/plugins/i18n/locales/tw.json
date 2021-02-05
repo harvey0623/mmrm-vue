@@ -23,6 +23,9 @@
       },
       "verifyPassword": {
          "title": "手機驗證碼"
+      },
+      "resetPassword": {
+         "title": "重設密碼"
       }
    },
    "validate": {

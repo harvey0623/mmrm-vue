@@ -23,6 +23,9 @@
       },
       "verifyPassword": {
          "title": "verifyPassword mobile"
+      },
+      "resetPassword": {
+         "title": "resetPassword"
       }
    },
    "validate": {

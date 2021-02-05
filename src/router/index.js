@@ -10,6 +10,7 @@ import Register_step3 from '@/views/register/step3.vue';
 import Member from '@/views/member/index.vue';
 import ForgotPassword from '@/views/member/forgotPassword.vue';
 import VerifyPassword from '@/views/member/verifyPassword.vue';
+import ResetPassword from '@/views/member/resetPassword.vue';
 import { cookie } from '@/plugins/cookie/index.js';
 import { checkIsLogin }  from '../middleware/checkIsLogin.js';
 
@@ -72,11 +73,18 @@ const routes = [
 			},
 			{
 				path: 'forgotPassword',
-				component: ForgotPassword
+				component: ForgotPassword,
+				beforeEnter: checkIsLogin
 			},
 			{
 				path: 'verifyPassword',
 				component: VerifyPassword,
+				beforeEnter: checkIsLogin
+			},
+			{
+				path: 'resetPassword',
+				component: ResetPassword,
+				beforeEnter: checkIsLogin
 			}
 		]
 	},

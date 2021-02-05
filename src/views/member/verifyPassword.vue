@@ -29,9 +29,6 @@ export default {
          return this.passwordToken !== '';
       }
    },
-   created() {
-      if (!this.hasPasswordToken) this.$router.push('/member/forgotPassword');
-   },
    methods: {
       async submitHandler() {
          let isValid = await this.$refs.form.validate().then(res => res);
@@ -41,23 +38,21 @@ export default {
          this.isLoading = false;
       },
       async verifyHandler() {
-         let payload = {
+         let { status, info } = await memberApi.forget_password_verify({
             temp_access_token: this.passwordToken,
             verify_code: this.user.verify_code
-         };
-         let { status, info } = await memberApi.forget_password_verify(payload).then(res => res)
-            .catch(err => err.response.data);
+         });
          this.verifySuccess = status;
          this.msgOption.message = status ? '驗證成功' : info.rcrm.RM;
          this.msgOption.isOpen = true;
       },
       verifyFeedBack() {
-         if (this.verifySuccess) {
-            this.$store.commit('auth/setPasswordToken', '');
-            this.$router.push('/');
-         }
+         if (this.verifySuccess) this.$router.push('/member/resetPassword');
          this.msgOption.isOpen = false;
       }
+   },
+   created() {
+      if (!this.hasPasswordToken) this.$router.push('/member/forgotPassword');
    }
 }
 </script>
