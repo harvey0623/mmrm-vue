@@ -18,7 +18,7 @@
             <div class="dataBody">
                <div class="dataRow">
                   <div class="block">
-                     <a href="./L2_05_02_00.html">{{ user.mobile }}</a>
+                     <a href="./L2_05_02_00.html">{{ user.data.mobile }}</a>
                   </div>
                   <p class="dataName">帳號</p>
                </div>
@@ -41,7 +41,7 @@
                      type="text" 
                      class="form-control"
                      placeholder="請輸入您的姓名" 
-                     v-model.trim="user.name">
+                     v-model.trim="user.data.name">
                   <p class="dataName">姓名</p>
                   <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
                </validation-provider>
@@ -50,7 +50,7 @@
                   class="dataRow"
                   rules="required"
                   v-slot="{ errors }">
-                  <select class="form-control" v-model="user.gender">
+                  <select class="form-control" v-model="user.data.gender">
                      <option 
                         v-for="item in genderList" 
                         :key="item.value"
@@ -69,7 +69,7 @@
                      type="email" 
                      class="form-control"
                      placeholder="請輸入電子信箱"
-                     v-model.trim="user.email">
+                     v-model.trim="user.data.email">
                   <p class="dataName">電子信箱</p>
                </div>
                <div class="dataRow">
@@ -82,7 +82,7 @@
                   <select 
                      class="form-control"
                      :class="{selectDown: user.city === ''}"
-                     v-model="user.city">
+                     v-model="user.data.city">
                      <option value=""></option>
                      <option 
                         v-for="city in cityList" :key="city"
@@ -96,7 +96,7 @@
                   <select 
                      class="form-control"
                      :class="{selectDown: user.district === ''}"
-                     v-model="user.district">
+                     v-model="user.data.district">
                      <option value=""></option>
                      <option 
                         v-for="area in areaList" :key="area"
@@ -111,7 +111,7 @@
                      type="text" 
                      class="form-control"
                      placeholder="請輸入地址" 
-                     v-model.trim="user.address">
+                     v-model.trim="user.data.address">
                   <p class="dataName">詳細地址</p>
                </div>
             </div>
@@ -121,7 +121,7 @@
                <div class="dataRow">
                   <select 
                      class="form-control eigthInput"
-                     v-model="user.security_question">
+                     v-model="user.data.security_question">
                      <option 
                         v-for="item in questionList"
                         :key="item.value"
@@ -139,7 +139,7 @@
                      type="text" 
                      class="form-control sixInput"
                      placeholder="請輸入答案"
-                     v-model.trim="user.security_answer">
+                     v-model.trim="user.data.security_answer">
                   <p class="dataName">安全問題答案</p>
                   <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
                </validation-provider>

@@ -2,8 +2,9 @@
 
 <script>
 import { memberApi } from '@/api/member.js';
+import { registerList } from '@/composition-api/registerList.js';
 import zipCodeData from '@/assets/json/zipcode.json';
-import { genderList, questionList } from '@/assets/json/registerData.json';
+import { ref, reactive, onMounted } from '@vue/composition-api';
 export default {
    name: 'maintain',
    metaInfo() {
@@ -11,32 +12,51 @@ export default {
          title: this.$i18n.t('page.maintain.title'),
       }
    },
-   data: () => ({
-      zipCodeData,
-      isVerified: true,
-      isLoading: false,
-      popupOption: {
-         isOpen: false,
+   setup(props, context) {
+      let { genderList, questionList } = registerList();
+      let isLoading = ref(false);
+      let isVerified = ref(false);
+      let inputPopup = ref(null);
+      let popupOption = reactive({
+         isOpen: true,
          popupTitle: '請輸入會員密碼',
          message: '為了保護您的個人資料，請輸入會員密碼以進入會員資料維護。',
          inputType: 'password',
          eventName: 'verifyPw',
          placeholder: '請輸入會員密碼',
          validateRule: 'required|password',
-      },
-      user: {
-         mobile: '',
-         name: '',
-         gender: '',
-         birthday: '',
-         city: '',
-         district: '',
-         address: '',
-         security_question: '',
-         security_answer: '',
-      },
-      genderList,
-      questionList,
+      });
+      let user = reactive({ data: {} });
+      let verifyPw = async(value) => {
+         isLoading.value = true;
+         let { status, info } = await memberApi.verify_member_password({ password: value });
+         if (status) {
+            await getMemberPtofile();
+            isVerified.value = true;
+            popupOption.isOpen = false;
+         } else {
+            inputPopup.value.$refs.form.setErrors({ name: [info.rcrm.RM] });
+         }
+         isLoading.value = false;
+      }
+      let getMemberPtofile =  async() => {
+         let { status, info } = await memberApi.get_member_profile();
+         if (!status) return;
+         let profile = info.results.member_profile;
+         if (profile.email === undefined) profile.email = '';
+         user.data = profile;
+      }
+      let birthdayHandler = () => {
+
+      }
+      let submitHandler = () => {
+
+      }
+
+      return { genderList, questionList, isLoading, isVerified, popupOption, verifyPw, inputPopup, user, submitHandler, birthdayHandler };
+   },
+   data: () => ({
+      zipCodeData,
    }),
    computed: {
       cityList() {
@@ -48,36 +68,6 @@ export default {
          if (region !== undefined) return region['districts'];
          else return [];
       }
-   },
-   methods: {
-      async verifyPw(value) {
-         this.isLoading = true;
-         let { status, info } = await memberApi.verify_member_password({ password: value });
-         if (status) {
-            await this.getMemberPtofile();
-            this.isVerified = true;
-            this.popupOption.isOpen = false;
-         } else {
-            this.$refs.inputPopup.$refs.form.setErrors({ name: [info.rcrm.RM] });
-         }
-         this.isLoading = false;
-      },
-      async getMemberPtofile() {
-         let { status, info } = await memberApi.get_member_profile();
-         if (!status) return;
-         let profile = info.results.member_profile;
-         if (!('email' in profile)) profile.email = '';
-         this.user = profile;
-      },
-      birthdayHandler() {
-
-      },
-      submitHandler() {
-
-      }
-   },
-   mounted() {
-      this.getMemberPtofile();
    }
 }
 </script>
