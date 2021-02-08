@@ -45,7 +45,7 @@ export default {
       async checkSignup(callback) {
          let status = await this.$store.dispatch('auth/checkHasSignupData');
          if (status) callback(status);
-         else this.$router.push('/register').catch(err => err);
+         else this.$router.push('/register').catch(err => {});
       }
    }
 }

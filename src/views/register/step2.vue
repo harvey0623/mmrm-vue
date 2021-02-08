@@ -46,7 +46,10 @@ export default {
       },
       async registerHandler() {
          this.$emit('loading', true);
-         let { status, info } = await this.$store.dispatch('auth/register', this.user);
+         let { status, info } = await this.$store.dispatch('auth/register', {
+            ...this.user,
+            birthday: this.user.birthday.replace(/-/g, '/')
+         });
          this.stepSuccess = status;
          this.stepOption.message = status ? '填寫成功' : info.rcrm.RM;
          this.stepOption.isOpen = true;

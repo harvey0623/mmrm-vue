@@ -3,26 +3,29 @@ import { crypto } from '@/plugins/crypto/index.js';
 
 export const authApi = {
    async login(payload) { //登入
-      let result = await httpConfig({
+      return await httpConfig({
          url: '/member/login',
          method: 'post',
          data: {
             account: crypto.wm_aes(payload.account),
             password: crypto.wm_aes(payload.password),
          }
-      }).then(res => res.data);
-      return result;
+      }).then(res => res.data)
+         .catch(err => err.response.data);
    },
    async logout() { //登出
-      let result = await httpConfig({
+      return await httpConfig({
          url: '/member/logout',
          method: 'post',
          data: {}
-      }).then(res => res.data);
-      return result;
+      }).then(res => {
+         return { status: true };
+      }).catch(err => {
+         return { status: false };
+      });
    },
    async register_check(payload) { //註冊第一步
-      let result = await httpConfig({
+      return await httpConfig({
          url: '/member/register_check',
          method: 'post',
          data: {
@@ -33,11 +36,11 @@ export const authApi = {
             security_question: payload.security_question,
             security_answer: payload.security_answer
          }
-      }).then(res => res.data);
-      return result;
+      }).then(res => res.data)
+         .catch(err => err.response.data);
    },
    async register({ step1, step2 }) { //註冊第二步
-      let result = await httpConfig({
+      return await httpConfig({
          url: '/member/register',
          method: 'post',
          data: {
@@ -46,15 +49,15 @@ export const authApi = {
             mobile: crypto.wm_aes(step1.mobile),
             password: crypto.wm_aes(step1.password),
          }
-      }).then(res => res.data);
-      return result;
+      }).then(res => res.data)
+         .catch(err => err.response.data)
    },
    async registerVerify(payload) { //註冊第三步
-      let result = await httpConfig({
+      return await httpConfig({
          url: '/member/register_verify',
          method: 'post',
          data: payload
-      }).then(res => res.data);
-      return result;
-   },
+      }).then(res => res.data)
+         .catch(err => err.response.data);
+   }
 }

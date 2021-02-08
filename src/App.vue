@@ -55,7 +55,16 @@ export default {
       },
       logoutHandler() {
          this.openLogoutPopup = false;
+      },
+      unloadHandler() {
+         this.$store.dispatch('auth/clearAllRegister');
       }
+   },
+   mounted() {
+      window.addEventListener('beforeunload', this.unloadHandler);
+   },
+   beforeDestroy() {
+      window.removeEventListener('beforeunload', this.unloadHandler);
    }
 };
 </script>

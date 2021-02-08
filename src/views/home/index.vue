@@ -65,11 +65,7 @@ export default {
    methods: {
       async logoutHandler() {
          this.isLoading = true;
-         let logoutResult = await this.$store.dispatch('auth/logout');
-         if (logoutResult.status) {
-            this.$store.commit('auth/setLogin', false);
-            this.$store.commit('setLogoutPopup', true);
-         }
+         await this.$store.dispatch('auth/logout');
          this.isLoading = false;
       }
    },

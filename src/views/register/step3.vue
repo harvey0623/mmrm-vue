@@ -30,7 +30,7 @@ export default {
          this.$emit('loading', true);
          let { status, info } = await this.$store.dispatch('auth/registerVerify', this.user);
          this.stepSuccess = status;
-         this.stepOption.message = status ? '驗證成功' : info.rcrm.RM;
+         this.stepOption.message = status ? '註冊成功' : info.rcrm.RM;
          this.stepOption.isOpen = true;
          this.$emit('loading', false);
       },

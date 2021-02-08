@@ -2,7 +2,6 @@ import { authApi } from '@/api/auth.js';
 import { cookie } from '@/plugins/cookie/index.js';
 import { storage } from '@/plugins/storage/index.js';
 import { crypto } from '@/plugins/crypto/index.js';
-import _ from 'lodash';
 
 const timeSessionKey = 'startTime';
 const signUpSessionKey = 'signUp';
@@ -27,19 +26,19 @@ export const authStore = {
          commit('setLogin', mmrmToken !== undefined);
       },
       async login({ commit }, payload) { //登入
-         let loginResult = await authApi.login(payload).then(res => res)
-            .catch(err => err.response.data);
+         let loginResult = await authApi.login(payload);
          if (loginResult.status) commit('setLogin', true);
          return loginResult;
       },
       async logout({ commit }) { //登出
-         let logoutResult = await authApi.logout().then(res => res)
-            .catch(err => err.response.data);
-         return logoutResult;
+         let logoutResult = await authApi.logout();
+         if (logoutResult.status) {
+            commit('setLogin', false);
+            commit('setLogoutPopup', true, { root: true });
+         }
       },
       async register_step1({ commit }, payload) { //註冊第一步
-         let stepResult = await authApi.register_check(payload).then(res => res)
-            .catch(err => err.response.data);
+         let stepResult = await authApi.register_check(payload);
          if (stepResult.status) {
             let signUpData = storage.getSessionItem(signUpSessionKey);
             if (signUpData === null) {
@@ -57,17 +56,14 @@ export const authStore = {
       },
       async register({ dispatch }, payload) { //註冊第二步
          let step1Data = await dispatch('getStepData', 'step1');
-         let step2Data = _.cloneDeep(payload);
-         step2Data.birthday = step2Data.birthday.replace(/-/g, '/');
          let stepResult = await authApi.register({
             step1: step1Data,
-            step2: step2Data
-         }).then(res => res)
-            .catch(err => err.response.data);
+            step2: payload
+         });
          if (stepResult.status) {
             let encodeText = crypto.encodeSignUp({
                step1: step1Data,
-               step2: step2Data,
+               step2: payload,
                temp_access_token: stepResult.info.results.temp_access_token
             });
             storage.setSessionItem(signUpSessionKey, encodeText);
@@ -79,8 +75,7 @@ export const authStore = {
          let stepResult = await authApi.registerVerify({
             temp_access_token: token,
             verify_code: payload.verify_code
-         }).then(res => res)
-            .catch(err => err.response.data);
+         });
          if (stepResult.status) dispatch('clearAllRegister');
          return stepResult;
       },

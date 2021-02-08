@@ -22,7 +22,6 @@ instance.interceptors.response.use(function (response) {
       store.commit('auth/setLogin', false);
       store.commit('setExpirePopup', true);
       router.push('/').catch(err => {});
-      return Promise.resolve(error.response);
    }
    return Promise.reject(error);
 });
