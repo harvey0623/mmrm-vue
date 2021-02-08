@@ -11,6 +11,7 @@ import Member from '@/views/member/index.vue';
 import ForgotPassword from '@/views/member/forgotPassword.vue';
 import VerifyPassword from '@/views/member/verifyPassword.vue';
 import ResetPassword from '@/views/member/resetPassword.vue';
+import Maintain from '@/views/member/maintain.vue';
 import { cookie } from '@/plugins/cookie/index.js';
 import { checkIsLogin }  from '../middleware/checkIsLogin.js';
 
@@ -85,6 +86,13 @@ const routes = [
 				path: 'resetPassword',
 				component: ResetPassword,
 				beforeEnter: checkIsLogin
+			},
+			{
+				path: 'maintain',
+				component: Maintain,
+				meta: {
+					suth: true
+				}
 			}
 		]
 	},

@@ -32,5 +32,15 @@ export const memberApi = {
          }
       }).then(res => res.data)
          .catch(err => err.response.data);
+   },
+   async verify_member_password(payload) { //密碼驗證
+      return await httpConfig({
+         url: '/member/verify_member_password',
+         method: 'post',
+         data: {
+            password: crypto.wm_aes(payload.password)
+         }
+      }).then(res => res.data)
+         .catch(err => err.response.data);
    }
 }

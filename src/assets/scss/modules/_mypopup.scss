@@ -18,13 +18,14 @@ $modalBorderColor: map-get($borderColor, placeholder);
    overflow: hidden;
    >.popup-header,
    >.popup-body {
-      padding: 12px;
+      padding: 15px;
       color: map-get($fontColor, formTitle);
       text-align: center;
    }
    >.popup-header {
+      padding-bottom: 0;
       font-size: 16px;
-      border-bottom: 1px solid $modalBorderColor;
+      // border-bottom: 1px solid $modalBorderColor;
    }
    >.popup-footer {
       display: flex;

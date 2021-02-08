@@ -26,6 +26,9 @@
       },
       "resetPassword": {
          "title": "重設密碼"
+      },
+      "maintain": {
+         "title": "會員資料維護"
       }
    },
    "validate": {

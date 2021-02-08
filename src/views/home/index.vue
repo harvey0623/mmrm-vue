@@ -33,7 +33,7 @@ export default {
                { iconClass: 'myCoupon', path: '/', auth: true, showInLogin: true },
                { iconClass: 'message', path: '/', auth: true, showInLogin: true },
                { iconClass: 'login', path: '/login', auth: true, showInLogin: false },
-               { iconClass: 'maintain', path: '/', auth: true, showInLogin: true },
+               { iconClass: 'maintain', path: '/member/maintain', auth: true, showInLogin: true },
                { iconClass: 'logout', path: '/', auth: true, showInLogin: true },
             ]
          },

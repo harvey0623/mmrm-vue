@@ -26,6 +26,9 @@
       },
       "resetPassword": {
          "title": "resetPassword"
+      },
+      "maintain": {
+         "title": "member maintain"
       }
    },
    "validate": {

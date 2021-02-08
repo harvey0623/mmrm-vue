@@ -2,7 +2,7 @@
    <div class="mypopup" v-show="isOpen">
       <div class="popup-content">
          <div class="popup-header">
-            <p>提示</p>
+            <p>{{ popupTitle }}</p>
          </div>
          <div class="popup-body">
             <p>{{ message }}</p>
@@ -29,6 +29,10 @@ export default {
       eventName: {
          type: String,
          required: true
+      },
+      popupTitle: {
+         type: String,
+         default: '提示'
       },
       message: {
          type: String,

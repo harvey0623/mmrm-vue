@@ -1,0 +1,14 @@
+<div>
+   <InputPopup
+      :isOpen="popupOption.isOpen"
+      :popupTitle="popupOption.popupTitle"
+      :message="popupOption.message"
+      :inputType="popupOption.inputType"
+      :placeholder="popupOption.placeholder"
+      :eventName="popupOption.eventName"
+      :validateRule="popupOption.validateRule"
+      @verifyPw="verifyPw"
+      ref="inputPopup"
+   ></InputPopup>
+   <Loading v-show="isLoading"></Loading>
+</div>
