@@ -42,5 +42,13 @@ export const memberApi = {
          }
       }).then(res => res.data)
          .catch(err => err.response.data);
-   }
+   },
+   async get_member_profile() { //會員資料
+      return await httpConfig({
+         url: '/member/get_member_profile',
+         method: 'post',
+         data: {}
+      }).then(res => res.data)
+         .catch(err => err.response.data);
+   },
 }
