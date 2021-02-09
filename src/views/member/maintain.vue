@@ -15,10 +15,10 @@ export default {
    setup(props, context) {
       let { genderList, questionList } = registerList();
       let isLoading = ref(false);
-      let isVerified = ref(false);
+      let isVerified = ref(true);
       let inputPopup = ref(null);
       let popupOption = reactive({
-         isOpen: true,
+         isOpen: false,
          popupTitle: '請輸入會員密碼',
          message: '為了保護您的個人資料，請輸入會員密碼以進入會員資料維護。',
          inputType: 'password',
@@ -52,6 +52,10 @@ export default {
       let submitHandler = () => {
 
       }
+
+      onMounted(() => {
+         getMemberPtofile();
+      });
 
       return { genderList, questionList, isLoading, isVerified, popupOption, verifyPw, inputPopup, user, submitHandler, birthdayHandler };
    },
