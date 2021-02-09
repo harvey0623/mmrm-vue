@@ -3,6 +3,7 @@
 <script>
 import { memberApi } from '@/api/member.js';
 import { registerList } from '@/composition-api/registerList.js';
+import { zipCode } from '@/composition-api/zipCode.js';
 import zipCodeData from '@/assets/json/zipcode.json';
 import { ref, reactive, onMounted } from '@vue/composition-api';
 export default {
@@ -14,6 +15,7 @@ export default {
    },
    setup(props, context) {
       let { genderList, questionList } = registerList();
+      let { resideInfo, cityList, districtList } = zipCode();
       let isLoading = ref(false);
       let isVerified = ref(true);
       let inputPopup = ref(null);
@@ -57,22 +59,8 @@ export default {
          getMemberPtofile();
       });
 
-      return { genderList, questionList, isLoading, isVerified, popupOption, verifyPw, inputPopup, user, submitHandler, birthdayHandler };
+      return { genderList, questionList, isLoading, isVerified, popupOption, verifyPw, inputPopup, user, submitHandler, birthdayHandler, resideInfo, cityList, districtList };
    },
-   data: () => ({
-      zipCodeData,
-   }),
-   computed: {
-      cityList() {
-         if (this.zipCodeData.length === 0) return [];
-         return this.zipCodeData.map(item => item.name);
-      },
-      areaList() {
-         let region = this.zipCodeData.find(item => item.name === this.user.city);
-         if (region !== undefined) return region['districts'];
-         else return [];
-      }
-   }
 }
 </script>
 
