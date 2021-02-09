@@ -4,7 +4,6 @@
 import { memberApi } from '@/api/member.js';
 import { registerList } from '@/composition-api/registerList.js';
 import { zipCode } from '@/composition-api/zipCode.js';
-import zipCodeData from '@/assets/json/zipcode.json';
 import { ref, reactive, onMounted } from '@vue/composition-api';
 export default {
    name: 'maintain',
@@ -13,12 +12,14 @@ export default {
          title: this.$i18n.t('page.maintain.title'),
       }
    },
-   setup(props, context) {
+   setup(props, { root }) {
       let { genderList, questionList } = registerList();
       let { resideInfo, cityList, districtList } = zipCode();
       let isLoading = ref(false);
       let isVerified = ref(true);
       let inputPopup = ref(null);
+      let form = ref(null);
+      let user = reactive({ data: {} });
       let popupOption = reactive({
          isOpen: false,
          popupTitle: '請輸入會員密碼',
@@ -28,7 +29,7 @@ export default {
          placeholder: '請輸入會員密碼',
          validateRule: 'required|password',
       });
-      let user = reactive({ data: {} });
+
       let verifyPw = async(value) => {
          isLoading.value = true;
          let { status, info } = await memberApi.verify_member_password({ password: value });
@@ -41,25 +42,32 @@ export default {
          }
          isLoading.value = false;
       }
+
       let getMemberPtofile =  async() => {
          let { status, info } = await memberApi.get_member_profile();
          if (!status) return;
          let profile = info.results.member_profile;
          if (profile.email === undefined) profile.email = '';
          user.data = profile;
+         resideInfo.city = profile.city;
+         await root.$nextTick();
+         resideInfo.district = profile.district;
       }
+
       let birthdayHandler = () => {
 
       }
-      let submitHandler = () => {
 
+      let submitHandler = async() => {
+         let isValid = await form.value.validate();
+         if (!isValid) return;
       }
 
       onMounted(() => {
          getMemberPtofile();
       });
 
-      return { genderList, questionList, isLoading, isVerified, popupOption, verifyPw, inputPopup, user, submitHandler, birthdayHandler, resideInfo, cityList, districtList };
+      return { genderList, questionList, isLoading, isVerified, popupOption, verifyPw, inputPopup, user, submitHandler, birthdayHandler, resideInfo, cityList, districtList, form };
    },
 }
 </script>
