@@ -1,4 +1,5 @@
 import { authApi } from '@/api/auth.js';
+import { memberApi } from '@/api/member.js';
 import { cookie } from '@/plugins/cookie/index.js';
 import { storage } from '@/plugins/storage/index.js';
 import { crypto } from '@/plugins/crypto/index.js';
@@ -10,7 +11,8 @@ export const authStore = {
    namespaced: true,
    state: () => ({
       isLogin: false,
-      passwordToken: ''
+      passwordToken: '',
+      pwVerified: false
    }),
    mutations: {
       setLogin(state, value) {
@@ -18,6 +20,9 @@ export const authStore = {
       },
       setPasswordToken(state, value) {
          state.passwordToken = value;
+      },
+      setPwVerify(state, value) {
+         state.pwVerified = value;
       }
    },
    actions: {
@@ -99,6 +104,19 @@ export const authStore = {
       clearAllRegister() { //清除所有註冊資料
          storage.removeSessionItem(timeSessionKey);
          storage.removeSessionItem(signUpSessionKey);
+      },
+      async verifyPassword({ commit }, value) { //驗證密碼
+         let verifyResult = await memberApi.verify_member_password({ password: value });
+         if (verifyResult.status) {
+            commit('setPwVerify', true);
+            storage.setSessionItem('pwVerified', { status: true });
+         }
+         return verifyResult;
+      },
+      checkPwVerify({ commit }) { //檢查密碼是否被驗證過
+         let storageData = storage.getSessionItem('pwVerified');
+         if (storageData === null) return;
+         if (storageData.status) commit('setPwVerify', true);
       }
    }
 }

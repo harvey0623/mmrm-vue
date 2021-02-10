@@ -1,10 +1,10 @@
 <template src="./html/maintain.html"></template>
 
 <script>
+import { ref, reactive, onMounted, computed } from '@vue/composition-api';
 import { memberApi } from '@/api/member.js';
 import { registerList } from '@/composition-api/registerList.js';
 import { zipCode } from '@/composition-api/zipCode.js';
-import { ref, reactive, onMounted } from '@vue/composition-api';
 export default {
    name: 'maintain',
    metaInfo() {
@@ -16,7 +16,7 @@ export default {
       let { genderList, questionList } = registerList();
       let { resideInfo, cityList, districtList } = zipCode();
       let isLoading = ref(false);
-      let isVerified = ref(true);
+      let isVerified = ref(false);
       let inputPopup = ref(null);
       let form = ref(null);
       let user = reactive({ data: {} });
@@ -35,9 +35,11 @@ export default {
          message: '',
          eventName: 'updateFeedBack',
       });
+      let pwVerified = computed(() => root.$store.state.auth.pwVerified);
+
       let verifyPw = async(value) => {
          isLoading.value = true;
-         let { status, info } = await memberApi.verify_member_password({ password: value });
+         let { status, info } = await root.$store.dispatch('auth/verifyPassword', value);
          if (status) {
             await getMemberPtofile();
             isVerified.value = true;
@@ -47,7 +49,6 @@ export default {
          }
          isLoading.value = false;
       }
-
       let getMemberPtofile =  async() => {
          let { status, info } = await memberApi.get_member_profile();
          if (!status) return;
@@ -57,10 +58,6 @@ export default {
          resideInfo.city = profile.city;
          await root.$nextTick();
          resideInfo.district = profile.district;
-      }
-
-      let birthdayHandler = () => {
-
       }
 
       let submitHandler = async() => {
@@ -85,11 +82,17 @@ export default {
          msgOption.isOpen = false;
       }
 
-      onMounted(() => {
-         getMemberPtofile();
+      onMounted(async() => {
+         popupOption.isOpen = !pwVerified.value;
+         isVerified.value = pwVerified.value;
+         if (isVerified.value) {
+            isLoading.value = true;
+            await getMemberPtofile();
+            isLoading.value = false;
+         } 
       });
 
-      return { genderList, questionList, isLoading, isVerified, popupOption, verifyPw, inputPopup, user, submitHandler, birthdayHandler, resideInfo, cityList, districtList, form, msgOption, updateFeedBack };
+      return { genderList, questionList, isLoading, isVerified, popupOption, verifyPw, inputPopup, user, submitHandler, resideInfo, cityList, districtList, form, msgOption, updateFeedBack };
    },
 }
 </script>
