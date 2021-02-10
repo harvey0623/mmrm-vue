@@ -10,6 +10,13 @@
       @verifyPw="verifyPw"
       ref="inputPopup"
    ></InputPopup>
+   <MessagePopup
+      :isOpen="msgOption.isOpen"
+      :message="msgOption.message"
+      :eventName="msgOption.eventName"
+      @updateFeedBack="updateFeedBack"
+   ></MessagePopup>
+
    <Loading v-show="isLoading"></Loading>
    <div class="mycontainer" v-if="isVerified">
       <validation-observer tag="div" class="dataOuter" ref="form">

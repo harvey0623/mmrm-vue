@@ -29,7 +29,12 @@ export default {
          placeholder: '請輸入會員密碼',
          validateRule: 'required|password',
       });
-
+      let msgOption = reactive({
+         isOpen: false,
+         popupTitle: '提示',
+         message: '',
+         eventName: 'updateFeedBack',
+      });
       let verifyPw = async(value) => {
          isLoading.value = true;
          let { status, info } = await memberApi.verify_member_password({ password: value });
@@ -61,13 +66,30 @@ export default {
       let submitHandler = async() => {
          let isValid = await form.value.validate();
          if (!isValid) return;
+         isLoading.value = true;
+         await updateMemberProfile();
+         isLoading.value = false;
+      }
+
+      let updateMemberProfile = async() => {
+         let updateResult = await memberApi.update_member_profile({
+            ...user.data,
+            city: resideInfo.city,
+            district: resideInfo.district
+         });
+         msgOption.isOpen = true;
+         msgOption.message = updateResult.status ? '更新成功' : '更新失敗';
+      }
+
+      let updateFeedBack = () => {
+         msgOption.isOpen = false;
       }
 
       onMounted(() => {
          getMemberPtofile();
       });
 
-      return { genderList, questionList, isLoading, isVerified, popupOption, verifyPw, inputPopup, user, submitHandler, birthdayHandler, resideInfo, cityList, districtList, form };
+      return { genderList, questionList, isLoading, isVerified, popupOption, verifyPw, inputPopup, user, submitHandler, birthdayHandler, resideInfo, cityList, districtList, form, msgOption, updateFeedBack };
    },
 }
 </script>
