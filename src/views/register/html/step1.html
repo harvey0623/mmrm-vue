@@ -131,10 +131,10 @@
       </div>
    </validation-observer>
    <validation-observer tag="div" class="termOuter" ref="term">
-      <p class="termTitle" v-show="termsList.length !== 0">其他</p>
+      <p class="termTitle" v-show="hasTerms">其他</p>
       <div class="termContent">
          <TermRow
-            v-for="term in termsList"
+            v-for="term in termsList.data"
             :key="term.id"
             :termId="term.id"
             :termTitle="term.title"
@@ -144,7 +144,7 @@
       </div>
    </validation-observer>
    <TermPopup
-      v-for="term in termsList"
+      v-for="term in termsList.data"
       :key="term.id"
       :termId="term.id"
       :termTitle="term.title"
