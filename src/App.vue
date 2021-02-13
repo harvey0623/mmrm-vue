@@ -61,10 +61,10 @@ export default {
       }
    },
    mounted() {
-      window.addEventListener('beforeunload', this.unloadHandler);
+      // window.addEventListener('beforeunload', this.unloadHandler);
    },
    beforeDestroy() {
-      window.removeEventListener('beforeunload', this.unloadHandler);
+      // window.removeEventListener('beforeunload', this.unloadHandler);
    }
 };
 </script>
