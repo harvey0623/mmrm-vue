@@ -51,4 +51,12 @@ export const memberApi = {
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
+   async update_member_profile(payload) { //更新會員資料
+      return await httpConfig({
+         url: '/member/update_member_profile',
+         method: 'post',
+         data: payload
+      }).then(res => res.data)
+         .catch(err => err.response.data);
+   },
 }

@@ -1,7 +1,8 @@
 <template src="./html/step2.html"></template>
 
 <script>
-import zipCodeData from '@/assets/json/zipcode.json';
+import { ref, reactive, onMounted, computed, watch } from '@vue/composition-api';
+import { zipCode } from '@/composition-api/zipCode.js';
 export default {
    name: 'register2',
    metaInfo() {
@@ -9,73 +10,74 @@ export default {
          title: this.$i18n.t('page.register-2.title'),
       }
    },
-   data: () => ({
-      zipCodeData,
-      user: {
-         email: 'test@gmail.com',
-         birthday: '2021-01-28',
-         city: '新北市',
-         district: '土城區',
-         address: '中央路'
-      },
-      stepOption: {
+   setup(props, { emit, root }) {
+      let { resideInfo, cityList, districtList } = zipCode();
+      let canRetrive = ref(false);
+      let canNext = ref(false);
+      let stepSuccess = ref(false);
+      let form = ref(null);
+      let user = reactive({
+         data: {
+            email: 'test@gmail.com',
+            birthday: '2021-01-28',
+            city: '',
+            district: '',
+            address: '中央路',
+         }
+      });
+      let stepOption = reactive({
          isOpen: false,
          message: '',
          eventName: 'stepFeedBack',
-      },
-      canRetrive: false,
-      canNext: false,
-      stepSuccess: false,
-   }),
-   computed: {
-      cityList() {
-         if (this.zipCodeData.length === 0) return [];
-         return this.zipCodeData.map(item => item.name);
-      },
-      areaList() {
-         let region = this.zipCodeData.find(item => item.name === this.user.city);
-         if (region !== undefined) return region['districts'];
-         else return [];
-      }
-   },
-   methods: {
-      async submitHandler() {
-         let isValid = await this.$refs.form.validate();
+      });
+
+      let submitHandler = async() => {
+         let isValid = await form.value.validate();
          if (!isValid) return;
-         this.$emit('checkSignup', (value) => this.canNext = value);
-      },
-      async registerHandler() {
-         this.$emit('loading', true);
-         let { status, info } = await this.$store.dispatch('auth/register', {
-            ...this.user,
-            birthday: this.user.birthday.replace(/-/g, '/')
+         emit('checkSignup', (value) => canNext.value = value);
+      }
+
+      let registerHandler = async() => {
+         emit('loading', true);
+         let { status, info } = await root.$store.dispatch('auth/register', {
+            ...user.data,
+            birthday: user.data.birthday.replace(/-/g, '/'),
+            city: resideInfo.city,
+            district: resideInfo.district,
          });
-         this.stepSuccess = status;
-         this.stepOption.message = status ? '填寫成功' : info.rcrm.RM;
-         this.stepOption.isOpen = true;
-         this.$emit('loading', false);
-      },
-      stepFeedBack() {
-         if (this.stepSuccess) this.$router.push('/register/step3');
-         this.canNext = false;
-         this.stepOption.isOpen = false;
+         stepSuccess.value = status;
+         stepOption.message = status ? '填寫成功' : info.rcrm.RM;
+         stepOption.isOpen = true;
+         emit('loading', false);
       }
-   },
-   mounted() {
-      this.$emit('checkSignup', (value) => this.canRetrive = value);
-   },
-   watch: {
-      async canRetrive(val) {
+
+      let stepFeedBack = async() => {
+         if (stepSuccess.value) root.$router.push('/register/step3');
+         canNext.value = false;
+         stepOption.isOpen = false;
+      }
+
+      watch(canRetrive, async(val) => {
          if (val) {
-            let stepData = await this.$store.dispatch('auth/getStepData', 'step2');
+            let stepData = await root.$store.dispatch('auth/getStepData', 'step2');
             if (stepData === undefined) return;
-            this.user = stepData;
-            this.user.birthday = this.user.birthday.replace(/\//g, '-');
+            user.data = stepData;
+            user.data.birthday = stepData.birthday.replace(/\//g, '-');
+            resideInfo.city = stepData.city;
+            await root.$nextTick();
+            resideInfo.district = stepData.district;
          }
-      },
-      async canNext(val) {
-         if (val) this.registerHandler();
-      }
+      });
+
+      watch(canNext, (val) => {
+         if (val) registerHandler();
+      });
+
+      onMounted(() => {
+         emit('checkSignup', (value) => canRetrive.value = value);
+      });
+
+      return { resideInfo, cityList, districtList, stepOption, user, submitHandler, form, stepFeedBack };
    }
 }
 </script>
