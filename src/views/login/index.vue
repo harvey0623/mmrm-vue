@@ -11,8 +11,10 @@ export default {
    data: () => ({
       visible: false,
       user: {
-         account: '0999803025',
-         password: '1qaz2wsx',
+         // account: '0999803025',
+         // password: '1qaz2wsx',
+         account: '0986104667',
+         password: 'abc123',
       },
       msgOption: {
          isOpen: false,

@@ -35,11 +35,8 @@ export default {
       }
    },
    methods: {
-      see1Handler() {
-         this.visible1 = !this.visible1;
-      },
-      see2Handler() {
-         this.visible2 = !this.visible2;
+      seeHandler(key) {
+         this[key] = !this[key];
       },
       setInputType({ status, el }) {
          el.type = status ? 'text' : 'password';

@@ -35,6 +35,9 @@
       },
       "memberVerify": {
          "title": "會員認證"
+      },
+      "updatePassword": {
+         "title": "更新密碼"
       }
    },
    "validate": {

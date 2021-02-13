@@ -35,6 +35,9 @@
       },
       "memberVerify": {
          "title": "memberVerify"
+      },
+      "updatePassword": {
+         "title": "updatePassword"
       }
    },
    "validate": {

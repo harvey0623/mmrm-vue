@@ -78,4 +78,15 @@ export const memberApi = {
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
+   async update_member_password(payload) { //更新密碼
+      return await httpConfig({
+         url: '/member/update_member_password',
+         method: 'post',
+         data: {
+            old_password: crypto.wm_aes(payload.old_password),
+            new_password: crypto.wm_aes(payload.new_password)
+         }
+      }).then(res => res.data)
+         .catch(err => err.response.data);
+   },
 }

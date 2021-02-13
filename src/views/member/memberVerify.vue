@@ -3,7 +3,7 @@
 <script>
 import { memberApi } from '@/api/member.js';
 export default {
-   name: 'verifyPassword',
+   name: 'memberVerify',
    metaInfo() {
       return { 
          title: this.$i18n.t('page.memberVerify.title'),
