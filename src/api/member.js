@@ -59,4 +59,23 @@ export const memberApi = {
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
+   async update_member_mobile(payload) { //更新會員手機
+      return await httpConfig({
+         url: '/member/update_member_mobile',
+         method: 'post',
+         data: {
+            mobile: crypto.wm_aes(payload.mobile),
+            password: crypto.wm_aes(payload.password)
+         }
+      }).then(res => res.data)
+         .catch(err => err.response.data);
+   },
+   async member_verify(payload) { //會員認證(更新手機號碼用)
+      return await httpConfig({
+         url: '/member/member_verify',
+         method: 'post',
+         data: payload
+      }).then(res => res.data)
+         .catch(err => err.response.data);
+   },
 }

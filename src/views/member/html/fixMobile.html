@@ -1,0 +1,57 @@
+<div class="login">
+   <div class="mycontainer">
+      <div id="logoBox">
+         <img :src="require('@/assets/img/page/img_common_form_logo_n@3x.png')">
+      </div>
+      <validation-observer tag="div" class="formLayout" ref="form">
+         <div class="formRow">
+            <p class="formTitle">手機號碼</p>
+            <validation-provider
+               tag="div"
+               class="formContent"
+               rules="required|phone"
+               v-slot="{ errors }">
+               <input
+                  type="number"
+                  class="form-control"
+                  placeholder="請輸入新的手機號碼"
+                  maxlength="10"
+                  v-model.trim="user.mobile"/>
+               <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
+            </validation-provider>
+         </div>
+         <div class="formRow">
+            <p class="formTitle">密碼</p>
+            <validation-provider
+               tag="div"
+               class="formContent"
+               rules="required|password"
+               v-slot="{ errors }">
+               <input
+                  type="password"
+                  class="form-control pwInput"
+                  placeholder="6 - 12 碼英數字"
+                  maxLength="12"
+                  ref="pwInput"
+                  v-model.trim="user.password"/>
+               <div
+                  class="visibleBox"
+                  :class="{ show: visible, hide: !visible }"
+                  @click="seeHandler">
+               </div>
+               <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
+            </validation-provider>
+         </div>
+      </validation-observer>
+      <div class="btnBox login">
+         <button @click="submitHandler" class="variation">確定</button>
+      </div>
+   </div>
+   <Loading v-show="isLoading"></Loading>
+   <MessagePopup
+      :isOpen="msgOption.isOpen"
+      :message="msgOption.message"
+      :eventName="msgOption.eventName"
+      @fix="fixHandler"
+   ></MessagePopup>
+</div>

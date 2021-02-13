@@ -16,7 +16,6 @@
       :eventName="msgOption.eventName"
       @updateFeedBack="updateFeedBack"
    ></MessagePopup>
-
    <Loading v-show="isLoading"></Loading>
    <div class="mycontainer" v-if="isVerified">
       <validation-observer tag="div" class="dataOuter" ref="form">
@@ -25,7 +24,7 @@
             <div class="dataBody">
                <div class="dataRow">
                   <div class="block">
-                     <router-link to="/">{{ user.data.mobile }}</router-link>
+                     <router-link to="/member/fixMobile">{{ user.data.mobile }}</router-link>
                   </div>
                   <p class="dataName">帳號</p>
                </div>

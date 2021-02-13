@@ -29,6 +29,12 @@
       },
       "maintain": {
          "title": "會員資料維護"
+      },
+      "fixPassword": {
+         "title": "修改手機號碼"
+      },
+      "memberVerify": {
+         "title": "會員認證"
       }
    },
    "validate": {

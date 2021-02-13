@@ -29,6 +29,12 @@
       },
       "maintain": {
          "title": "member maintain"
+      },
+      "fixPassword": {
+         "title": "fixPassword"
+      },
+      "memberVerify": {
+         "title": "memberVerify"
       }
    },
    "validate": {
