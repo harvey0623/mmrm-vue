@@ -16,6 +16,11 @@ export default {
       oldInput: null,
       newInput: null,
       confirmInput: null,
+      visibleInfo: {
+         0: { show: false, el: null },
+         1: { show: false, el: null },
+         2: { show: false, el: null }
+      },
       user: {
          old_password: 'abc123',
          new_password: 'abc456',
@@ -30,11 +35,10 @@ export default {
       updateSuccess: false
    }),
    methods: {
-      seeHandler(key) {
-         this[key] = !this[key];
-      },
-      setInputType({ status, el }) {
-         el.type = status ? 'text' : 'password';
+      seeHandler(key, isFirst = false) {
+         let targetObj = this.visibleInfo[key];
+         if (!isFirst) targetObj.show = !targetObj.show;
+         targetObj.el.type = targetObj.show ? 'text' : 'password';
       },
       async submitHandler() {
          let isValid = await this.$refs.form.validate().then(res => res);
@@ -58,27 +62,13 @@ export default {
       }
    },
    mounted() {
-      this.oldInput = this.$refs.oldInput;
-      this.newInput = this.$refs.newInput;
-      this.confirmInput = this.$refs.confirmInput;
-      this.setInputType({ status: this.visible1, el: this.oldInput });
-      this.setInputType({ status: this.visible2, el: this.newInput });
-      this.setInputType({ status: this.visible3, el: this.confirmInput });
-   },
-   watch: {
-      visible1(to) {
-         this.setInputType({ status: to, el: this.oldInput });
-      },
-      visible2(to) {
-         this.setInputType({ status: to, el: this.newInput });
-      },
-      visible3(to) {
-         this.setInputType({ status: to, el: this.confirmInput });
-      }
+      document.querySelectorAll('input').forEach((item, index) => {
+         let targetObj = this.visibleInfo[index];
+         targetObj.el = item;
+         this.seeHandler(index, true);
+      });
    }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

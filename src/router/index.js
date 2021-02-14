@@ -94,28 +94,28 @@ const routes = [
 				path: 'maintain',
 				component: Maintain,
 				meta: {
-					suth: true
+					auth: true
 				}
 			},
 			{
 				path: 'fixMobile',
 				component: FixMobile,
 				meta: {
-					suth: true
+					auth: true
 				}
 			},
 			{
 				path: 'memberVerify',
 				component: MemberVerify,
 				meta: {
-					suth: true
+					auth: true
 				}
 			},
 			{
 				path: 'updatePassword',
 				component: UpdatePassword,
 				meta: {
-					suth: true
+					auth: true
 				}
 			}
 		]
