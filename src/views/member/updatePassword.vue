@@ -10,17 +10,8 @@ export default {
       }
    },
    data: () => ({
-      visible1: false,
-      visible2: false,
-      visible3: false,
-      oldInput: null,
-      newInput: null,
-      confirmInput: null,
-      visibleInfo: {
-         0: { show: false, el: null },
-         1: { show: false, el: null },
-         2: { show: false, el: null }
-      },
+      isReady: false,
+      visibleInfo: {},
       user: {
          old_password: 'abc123',
          new_password: 'abc456',
@@ -35,6 +26,13 @@ export default {
       updateSuccess: false
    }),
    methods: {
+      initVisibleInfo() {
+         document.querySelectorAll('input').forEach((item, index) => {
+            this.$set(this.visibleInfo, index, { show: false, el: item });
+            this.seeHandler(index, true);
+         });
+         this.isReady = true;
+      },
       seeHandler(key, isFirst = false) {
          let targetObj = this.visibleInfo[key];
          if (!isFirst) targetObj.show = !targetObj.show;
@@ -62,11 +60,7 @@ export default {
       }
    },
    mounted() {
-      document.querySelectorAll('input').forEach((item, index) => {
-         let targetObj = this.visibleInfo[index];
-         targetObj.el = item;
-         this.seeHandler(index, true);
-      });
+      this.initVisibleInfo();
    }
 }
 </script>
