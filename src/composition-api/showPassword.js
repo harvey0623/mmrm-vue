@@ -8,12 +8,12 @@ export const showPassword = function ({ root }) {
          seeHandler(index, true);
       });
       isReady.value = true;
-   }
+   };
    let seeHandler = function (key, isFirst = false) {
       let targetObj = visibleInfo[key];
       if (!isFirst) targetObj.show = !targetObj.show;
       targetObj.el.type = targetObj.show ? 'text' : 'password';
-   }
+   };
 
    onMounted(() => {
       initVisibleInfo();

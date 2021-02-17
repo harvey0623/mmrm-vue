@@ -12,8 +12,8 @@ export default {
       }
    },
    setup(props, context) {
-      let { root } = context;
       let { isReady, visibleInfo, seeHandler } = showPassword(context);
+      let { root } = context;
       let isLoading =  ref(false);
       let updateSuccess =  ref(false);
       let form = ref(null);

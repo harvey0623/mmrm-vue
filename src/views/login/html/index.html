@@ -35,9 +35,10 @@
                   ref="pwInput"
                   v-model.trim="user.password"/>
                <div
-                  class="visibleBox"
-                  :class="{ show: visible, hide: !visible }"
-                  @click="seeHandler">
+                  class="visibleBox" 
+                  :class="{ show: visibleInfo[0].show, hide: !visibleInfo[0].show }"
+                  @click="seeHandler('0')"
+                  v-if="isReady">
                </div>
                <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
             </validation-provider>
