@@ -15,6 +15,7 @@ import Maintain from '@/views/member/maintain.vue';
 import FixMobile from '@/views/member/fixMobile.vue';
 import MemberVerify from '@/views/member/memberVerify.vue';
 import UpdatePassword from '@/views/member/updatePassword.vue';
+import MemberLevel from '@/views/member/memberLevel.vue';
 import { cookie } from '@/plugins/cookie/index.js';
 import { checkIsLogin }  from '../middleware/checkIsLogin.js';
 
@@ -114,6 +115,13 @@ const routes = [
 			{
 				path: 'updatePassword',
 				component: UpdatePassword,
+				meta: {
+					auth: true
+				}
+			},
+			{
+				path: 'level',
+				component: MemberLevel,
 				meta: {
 					auth: true
 				}

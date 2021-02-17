@@ -38,6 +38,9 @@
       },
       "updatePassword": {
          "title": "更新密碼"
+      },
+      "memberLevel": {
+         "title": "會員等級"
       }
    },
    "validate": {

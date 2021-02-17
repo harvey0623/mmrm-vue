@@ -38,6 +38,9 @@
       },
       "updatePassword": {
          "title": "updatePassword"
+      },
+      "memberLevel": {
+         "title": "memberLevel"
       }
    },
    "validate": {

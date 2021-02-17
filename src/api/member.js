@@ -89,4 +89,12 @@ export const memberApi = {
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
+   async member_summary() {
+      return await httpConfig({
+         url: '/member/member_summary',
+         method: 'post',
+         data: {}
+      }).then(res => res.data)
+         .catch(err => err.response.data);
+   },
 }
