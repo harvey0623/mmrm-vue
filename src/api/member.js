@@ -89,7 +89,7 @@ export const memberApi = {
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
-   async member_summary() {
+   async member_summary() { //會員資訊
       return await httpConfig({
          url: '/member/member_summary',
          method: 'post',
