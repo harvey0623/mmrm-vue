@@ -1,7 +1,9 @@
 <template src="./html/updatePassword.html"></template>
 
 <script>
+import { ref, reactive } from '@vue/composition-api';
 import { memberApi } from '@/api/member.js';
+import { showPassword } from '@/composition-api/showPassword.js';
 export default {
    name: 'updatePassword',
    metaInfo() {
@@ -9,58 +11,44 @@ export default {
          title: this.$i18n.t('page.updatePassword.title'),
       }
    },
-   data: () => ({
-      isReady: false,
-      visibleInfo: {},
-      user: {
+   setup(props, context) {
+      let { root } = context;
+      let { isReady, visibleInfo, seeHandler } = showPassword(context);
+      let isLoading =  ref(false);
+      let updateSuccess =  ref(false);
+      let form = ref(null);
+      let user = reactive({
          old_password: 'abc123',
-         new_password: 'abc456',
-         confrimPw: 'abc456'
-      },
-      msgOption: {
+         new_password: 'abc123',
+         confrimPw: 'abc123'
+      });
+      let msgOption = reactive({
          isOpen: false,
          message: '',
          eventName: 'updateFeedBack',
-      },
-      isLoading: false,
-      updateSuccess: false
-   }),
-   methods: {
-      initVisibleInfo() {
-         document.querySelectorAll('input').forEach((item, index) => {
-            this.$set(this.visibleInfo, index, { show: false, el: item });
-            this.seeHandler(index, true);
-         });
-         this.isReady = true;
-      },
-      seeHandler(key, isFirst = false) {
-         let targetObj = this.visibleInfo[key];
-         if (!isFirst) targetObj.show = !targetObj.show;
-         targetObj.el.type = targetObj.show ? 'text' : 'password';
-      },
-      async submitHandler() {
-         let isValid = await this.$refs.form.validate().then(res => res);
+      });
+      let submitHandler = async() => {
+         let isValid = await form.value.validate();
          if (!isValid) return;
-         this.isLoading = true;
-         await this.updateHandler();
-         this.isLoading = false;
-      },
-      async updateHandler() {
+         isLoading.value = true;
+         await updateHandler();
+         isLoading.value = false;
+      };
+      let updateHandler = async() => {
          let { status, info } = await memberApi.update_member_password({
-            old_password: this.user.old_password,
-            new_password: this.user.new_password
+            old_password: user.old_password,
+            new_password: user.new_password
          });
-         this.updateSuccess = status;
-         this.msgOption.isOpen = true;
-         this.msgOption.message = status ? '更新密碼成功' : info.rcrm.RM;
-      },
-      updateFeedBack() {
-         if (this.updateSuccess) this.$router.replace('/member/maintain');
-         this.msgOption.isOpen = false;
+         updateSuccess.value = status;
+         msgOption.isOpen = true;
+         msgOption.message = status ? '更新密碼成功' : info.rcrm.RM;
+      };
+      let updateFeedBack = async() => {
+         if (updateSuccess.value) root.$router.replace('/member/maintain');
+         msgOption.isOpen = false;
       }
-   },
-   mounted() {
-      this.initVisibleInfo();
+
+      return { isReady, visibleInfo, seeHandler, user, msgOption, isLoading, updateSuccess, form, submitHandler, updateFeedBack };
    }
 }
 </script>
