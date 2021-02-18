@@ -41,6 +41,9 @@
       },
       "memberLevel": {
          "title": "memberLevel"
+      },
+      "transaction": {
+         "title": "transaction"
       }
    },
    "validate": {

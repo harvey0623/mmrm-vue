@@ -41,6 +41,9 @@
       },
       "memberLevel": {
          "title": "會員等級"
+      },
+      "transaction": {
+         "title": "交易紀錄"
       }
    },
    "validate": {

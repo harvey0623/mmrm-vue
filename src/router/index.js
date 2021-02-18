@@ -16,6 +16,7 @@ import FixMobile from '@/views/member/fixMobile.vue';
 import MemberVerify from '@/views/member/memberVerify.vue';
 import UpdatePassword from '@/views/member/updatePassword.vue';
 import MemberLevel from '@/views/member/memberLevel.vue';
+import Transaction from '@/views/member/transaction.vue';
 import { cookie } from '@/plugins/cookie/index.js';
 import { checkIsLogin }  from '../middleware/checkIsLogin.js';
 
@@ -122,6 +123,13 @@ const routes = [
 			{
 				path: 'level',
 				component: MemberLevel,
+				meta: {
+					auth: true
+				}
+			},
+			{
+				path: 'transaction',
+				component: Transaction,
 				meta: {
 					auth: true
 				}
