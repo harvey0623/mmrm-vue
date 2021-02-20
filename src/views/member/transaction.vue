@@ -1,12 +1,4 @@
-<template>
-   <div class="mycontainer">
-      <HistorySidebar
-         :isOpen="isOpen"
-         :startTime.sync="dateRange.start"
-         :endTime.sync="dateRange.end"
-      ></HistorySidebar>
-   </div>
-</template>
+<template src="./html/transaction.html"></template>
 
 <script>
 import { ref, reactive, onMounted } from '@vue/composition-api';
@@ -22,13 +14,33 @@ export default {
    },
    setup(props, context) {
       let today = dayjs();
-      let isOpen = ref(true);
+      let isSidebarOpen = ref(true);
+      let isLoading = ref(false);
+      let currentPage = ref(0);
       let dateRange = reactive({
          start: today.subtract(6, 'month').format('YYYY-MM-DD'),
          end: today.format('YYYY-MM-DD')
       });
+      let msgOption = reactive({
+         isOpen: false,
+         message: '',
+         eventName: 'invaildFeedback'
+      });
+      let invalidHandler = ({ msg }) => {
+         msgOption.isOpen = true;
+         msgOption.message = msg;
+      }
+      let invaildFeedback = () => {
+         msgOption.isOpen = false;
+      }
+      let updateHandler = () => {
+         isSidebarOpen.value = false;
+         isLoading.value = true;
+         currentPage.value = 0;
+         isLoading.value = false;
+      }
 
-      return { isOpen, dateRange };
+      return { isSidebarOpen, dateRange, invalidHandler, msgOption, invaildFeedback, updateHandler, isLoading };
    },
    components: {
       HistorySidebar

@@ -1,0 +1,16 @@
+<div class="mycontainer">
+   <HistorySidebar
+      :isOpen="isSidebarOpen"
+      :startTime.sync="dateRange.start"
+      :endTime.sync="dateRange.end"
+      @invalid="invalidHandler"
+      @history="updateHandler"
+   ></HistorySidebar>
+   <MessagePopup
+      :isOpen="msgOption.isOpen"
+      :message="msgOption.message"
+      :eventName="msgOption.eventName"
+      @invaildFeedback="invaildFeedback"
+   ></MessagePopup>
+   <Loading v-show="isLoading"></Loading>
+</div>

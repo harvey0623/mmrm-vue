@@ -25,7 +25,7 @@ $sideTime: 0.25s;
    transition: transform $sideTime;
    background-color: #fff;
    overflow: hidden;
-   z-index: 99;
+   z-index: 19;
    &.show {
       transform: translateX(0);
    }
