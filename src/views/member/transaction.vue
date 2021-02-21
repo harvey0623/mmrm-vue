@@ -3,6 +3,7 @@
 <script>
 import { ref, reactive, onMounted, computed } from '@vue/composition-api';
 import { transactionApi } from '@/api/transaction.js';
+import { brandApi } from '@/api/brand.js';
 import HistorySidebar from '@/components/HistorySidebar/index.vue';
 import dayjs from 'dayjs';
 export default {
@@ -64,9 +65,13 @@ export default {
          return Array.from(dateSet);
       });
 
-      let gatherBrandId = () => {
+      let gatherBrandId = () => { //取德品牌id
          let arr = tempHistory.data.map(item => item.brand_id);
          return Array.from(new Set(arr));
+      }
+
+      let mergeHistoryAndBrand = (historyData, brandData) => { //合併歷史紀錄和品來資料
+
       }
 
       let getHistory = async() => { //取得歷史資料
@@ -87,11 +92,11 @@ export default {
          else tempHistory.data = historyData;
          if (historyData.length !== 0) {
             let brand_ids = gatherBrandId();
+            let brandInfo = await brandApi.brand_information({ brand_ids, full_info: false });
             
          } else {
             tradeList.data = [];
          }
-         
          isPagLoading.value = false;
       }
 
