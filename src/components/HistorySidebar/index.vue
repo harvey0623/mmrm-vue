@@ -98,7 +98,7 @@ export default {
          if (!isValid) return emitMessage('請輸入日期');
          if (!checkisAfter()) return;
          if (!cehckIsBetween()) return;
-         emit('history');  
+         emit('history');
       }
 
       return { beginDate, finishDate, checkHandler, form };

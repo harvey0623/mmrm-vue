@@ -89,3 +89,17 @@ body {
       background-color: var(--variationMain);
    }
 }
+
+//===無資料顯示
+.emptyBlock {
+   padding-top: 50px;
+   >.emptyBg {
+      @include size(90px);
+      margin: 0 auto 46px;
+      @extend %bgImgCenter;
+   }
+   >p {
+      color: map-get($fontColor, input);
+      text-align: center;
+   }
+}
