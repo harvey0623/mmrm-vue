@@ -55,6 +55,10 @@ export default {
          return tradeList.data.length > 0;
       });
 
+      let showEmptyBlock = computed(() => {
+         return !isLoading.value && !hasHistoryData.value;
+      });
+
       let dateGroup = computed(() => { //日期群組
          if (tempHistory.data.length === 0) return [];
          let dateSet = new Set();
@@ -70,8 +74,28 @@ export default {
          return Array.from(new Set(arr));
       }
 
-      let mergeHistoryAndBrand = (historyData, brandData) => { //合併歷史紀錄和品來資料
+      let mergeHistoryAndBrand = (brandData) => { //合併歷史紀錄和品來資料
+         return tempHistory.data.reduce((prev, current) => {
+            let brandId = current.brand_id;
+            let { title, feature_image_small } = brandData.find(brand => brand.brand_id === brandId);
+            prev.push({
+               ...current,
+               brandTitle: title,
+               brandImage: feature_image_small.url || ''
+            });
+            return prev;
+         }, []);
+      }
 
+      let classifyByDate = (data) => { //依照日期來分類
+         return dateGroup.value.reduce((prev, current, index) => {
+            let arr = data.filter(item => {
+               let dateText = dayjs(item.datetime).format('YYYY / MM');
+               return dateText === current;
+            });
+            prev.push({ dateText: current, orderId: index, data: arr });
+            return prev;
+         }, []);
       }
 
       let getHistory = async() => { //取得歷史資料
@@ -85,15 +109,16 @@ export default {
          return data.info.results.transaction_history;
       }
 
-      let getPagination = async(isPag) => {
+      let getPagination = async(isPag) => { //取得分頁資料
          isPagLoading.value = true;
          let historyData = await getHistory();
          if (isPag) tempHistory.data = tempHistory.data.concat(historyData);
          else tempHistory.data = historyData;
          if (historyData.length !== 0) {
             let brand_ids = gatherBrandId();
-            let brandInfo = await brandApi.brand_information({ brand_ids, full_info: false });
-            
+            let { info:brandInfo } = await brandApi.brand_information({ brand_ids, full_info: false });
+            let mergeResult = mergeHistoryAndBrand(brandInfo.results.brand_information);
+            tradeList.data = classifyByDate(mergeResult);
          } else {
             tradeList.data = [];
          }
@@ -112,7 +137,7 @@ export default {
          updateHandler();
       });
 
-      return { isSidebarOpen, dateRange, invalidHandler, msgOption, invaildFeedback, updateHandler, isLoading };
+      return { isSidebarOpen, dateRange, invalidHandler, msgOption, invaildFeedback, updateHandler, isLoading, tradeList, showEmptyBlock };
    },
    components: {
       HistorySidebar
