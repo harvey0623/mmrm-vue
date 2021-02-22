@@ -1,11 +1,12 @@
 <template src="./html/transaction.html"></template>
 
 <script>
+import dayjs from 'dayjs';
 import { ref, reactive, onMounted, computed } from '@vue/composition-api';
 import { transactionApi } from '@/api/transaction.js';
 import { brandApi } from '@/api/brand.js';
 import HistorySidebar from '@/components/HistorySidebar/index.vue';
-import dayjs from 'dayjs';
+import TradeList from '@/components/TradeList/index.vue';
 export default {
    name: 'transaction',
    metaInfo() {
@@ -140,7 +141,8 @@ export default {
       return { isSidebarOpen, dateRange, invalidHandler, msgOption, invaildFeedback, updateHandler, isLoading, tradeList, showEmptyBlock };
    },
    components: {
-      HistorySidebar
+      HistorySidebar,
+      TradeList
    }
 }
 </script>

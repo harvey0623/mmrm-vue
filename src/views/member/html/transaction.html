@@ -15,7 +15,14 @@
    <Loading v-show="isLoading"></Loading>
 
    <div class="historyBlock">
-      
+      <ul class="tradeList">
+         <TradeList 
+            v-for="trade in tradeList.data"
+            :key="trade.orderId"
+            :dateText="trade.dateText"
+            :tradeData="trade.data"
+         ></TradeList>
+      </ul>
    </div>
 
    <div class="emptyBlock" v-show="showEmptyBlock">
