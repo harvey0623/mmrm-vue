@@ -13,9 +13,9 @@ export default {
    },
    setup(props, { root }) {
       let { tradeInfo } = toRefs(props);
-      let tradeDetail = reactive({ data: {} });
       let isOpen = ref(false);
       let isLoading = ref(false);
+      let tradeDetail = reactive({ data: {} });
 
       let brandLogo = computed(() => {
          let brandImage = tradeInfo.value.brandImage;
@@ -42,7 +42,7 @@ export default {
          await root.$nextTick();
       }
       
-      return { brandLogo, payment, showDetail, tradeDetail };
+      return { brandLogo, payment, showDetail, tradeDetail, isLoading, isOpen };
    }
 }
 </script>
