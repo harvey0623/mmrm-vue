@@ -1,11 +1,11 @@
 <div class="mycontainer">
-   <HistorySidebar
+   <DateSidebar
       :isOpen.sync="isSidebarOpen"
       :startTime.sync="dateRange.start"
       :endTime.sync="dateRange.end"
       @invalid="invalidHandler"
       @history="updateHandler"
-   ></HistorySidebar>
+   ></DateSidebar>
    <MessagePopup
       :isOpen="msgOption.isOpen"
       :message="msgOption.message"

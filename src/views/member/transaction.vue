@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { ref, reactive, onMounted, computed, onBeforeUnmount } from '@vue/composition-api';
 import { transactionApi } from '@/api/transaction.js';
 import { brandApi } from '@/api/brand.js';
-import HistorySidebar from '@/components/HistorySidebar/index.vue';
+import DateSidebar from '@/components/Sidebar/Date.vue';
 import TradeList from '@/components/TradeList/index.vue';
 export default {
    name: 'transaction',
@@ -159,7 +159,7 @@ export default {
       return { isSidebarOpen, dateRange, invalidHandler, msgOption, invaildFeedback, updateHandler, isLoading, tradeList, showEmptyBlock, hasHistoryData, isPagLoading, hasNextPage };
    },
    components: {
-      HistorySidebar,
+      DateSidebar,
       TradeList
    }
 }

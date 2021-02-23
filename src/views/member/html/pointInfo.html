@@ -1,0 +1,31 @@
+<section>
+   <div class="fixBox">
+      <div class="pointIntro">
+         <p class="pointName">{{ pointName }}</p>
+         <div class="pointTotal">
+            <span class="count">{{ 10 }}</span>
+            <span>點</span>
+         </div>
+         <div class="pointPeriod">
+            <template v-if="hideDuartion">
+               <div>常規點數</div>
+            </template>
+            <template v-else>
+               <div>使用期間</div>
+               <div>:</div>
+               <div>{{ pointUsageTime }}</div>
+            </template>
+         </div>
+      </div>
+      <div class="expireBox">
+         <div class="inner">
+            <span>即將到期點數</span>
+            <span class="expirePoint">{{ 20 }}</span>
+            <span>點</span>
+            <span class="pointArrow"></span>
+         </div>
+      </div>
+   </div>
+
+   <Loading v-show="isLoading"></Loading>
+</section>

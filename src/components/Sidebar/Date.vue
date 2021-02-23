@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from '@vue/composition-api';
+import { ref, computed } from '@vue/composition-api';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isBetween from 'dayjs/plugin/isBetween';
