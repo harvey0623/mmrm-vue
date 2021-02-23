@@ -2,7 +2,7 @@
 
 <script>
 import dayjs from 'dayjs';
-import { ref, reactive, onMounted, computed } from '@vue/composition-api';
+import { ref, reactive, onMounted, computed, onBeforeUnmount } from '@vue/composition-api';
 import { transactionApi } from '@/api/transaction.js';
 import { brandApi } from '@/api/brand.js';
 import HistorySidebar from '@/components/HistorySidebar/index.vue';
@@ -134,11 +134,27 @@ export default {
          isLoading.value = false;
       }
 
+      let scrollHandler = () => {
+         if (isPagLoading.value) return;
+         let windowH = window.innerHeight;
+         let documentH = document.documentElement.scrollHeight;
+         let distance = documentH - windowH;
+         let currentPos = window.pageYOffset;
+         if ((currentPos >= distance * 0.95) && hasNextPage.value) {
+            getPagination(true);
+         }
+      }
+
       onMounted(() => {
          updateHandler();
+         window.addEventListener('scroll', scrollHandler);
       });
 
-      return { isSidebarOpen, dateRange, invalidHandler, msgOption, invaildFeedback, updateHandler, isLoading, tradeList, showEmptyBlock };
+      onBeforeUnmount(() => {
+         window.removeEventListener('scroll', scrollHandler);
+      });
+
+      return { isSidebarOpen, dateRange, invalidHandler, msgOption, invaildFeedback, updateHandler, isLoading, tradeList, showEmptyBlock, hasHistoryData, isPagLoading, hasNextPage };
    },
    components: {
       HistorySidebar,

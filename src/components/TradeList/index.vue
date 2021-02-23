@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, computed } from '@vue/composition-api';
 import TradeItem from './TradeItem.vue';
 export default {
    props: {
@@ -24,9 +23,6 @@ export default {
          type: Array,
          required: true
       }
-   },
-   setup() {
-      
    },
    components: {
       TradeItem

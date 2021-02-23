@@ -1,8 +1,8 @@
 <template src="./html/TradeItem.html"></template>
 
 <script>
-import { ref, reactive, onMounted, computed, toRefs } from '@vue/composition-api';
 import _ from 'lodash';
+import { ref, reactive, onMounted, computed, toRefs } from '@vue/composition-api';
 import { transactionApi } from '@/api/transaction.js';
 export default {
    props: {
@@ -15,6 +15,7 @@ export default {
       let { tradeInfo } = toRefs(props);
       let isOpen = ref(false);
       let isLoading = ref(false);
+      let tradeItem = ref(null);
       let tradeDetail = reactive({ data: {} });
 
       let brandLogo = computed(() => {
@@ -36,17 +37,18 @@ export default {
             });
             tradeDetail.data = info.results.transaction_detail;
             isLoading.value = false;
-            console.log(tradeDetail.data);
          }
          isOpen.value = !isOpen.value;
          await root.$nextTick();
+         if (isOpen.value) {
+            let offsetTop = tradeItem.value.offsetTop;
+            window.scrollTo(0, offsetTop - 20);
+         }
       }
       
-      return { brandLogo, payment, showDetail, tradeDetail, isLoading, isOpen };
+      return { brandLogo, payment, showDetail, tradeDetail, isLoading, isOpen, tradeItem };
    }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

@@ -13,21 +13,22 @@
       @invaildFeedback="invaildFeedback"
    ></MessagePopup>
    <Loading v-show="isLoading"></Loading>
-
-   <div class="historyBlock">
+   <div class="historyBlock" v-show="hasHistoryData">
       <ul class="tradeList">
-         <TradeList 
+         <TradeList
             v-for="trade in tradeList.data"
             :key="trade.orderId"
             :dateText="trade.dateText"
             :tradeData="trade.data"
          ></TradeList>
       </ul>
+      <p class="tipBox center">僅顯示最近 6 個月內紀錄</p>
+		<div class="pagTip" v-show="isPagLoading">資料加載中...</div>
+		<div class="pagTip" v-show="!hasNextPage">已經到最底囉～</div>
    </div>
-
    <div class="emptyBlock" v-show="showEmptyBlock">
       <div class="emptyBg"></div>
       <p>您目前還沒有消費紀錄哦！</p>
    </div>
-
+   <div class="toggleSidebar" @click="isSidebarOpen = true"></div>
 </div>
