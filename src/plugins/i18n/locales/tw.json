@@ -44,6 +44,9 @@
       },
       "transaction": {
          "title": "交易紀錄"
+      },
+      "pointInfo": {
+         "title": "點數資訊"
       }
    },
    "validate": {

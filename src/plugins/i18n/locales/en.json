@@ -44,6 +44,9 @@
       },
       "transaction": {
          "title": "transaction"
+      },
+      "pointInfo": {
+         "title": "pointInfo"
       }
    },
    "validate": {
