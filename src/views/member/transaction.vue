@@ -14,7 +14,7 @@ export default {
          title: this.$i18n.t('page.transaction.title'),
       }
    },
-   setup(props, context) {
+   setup(props, { root }) {
       let today = dayjs();
       let isSidebarOpen = ref(false);
       let isLoading = ref(false);
@@ -127,10 +127,12 @@ export default {
       }
 
       let updateHandler = async() => {
-         isSidebarOpen.value = false;
          isLoading.value = true;
          currentPage.value = 0;
          await getPagination(false);
+         await root.$nextTick();
+         window.scrollTo(0, 0);
+         isSidebarOpen.value = false;
          isLoading.value = false;
       }
 

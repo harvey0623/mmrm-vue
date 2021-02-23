@@ -1,6 +1,6 @@
 <div class="mycontainer">
    <HistorySidebar
-      :isOpen="isSidebarOpen"
+      :isOpen.sync="isSidebarOpen"
       :startTime.sync="dateRange.start"
       :endTime.sync="dateRange.end"
       @invalid="invalidHandler"
@@ -31,4 +31,5 @@
       <p>您目前還沒有消費紀錄哦！</p>
    </div>
    <div class="toggleSidebar" @click="isSidebarOpen = true"></div>
+   <div class="sidebarCover" :class="{show: isSidebarOpen}"></div>
 </div>

@@ -122,6 +122,22 @@ $sideTime: 0.25s;
    }
 }
 
+.sidebarCover {
+   position: fixed;
+   left: 0;
+   top: 0;
+   @include size(100%, 100vh);
+   z-index: 18;
+   background-color: rgba(#000, 0.75);
+   transition: opacity $sideTime;
+   opacity: 0;
+   pointer-events: none;
+   &.show {
+      opacity: 1;
+      pointer-events: auto;
+   }
+}
+
 .subMenu {
    position: absolute;
    left: 0;

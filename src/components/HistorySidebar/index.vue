@@ -1,7 +1,7 @@
 <template>
    <div id="sidebar" :class="{ show: isOpen }">
       <div class="sidebarPanel">
-         <div class="empty"></div>
+         <div class="empty" @click="closeHandler">取消</div>
          <div class="seekText">搜尋</div>
          <div class="sureText" @click="checkHandler">確定</div>
       </div>
@@ -70,9 +70,11 @@ export default {
             emit('update:endTime', val);
          }
       });
+
       let emitMessage = (msg) => {
          emit('invalid', { msg });
       }
+
       let checkisAfter = () => {
          let startDate = dayjs(beginDate.value);
          let endDate = dayjs(finishDate.value);
@@ -80,6 +82,7 @@ export default {
          if (!result) emitMessage('結束日需大於開始日');
          return result;
       }
+
       let cehckIsBetween = () => {
          let today = dayjs();
          let limit = today.subtract(6, 'month');
@@ -93,6 +96,7 @@ export default {
          if (!result) emitMessage(`搜尋區間區需在${limitText} ~ ${todayText}`);
          return result;
       }
+
       let checkHandler = async() => {
          let isValid =  await form.value.validate();
          if (!isValid) return emitMessage('請輸入日期');
@@ -100,8 +104,12 @@ export default {
          if (!cehckIsBetween()) return;
          emit('history');
       }
+      
+      let closeHandler = () => {
+         emit('update:isOpen', false);
+      }
 
-      return { beginDate, finishDate, checkHandler, form };
+      return { beginDate, finishDate, checkHandler, form, closeHandler };
    }
 }
 </script>
