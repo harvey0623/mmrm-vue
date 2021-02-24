@@ -1,3 +1,10 @@
+.point_section {
+   padding-top: 140px;
+   &.hasExpire {
+      padding-top: 180px;
+   }
+}
+
 .fixBox {
    position: fixed;
    left: 0;
