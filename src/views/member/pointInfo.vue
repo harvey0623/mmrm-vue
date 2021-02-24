@@ -21,7 +21,7 @@ export default {
       let userPoint = reactive({ data: {} });
       let expiredPoint = reactive({ data: [] });
 
-      let hasUserPoint = computed(() => {
+      let hasUserPoint = computed(() => { //是否有使用者點數
          return !(_.isEmpty(userPoint.data));
       });
 
@@ -64,7 +64,7 @@ export default {
          return parseInt(result);
       }
 
-      let getTargetPointInfo = async() => {
+      let getTargetPointInfo = async() => { //取得特定點數
          let { info } = await pointApi.pointInfo({
             point_id: [pointId.value],
             full_info: false
@@ -72,7 +72,7 @@ export default {
          userPoint.data = info.results.point_information[0];
       }
 
-      let getMemberPoint = async() => {
+      let getMemberPoint = async() => { //取得會員點數
          let { info } = await memberApi.member_summary();
          let obj = info.results.point_summary.current_point.find(item => {
             return item.point_id === pointId.value;
@@ -81,25 +81,29 @@ export default {
          else currentPointAmount.value = 0;
       }
 
-      let getExpiredPoint = async() => {
+      let getExpiredPoint = async() => { //取得過期點數
          let { info } = await pointApi.pointDueToExpire({ point_id: pointId.value });
          // expiredPoint.data = info.results.point_due_to_expire;
          expiredPoint.data = [
             { "datetime": "2019/02/10 23:59:59", "amount": "1,000" },
          ]
       }
-      
-      watch(() => root.$route, (val, oldVal) => {
-         console.log(val);
-      });
 
-      onMounted(async() => {
+      let init = async() => {
          isLoading.value = true;
          pointId.value = parseInt(root.$route.params.point_id);
          await getTargetPointInfo();
          await getMemberPoint();
          await getExpiredPoint();
          isLoading.value = false;
+      }
+      
+      watch(() => root.$route, (val, oldVal) => {
+         init();
+      });
+
+      onMounted(async() => {
+         init();
       });
 
       return { isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint };

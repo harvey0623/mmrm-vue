@@ -1,4 +1,4 @@
-<section class="point_section">
+<section class="point_section" :class="{hasExpire: hasExpiredPoint}">
    <div class="fixBox" v-show="hasUserPoint">
       <div class="pointIntro">
          <p class="pointName">{{ pointName }}</p>
