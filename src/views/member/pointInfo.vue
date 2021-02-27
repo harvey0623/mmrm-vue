@@ -5,6 +5,7 @@ import { ref, reactive, onMounted, computed, watch } from '@vue/composition-api'
 import { pointApi } from '@/api/point.js';
 import { memberApi } from '@/api/member.js';
 import DateSidebar from '@/components/Sidebar/Date.vue';
+import PointPopup from '@/components/Popup/PointPopup.vue';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 export default {
@@ -20,6 +21,7 @@ export default {
       let currentPointAmount = ref('');
       let userPoint = reactive({ data: {} });
       let expiredPoint = reactive({ data: [] });
+      let expiredPopupIsOpen = ref(false);
 
       let hasUserPoint = computed(() => { //是否有使用者點數
          return !(_.isEmpty(userPoint.data));
@@ -106,10 +108,11 @@ export default {
          init();
       });
 
-      return { isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint };
+      return { isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint, expiredPopupIsOpen };
    },
    components: {
-      DateSidebar
+      DateSidebar,
+      PointPopup
    }
 }
 </script>
