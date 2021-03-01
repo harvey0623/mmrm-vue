@@ -33,6 +33,14 @@
          您沒有點數記錄呦！若您已經有消費但尚未獲得點數，您的點數會在交易完成後入帳，或請洽詢客服人員。
       </div>
    </div>
+   <ul class="pointHistoryList" v-if="hasPointHistory">
+      <PointHistoryList
+         v-for="history in pointHistory.data"
+         :key="history.orderIndex"
+         :dateText="history.dateText"
+         :lists="history.data">
+      </PointHistoryList>
+   </ul>
 
    <PointPopup
       :isOpen.sync="expiredPopupIsOpen"

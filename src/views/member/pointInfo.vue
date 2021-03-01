@@ -6,6 +6,7 @@ import { pointApi } from '@/api/point.js';
 import { memberApi } from '@/api/member.js';
 import DateSidebar from '@/components/Sidebar/Date.vue';
 import PointPopup from '@/components/Popup/PointPopup.vue';
+import PointHistoryList from '@/components/PointHistoryList/index.vue';
 import _ from 'lodash';
 import dayjs from 'dayjs';
 export default {
@@ -190,11 +191,12 @@ export default {
          init();
       });
 
-      return { isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint, expiredPopupIsOpen, expiredList, isSidebarOpen, updateHandler, invalidHandler, dateRange, msgOption, invaildFeedback, showEmptyBlock };
+      return { isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint, expiredPopupIsOpen, expiredList, isSidebarOpen, updateHandler, invalidHandler, dateRange, msgOption, invaildFeedback, showEmptyBlock, hasPointHistory, pointHistory };
    },
    components: {
       DateSidebar,
-      PointPopup
+      PointPopup,
+      PointHistoryList
    }
 }
 </script>
