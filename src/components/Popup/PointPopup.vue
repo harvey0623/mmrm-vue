@@ -4,7 +4,7 @@
       <div class="point-content">
          <div class="point-header">
             <p>{{ pointTitle }}</p>
-            <p>{{ pointAmount }} 點</p>
+            <p>{{ pointAmount | currency('', 0) }} 點</p>
          </div>
          <div class="point-body">
             <slot></slot>

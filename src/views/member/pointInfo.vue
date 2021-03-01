@@ -59,6 +59,16 @@ export default {
          }, 0);
       });
 
+      let expiredList = computed(() => { //到期點數列表
+         return expiredPoint.data.reduce((prev, current) => {
+            prev.push({
+               date: splitDateTime(current.datetime),
+               amount: current.amount
+            });
+            return prev;
+         }, []);
+      });
+
       let splitDateTime = (text) => text.split(' ')[0];
 
       let cammaToNumber = (text) => {
@@ -98,6 +108,7 @@ export default {
          await getMemberPoint();
          await getExpiredPoint();
          isLoading.value = false;
+               console.log(expiredList.value)
       }
       
       watch(() => root.$route, (val, oldVal) => {
@@ -108,7 +119,7 @@ export default {
          init();
       });
 
-      return { isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint, expiredPopupIsOpen };
+      return { isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint, expiredPopupIsOpen, expiredList };
    },
    components: {
       DateSidebar,

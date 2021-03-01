@@ -98,3 +98,22 @@
    margin-top: 0;
    margin-bottom: map-get($gutter, basic);
 }
+
+.recentlyExpireText {
+   margin-bottom: map-get($gutter, basic);
+}
+
+.expireList {
+   >li {
+      @extend %bwtFlex;
+      @include elGutter(margin-bottom, map-get($gutter, basic));
+      color: map-get($fontColor, input);
+      .date {
+         margin-right: 5px;
+      }
+      .point {
+         margin-right: 5px;
+         color: var(--variationMain);
+      }
+   }
+}
