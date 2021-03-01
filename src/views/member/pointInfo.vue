@@ -22,8 +22,11 @@ export default {
       let currentPointAmount = ref('');
       let expiredPopupIsOpen = ref(false);
       let isSidebarOpen = ref(false);
+      let currentPage = ref(0);
       let userPoint = reactive({ data: {} });
       let expiredPoint = reactive({ data: [] });
+      let tempHistory = reactive({ data: [] });
+      let pointHistory = reactive({ data: [] });
       let dateRange = reactive({
          start: today.subtract(6, 'month').format('YYYY-MM-DD'),
          end: today.format('YYYY-MM-DD')
@@ -86,6 +89,23 @@ export default {
          return { start, end };
       });
 
+      let hasPointHistory = computed(() => { //是否有點數交易資料
+         return tempHistory.data.length > 0;
+      });
+
+      let dateGroup = computed(() => {
+         if (!hasPointHistory.value) return [];
+         let dateSet = new Set();
+         tempHistory.data.forEach(item => {
+            dateSet.add(dayjs(item.datetime).format('YYYY / MM'));
+         });
+         return Array.from(dateSet);
+      });
+
+      let showEmptyBlock = computed(() => {
+         return !hasPointHistory.value && !isLoading.value && currentPage.value === null;
+      });
+
       let splitDateTime = (text) => text.split(' ')[0];
 
       let cammaToNumber = (text) => {
@@ -108,8 +128,15 @@ export default {
 
       let invaildFeedback = () => msgOption.isOpen = false;
 
-      let updateHandler = () => {
-         
+      let classifyByDate = () => { //分類點數資料
+         let result = dateGroup.value.reduce((prev, current, index) => {
+            let arr = tempHistory.data.filter(item => {
+               return dayjs(item.datetime).format('YYYY / MM') === current;
+            });
+            prev.push({ orderIndex: index, dateText: current, data: arr });
+            return prev;
+         }, []);
+         return result;
       }
 
       let getMemberPoint = async() => { //取得會員點數
@@ -123,10 +150,26 @@ export default {
 
       let getExpiredPoint = async() => { //取得過期點數
          let { info } = await pointApi.pointDueToExpire({ point_id: pointId.value });
-         // expiredPoint.data = info.results.point_due_to_expire;
-         expiredPoint.data = [
-            { "datetime": "2019/02/10 23:59:59", "amount": "1,000" },
-         ]
+         expiredPoint.data = info.results.point_due_to_expire;
+      }
+
+      let getPagination = async() => { //取得點數交易資料
+         let { info } = await pointApi.point_history({
+            point_id:  pointId.value,
+            query_start_datetime: `${dateFormat.value.start} 00:00:00`,
+            query_end_datetime: `${dateFormat.value.end} 23:59:59`,
+            offset: currentPage.value
+         });
+         currentPage.value = info.next;
+         tempHistory.data = tempHistory.data.concat(info.results.point_history);
+         pointHistory.data = classifyByDate();
+      }
+
+      let updateHandler = async() => {
+         isLoading.value = true;
+         currentPage.value = 0;
+         await getPagination();
+         isLoading.value = false;
       }
 
       let init = async() => {
@@ -135,6 +178,7 @@ export default {
          await getTargetPointInfo();
          await getMemberPoint();
          await getExpiredPoint();
+         await updateHandler();
          isLoading.value = false;
       }
       
@@ -146,7 +190,7 @@ export default {
          init();
       });
 
-      return { isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint, expiredPopupIsOpen, expiredList, isSidebarOpen, updateHandler, invalidHandler, dateRange, msgOption, invaildFeedback };
+      return { isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint, expiredPopupIsOpen, expiredList, isSidebarOpen, updateHandler, invalidHandler, dateRange, msgOption, invaildFeedback, showEmptyBlock };
    },
    components: {
       DateSidebar,

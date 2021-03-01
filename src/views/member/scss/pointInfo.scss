@@ -72,18 +72,11 @@
 
 .noRecord {
    padding: 50px 20px 0;
-   >.pigBg,
-   >.searchBg {
+   >.pigBg{
       @extend %bgImgCenter;
-      margin: 0 auto 40px;
-   }
-   >.pigBg {
       @include size(80px, 90px);
+      margin: 0 auto 40px;
       background-image: url("~@/assets/img/page/img_member_pointhistory_empty_n@2x.png");
-   }
-   >.searchBg {
-      @include size(90px, 90px);
-      background-image: url("~@/assets/img/page/img_common_search_empty_n@2x.png");
    }
    >.tipBox {
       margin-bottom: 0;
