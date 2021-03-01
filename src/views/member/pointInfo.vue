@@ -6,8 +6,8 @@ import { pointApi } from '@/api/point.js';
 import { memberApi } from '@/api/member.js';
 import DateSidebar from '@/components/Sidebar/Date.vue';
 import PointPopup from '@/components/Popup/PointPopup.vue';
-import dayjs from 'dayjs';
 import _ from 'lodash';
+import dayjs from 'dayjs';
 export default {
    name: 'pointInfo',
    metaInfo() {
@@ -16,12 +16,23 @@ export default {
       }
    },
    setup(props, { root }) {
+      let today = dayjs();
       let pointId = ref(0);
       let isLoading = ref(false);
       let currentPointAmount = ref('');
+      let expiredPopupIsOpen = ref(false);
+      let isSidebarOpen = ref(false);
       let userPoint = reactive({ data: {} });
       let expiredPoint = reactive({ data: [] });
-      let expiredPopupIsOpen = ref(false);
+      let dateRange = reactive({
+         start: today.subtract(6, 'month').format('YYYY-MM-DD'),
+         end: today.format('YYYY-MM-DD')
+      });
+      let msgOption = reactive({
+         isOpen: false,
+         message: '',
+         eventName: 'invaildFeedback'
+      });
 
       let hasUserPoint = computed(() => { //是否有使用者點數
          return !(_.isEmpty(userPoint.data));
@@ -69,6 +80,12 @@ export default {
          }, []);
       });
 
+      let dateFormat = computed(() => {
+         let start = dateRange.start.replace(/-/g, '/');
+         let end = dateRange.end.replace(/-/g, '/');
+         return { start, end };
+      });
+
       let splitDateTime = (text) => text.split(' ')[0];
 
       let cammaToNumber = (text) => {
@@ -82,6 +99,17 @@ export default {
             full_info: false
          });
          userPoint.data = info.results.point_information[0];
+      }
+
+      let invalidHandler = ({ msg }) => {
+         msgOption.message = msg;
+         msgOption.isOpen = true;
+      }
+
+      let invaildFeedback = () => msgOption.isOpen = false;
+
+      let updateHandler = () => {
+         
       }
 
       let getMemberPoint = async() => { //取得會員點數
@@ -108,10 +136,9 @@ export default {
          await getMemberPoint();
          await getExpiredPoint();
          isLoading.value = false;
-               console.log(expiredList.value)
       }
       
-      watch(() => root.$route, (val, oldVal) => {
+      watch(() => root.$route, () => {
          init();
       });
 
@@ -119,7 +146,7 @@ export default {
          init();
       });
 
-      return { isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint, expiredPopupIsOpen, expiredList };
+      return { isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint, expiredPopupIsOpen, expiredList, isSidebarOpen, updateHandler, invalidHandler, dateRange, msgOption, invaildFeedback };
    },
    components: {
       DateSidebar,
