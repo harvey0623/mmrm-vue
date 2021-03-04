@@ -2,17 +2,21 @@
    <li>
       <p class="title">{{ dateText }}</p>
       <div class="inner">
-         <!-- <point-item
-            v-for="item in lists"
-            :key="item.transaction_id"
-            :detail="item"
-            @callHandler="call2Handler"
-         ></point-item> -->
+         <PointItem
+            v-for="list in lists"
+            :key="list.transaction_id"
+            :transactionId="list.transaction_id"
+            :amount="list.amount"
+            :datetime="list.datetime"
+            :transactionType="list.transaction_type"
+            @detail="$emit('detail', $event)"
+         ></PointItem>
       </div>
    </li>
 </template>
 
 <script>
+import PointItem from './PointItem.vue';
 export default {
    props: {
       dateText: {
@@ -24,6 +28,9 @@ export default {
          required: true
       }
    },
+   components: {
+      PointItem
+   }
 };
 </script>
 

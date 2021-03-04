@@ -22,8 +22,10 @@ export default {
       let isLoading = ref(false);
       let currentPointAmount = ref('');
       let expiredPopupIsOpen = ref(false);
+      let tradePopupIsOpen = ref(false);
       let isSidebarOpen = ref(false);
       let currentPage = ref(0);
+      let currentTradeId = ref('');
       let userPoint = reactive({ data: {} });
       let expiredPoint = reactive({ data: [] });
       let tempHistory = reactive({ data: [] });
@@ -107,6 +109,13 @@ export default {
          return !hasPointHistory.value && !isLoading.value && currentPage.value === null;
       });
 
+      let tradeDetail = computed(() => {
+         if (!hasPointHistory.value) return {};
+         let obj = tempHistory.data.find(item => item.transaction_id === currentTradeId.value);
+         if (obj !== undefined) return obj;
+         else return {};
+      });
+
       let splitDateTime = (text) => text.split(' ')[0];
 
       let cammaToNumber = (text) => {
@@ -138,6 +147,11 @@ export default {
             return prev;
          }, []);
          return result;
+      }
+
+      let showHistoryDetail = (tradeId) => {
+         currentTradeId.value = tradeId;
+         tradePopupIsOpen.value = true;
       }
 
       let getMemberPoint = async() => { //取得會員點數
@@ -191,7 +205,7 @@ export default {
          init();
       });
 
-      return { isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint, expiredPopupIsOpen, expiredList, isSidebarOpen, updateHandler, invalidHandler, dateRange, msgOption, invaildFeedback, showEmptyBlock, hasPointHistory, pointHistory };
+      return { isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint, expiredPopupIsOpen, expiredList, isSidebarOpen, updateHandler, invalidHandler, dateRange, msgOption, invaildFeedback, showEmptyBlock, hasPointHistory, pointHistory, showHistoryDetail, tradeDetail, tradePopupIsOpen };
    },
    components: {
       DateSidebar,

@@ -38,7 +38,8 @@
          v-for="history in pointHistory.data"
          :key="history.orderIndex"
          :dateText="history.dateText"
-         :lists="history.data">
+         :lists="history.data"
+         @detail="showHistoryDetail">
       </PointHistoryList>
    </ul>
 
@@ -55,6 +56,19 @@
             <div>
                <span class="point">{{ item.amount }}</span>點
             </div>
+         </li>
+      </ul>
+   </PointPopup>
+
+   <PointPopup
+      :isOpen.sync="tradePopupIsOpen"
+      :pointTitle="tradeDetail.transaction_type"
+      :pointAmount="tradeDetail.amount">
+      <ul class="tradeMetaList">
+         <li v-for="(trade,index) in tradeDetail.meta" :key="index">
+            <div class="title">{{ trade.key }}</div>
+            <div class="colon">:</div>
+            <div class="content">{{ trade.value }}</div>
          </li>
       </ul>
    </PointPopup>
@@ -77,6 +91,5 @@
    <Loading v-show="isLoading"></Loading>
    <div class="toggleSidebar" @click="isSidebarOpen = true"></div>
    <div class="sidebarCover" :class="{show: isSidebarOpen}"></div>
-
 
 </section>

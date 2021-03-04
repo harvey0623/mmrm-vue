@@ -106,3 +106,23 @@
       }
    }
 }
+
+.tradeMetaList {
+   >li {
+      display: flex;
+      align-items: flex-start;
+      color: map-get($fontColor, input);
+      @include elGutter(margin-bottom, 15px);
+      >.title {
+         flex: 0 0 80px;
+      }
+      >.colon {
+         margin-right: 15px;
+         margin-left: 10px;
+      }
+      >.content {
+         flex: 1;
+         word-break: break-all;
+      }
+   }
+}
