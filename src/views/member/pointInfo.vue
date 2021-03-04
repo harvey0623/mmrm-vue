@@ -1,7 +1,7 @@
 <template src="./html/pointInfo.html"></template>
 
 <script>
-import { ref, reactive, onMounted, computed, watch } from '@vue/composition-api';
+import { ref, reactive, onMounted, computed, watch, onBeforeUnmount } from '@vue/composition-api';
 import { pointApi } from '@/api/point.js';
 import { memberApi } from '@/api/member.js';
 import DateSidebar from '@/components/Sidebar/Date.vue';
@@ -25,6 +25,7 @@ export default {
       let tradePopupIsOpen = ref(false);
       let isSidebarOpen = ref(false);
       let currentPage = ref(0);
+      let isPagLoading = ref(false);
       let currentTradeId = ref('');
       let userPoint = reactive({ data: {} });
       let expiredPoint = reactive({ data: [] });
@@ -42,6 +43,10 @@ export default {
 
       let hasUserPoint = computed(() => { //是否有使用者點數
          return !(_.isEmpty(userPoint.data));
+      });
+
+      let hasNextPage = computed(() => { //是否有下一頁
+         return currentPage.value !== null;
       });
 
       let pointName = computed(() => { //點數名稱
@@ -149,7 +154,7 @@ export default {
          return result;
       }
 
-      let showHistoryDetail = (tradeId) => {
+      let showHistoryDetail = (tradeId) => { //顯示歷史點數詳情
          currentTradeId.value = tradeId;
          tradePopupIsOpen.value = true;
       }
@@ -168,7 +173,7 @@ export default {
          expiredPoint.data = info.results.point_due_to_expire;
       }
 
-      let getPagination = async() => { //取得點數交易資料
+      let getPagination = async(isPag) => { //取得點數交易資料
          let { info } = await pointApi.point_history({
             point_id:  pointId.value,
             query_start_datetime: `${dateFormat.value.start} 00:00:00`,
@@ -176,15 +181,31 @@ export default {
             offset: currentPage.value
          });
          currentPage.value = info.next;
-         tempHistory.data = tempHistory.data.concat(info.results.point_history);
+         if (isPag) tempHistory.data = tempHistory.data.concat(info.results.point_history);
+         else tempHistory.data = info.results.point_history;
          pointHistory.data = classifyByDate();
+      }
+
+      let scrollHandler = async() => {
+         if (isPagLoading.value) return;
+         isPagLoading.value = true;
+         let windowH = window.innerHeight;
+         let documentH = document.documentElement.scrollHeight;
+         let distance = documentH - windowH;
+         let currentPos = window.pageYOffset;
+         if ((currentPos >= distance * 0.95) && hasNextPage.value) {
+            await getPagination(true);
+         }
+         isPagLoading.value = false;
       }
 
       let updateHandler = async() => {
          isLoading.value = true;
          currentPage.value = 0;
-         await getPagination();
+         await getPagination(false);
          isLoading.value = false;
+         window.scrollTo(0, 0);
+         isSidebarOpen.value = false;
       }
 
       let init = async() => {
@@ -203,9 +224,14 @@ export default {
 
       onMounted(async() => {
          init();
+         window.addEventListener('scroll', scrollHandler);
       });
 
-      return { isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint, expiredPopupIsOpen, expiredList, isSidebarOpen, updateHandler, invalidHandler, dateRange, msgOption, invaildFeedback, showEmptyBlock, hasPointHistory, pointHistory, showHistoryDetail, tradeDetail, tradePopupIsOpen };
+      onBeforeUnmount(() => {
+         window.removeEventListener('scroll', scrollHandler);
+      });
+
+      return { isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint, expiredPopupIsOpen, expiredList, isSidebarOpen, updateHandler, invalidHandler, dateRange, msgOption, invaildFeedback, showEmptyBlock, hasPointHistory, pointHistory, showHistoryDetail, tradeDetail, tradePopupIsOpen, isPagLoading, hasNextPage };
    },
    components: {
       DateSidebar,
