@@ -47,6 +47,33 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+   .pointContent {
+      @include elGutter(margin-bottom, map-get($gutter, basic));
+      padding: 25px;
+      background-color: #fff;
+      border-radius: map-get($radius, basic);
+      cursor: pointer;
+      >.summaryBox {
+         @extend %bwtFlex;
+         margin-bottom: map-get($gutter, basic);
+         color: map-get($fontColor, formTitle);
+      }
+      >.invoiceInfo {
+         >.invoiceRow {
+            display: flex;
+            align-items: flex-;
+            color: map-get($fontColor, input);
+            @include elGutter(margin-bottom, 7.5px);
+            >.colon {
+               margin-left: 15px;
+               margin-right: 10px;
+            }
+            >.value {
+               flex: 1;
+               word-break: break-all;
+            }
+         }
+      }
+   }
 </style>

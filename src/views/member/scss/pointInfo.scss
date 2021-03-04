@@ -92,6 +92,10 @@
    margin-bottom: map-get($gutter, basic);
 }
 
+.pointHistoryList {
+   padding: 25px 20px;
+}
+
 .expireList {
    >li {
       @extend %bwtFlex;
