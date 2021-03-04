@@ -123,3 +123,17 @@ body {
    cursor: pointer;
    z-index: 1;
 }
+
+//===fixLink
+.fixBlock {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   @include size(100%, map-get($heightObj, basic));
+   line-height: map-get($heightObj, basic);
+   text-align: center;
+   color: #fff;
+   background-color: var(--variationMain);
+   cursor: pointer;
+   z-index: 8;
+}

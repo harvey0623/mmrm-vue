@@ -1,4 +1,8 @@
 .point_section {
+   padding-bottom: map-get($heightObj, basic);
+}
+
+.point_section {
    padding-top: 140px;
    &.hasExpire {
       padding-top: 180px;
@@ -129,4 +133,8 @@
          word-break: break-all;
       }
    }
+}
+
+.toggleSidebar {
+   bottom: 60px;
 }
