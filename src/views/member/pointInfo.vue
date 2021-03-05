@@ -231,7 +231,7 @@ export default {
          window.removeEventListener('scroll', scrollHandler);
       });
 
-      return { isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint, expiredPopupIsOpen, expiredList, isSidebarOpen, updateHandler, invalidHandler, dateRange, msgOption, invaildFeedback, showEmptyBlock, hasPointHistory, pointHistory, showHistoryDetail, tradeDetail, tradePopupIsOpen, isPagLoading, hasNextPage };
+      return { pointId, isLoading, pointName, pointUsageTime, hideDuration, hasExpiredPoint, expiredTotal, expiredPointAmount, currentPointAmount, hasUserPoint, expiredPopupIsOpen, expiredList, isSidebarOpen, updateHandler, invalidHandler, dateRange, msgOption, invaildFeedback, showEmptyBlock, hasPointHistory, pointHistory, showHistoryDetail, tradeDetail, tradePopupIsOpen, isPagLoading, hasNextPage };
    },
    components: {
       DateSidebar,

@@ -47,6 +47,9 @@
       },
       "pointInfo": {
          "title": "pointInfo"
+      },
+      "pointDesc": {
+         "title": "pointDesc"
       }
    },
    "validate": {

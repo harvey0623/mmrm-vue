@@ -47,6 +47,9 @@
       },
       "pointInfo": {
          "title": "點數資訊"
+      },
+      "pointDesc": {
+         "title": "點數介紹"
       }
    },
    "validate": {

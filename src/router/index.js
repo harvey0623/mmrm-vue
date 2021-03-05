@@ -18,6 +18,7 @@ import UpdatePassword from '@/views/member/updatePassword.vue';
 import MemberLevel from '@/views/member/memberLevel.vue';
 import Transaction from '@/views/member/transaction.vue';
 import PointInfo from '@/views/member/pointInfo.vue';
+import PointDesc from '@/views/member/pointDesc.vue';
 import { cookie } from '@/plugins/cookie/index.js';
 import { checkIsLogin }  from '../middleware/checkIsLogin.js';
 
@@ -138,6 +139,14 @@ const routes = [
 			{
 				path: 'pointInfo/:point_id(\\d+)',
 				component: PointInfo,
+				meta: {
+					auth: true
+				}
+			},
+			{
+				path: 'pointDesc/:point_id(\\d+)',
+				component: PointDesc,
+				name: 'pointDesc',
 				meta: {
 					auth: true
 				}

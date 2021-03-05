@@ -97,6 +97,10 @@
    <Loading v-show="isLoading"></Loading>
    <div class="toggleSidebar" @click="isSidebarOpen = true"></div>
    <div class="sidebarCover" :class="{show: isSidebarOpen}"></div>
-   <div class="fixBlock">點數說明</div>
+   <router-link 
+      :to="{name:'pointDesc', params: {point_id: pointId}}" 
+      class="fixBlock">
+      點數說明
+   </router-link>
 
 </section>
