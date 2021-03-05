@@ -50,6 +50,9 @@
       },
       "pointDesc": {
          "title": "pointDesc"
+      },
+      "memberCard": {
+         "title": "memberCard"
       }
    },
    "validate": {

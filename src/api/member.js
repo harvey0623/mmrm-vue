@@ -97,4 +97,12 @@ export const memberApi = {
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
+   async member_card() { //會員條碼
+      return await httpConfig({
+         url: '/member/get_member_card',
+         method: 'post',
+         data: {}
+      }).then(res => res.data)
+         .catch(err => err.response.data);
+   }
 }

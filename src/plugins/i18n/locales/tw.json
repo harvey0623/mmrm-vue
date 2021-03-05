@@ -50,6 +50,9 @@
       },
       "pointDesc": {
          "title": "點數介紹"
+      },
+      "memberCard": {
+         "title": "會員卡"
       }
    },
    "validate": {

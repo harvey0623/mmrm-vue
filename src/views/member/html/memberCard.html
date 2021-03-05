@@ -1,0 +1,26 @@
+<section>
+   <div class="mask">
+      <div class="maskInner">
+         <div class="panel">
+            <div class="closeBg"></div>
+            <div class="codeText" @click="switchBarcodeType">{{ barcodeTypeText }}</div>
+         </div>
+         <div class="cardBox">
+            <div class="cardHead">
+               <div class="name">{{ memberName }}</div>
+               <div class="status">{{ memberLevel }}</div>
+            </div>
+            <div class="cardBody">
+               <div class="cardInner">
+                  <div class="codeBox" id="qrcode">
+                     <img ref="qrcodeEl">
+                  </div>
+                  <div class="codeBox" id="barCodeBox"></div>
+               </div>
+            </div>
+            <div class="cardFooter"></div>
+         </div>
+      </div>
+   </div>
+   <Loading v-if="isLoading"></Loading>
+</section>

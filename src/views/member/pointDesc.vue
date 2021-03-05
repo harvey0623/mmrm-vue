@@ -18,7 +18,7 @@
 			</div>
 			<div class="content" v-html="pointData.content"></div>
 		</div>
-		<div id="loading" v-if="isLoading"></div>
+      <Loading v-if="isLoading"></Loading>
    </section>
 </template>
 
