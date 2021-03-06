@@ -60,9 +60,6 @@ $basicRadius: map-get($radius, basic);
 .cardInner {
    width: 85%;
    margin: 0 auto;
-   >.codeBox {
-      // display: none;
-   }
 }
 
 #qrcode {

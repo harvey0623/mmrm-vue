@@ -12,10 +12,12 @@
             </div>
             <div class="cardBody">
                <div class="cardInner">
-                  <div class="codeBox" id="qrcode">
+                  <div class="codeBox" id="qrcode" v-show="barcodeTypeId === 1">
                      <img ref="qrcodeEl">
                   </div>
-                  <div class="codeBox" id="barCodeBox"></div>
+                  <div class="codeBox" id="barCodeBox" v-show="barcodeTypeId === 2">
+                     barcode
+                  </div>
                </div>
             </div>
             <div class="cardFooter"></div>
