@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { ref, reactive, onMounted, computed, onBeforeUnmount } from '@vue/composition-api';
 import { transactionApi } from '@/api/transaction.js';
 import { brandApi } from '@/api/brand.js';
+import { sidebarDate } from '@/composition-api/sidebarDate.js';
 import DateSidebar from '@/components/Sidebar/Date.vue';
 import TradeList from '@/components/TradeList/index.vue';
 export default {
@@ -15,38 +16,13 @@ export default {
       }
    },
    setup(props, { root }) {
-      let today = dayjs();
+      let { dateRange, dateFormat, msgOption, invalidHandler, invaildFeedback } = sidebarDate();
       let isSidebarOpen = ref(false);
       let isLoading = ref(false);
       let isPagLoading = ref(false);
       let currentPage = ref(0);
       let tempHistory = reactive({ data: [] });
       let tradeList = reactive({ data: [] });
-      let dateRange = reactive({
-         start: today.subtract(6, 'month').format('YYYY-MM-DD'),
-         end: today.format('YYYY-MM-DD')
-      });
-
-      let msgOption = reactive({
-         isOpen: false,
-         message: '',
-         eventName: 'invaildFeedback'
-      });
-
-      let invalidHandler = ({ msg }) => {
-         msgOption.isOpen = true;
-         msgOption.message = msg;
-      }
-
-      let invaildFeedback = () => {
-         msgOption.isOpen = false;
-      }
-
-      let dateFormat = computed(() => {
-         let start = dateRange.start.replace(/-/g, '/');
-         let end = dateRange.end.replace(/-/g, '/');
-         return { start, end };
-      });
 
       let hasNextPage = computed(() => { //是否有下一頁
          return currentPage.value !== null;
