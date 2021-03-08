@@ -7,6 +7,7 @@ import i18n from '@/plugins/i18n/index.js';
 import validator from "@/plugins/veeValidate/index.js";
 import VueMeta from 'vue-meta';
 import VueCompositionAPI from '@vue/composition-api';
+import 'swiper/swiper-bundle.css';
 
 //====global component
 import '@/components/global/index.js';

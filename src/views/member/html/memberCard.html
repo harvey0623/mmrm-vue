@@ -12,11 +12,17 @@
             </div>
             <div class="cardBody">
                <div class="cardInner">
-                  <div class="codeBox" id="qrcode" v-show="barcodeTypeId === 1">
-                     <MemberQrcode :qrcodeInfo="qrcodeInfo.data"></MemberQrcode>
+                  <div id="qrcode" :class="['codeBox', { active: barcodeTypeId === 1 }]">
+                     <MemberQrcode
+                        v-if="hasQrcodeInfo"
+                        :qrcodeInfo="qrcodeInfo.data"
+                     ></MemberQrcode>
                   </div>
-                  <div class="codeBox" id="barCodeBox" v-show="barcodeTypeId === 2">
-                     barcode
+                  <div id="barCodeBox" :class="['codeBox', { active: barcodeTypeId === 2 }]">
+                     <MemberBarCode 
+                        v-if="hasBarcodeList"
+                        :barcodeList="barcodeList.data"
+                     ></MemberBarCode>
                   </div>
                </div>
             </div>

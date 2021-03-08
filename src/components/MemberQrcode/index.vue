@@ -3,8 +3,7 @@
 </template>
 
 <script>
-import { ref, computed, watch, toRefs } from '@vue/composition-api';
-import _ from 'lodash';
+import { ref, onMounted, toRefs } from '@vue/composition-api';
 import Qrious from 'qrious';
 export default {
    props: {
@@ -15,10 +14,6 @@ export default {
    },
    setup(props, context) {
       let qrcodeImg = ref(null);
-
-      let hasData = computed(() => {
-         return !(_.isEmpty(props.qrcodeInfo));
-      });
 
       let createQrcodeSchema = (cardData, vehicleCode) => { //產生qrcode資料結構
          let total = cardData.length;
@@ -48,13 +43,10 @@ export default {
          });
       }
 
-      watch(() => hasData.value, (val) => {
-         if (!val) return;
+      onMounted(() => {
          let { normalCode, vehicleCode } = toRefs(props.qrcodeInfo);
          let schemaText = createQrcodeSchema(normalCode.value, vehicleCode.value);
          createQrcode(schemaText);
-      }, {
-         immediate: true
       });
 
       return { qrcodeImg };

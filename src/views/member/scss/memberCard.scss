@@ -58,8 +58,10 @@ $basicRadius: map-get($radius, basic);
 }
 
 .cardInner {
+   position: relative;
    width: 85%;
    margin: 0 auto;
+   overflow: hidden;
 }
 
 #qrcode {
@@ -67,6 +69,20 @@ $basicRadius: map-get($radius, basic);
    text-align: center;
    >img {
       margin: 0 auto;
+   }
+}
+
+.codeBox {
+   position: absolute;
+   left: 200%;
+   width: 100%;
+   opacity: 0;
+   pointer-events: none;
+   &.active {
+      position: static;
+      left: 0;
+      opacity: 1;
+      pointer-events: auto;
    }
 }
 
@@ -79,13 +95,15 @@ $basicRadius: map-get($radius, basic);
 }
 
 //===swiper style
-.swiper-container {
+.barcode-container{
    padding: 20px 0 60px;
 }
 
-.swiper-container-horizontal {
-   >.swiper-pagination-bullets {
-      bottom: 12px;
+.barcode-container {
+   &.swiper-container-horizontal {
+      >.swiper-pagination-bullets {
+         bottom: 12px;
+      }
    }
 }
 
@@ -93,7 +111,7 @@ $basicRadius: map-get($radius, basic);
    #qrcode {
       padding: 20px 0 50px;
    }
-   .swiper-container {
+   .barcode-container {
       padding: 15px 0 40px;
    }
    .cardInner {
