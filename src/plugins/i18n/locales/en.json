@@ -29,6 +29,30 @@
       },
       "maintain": {
          "title": "member maintain"
+      },
+      "fixPassword": {
+         "title": "fixPassword"
+      },
+      "memberVerify": {
+         "title": "memberVerify"
+      },
+      "updatePassword": {
+         "title": "updatePassword"
+      },
+      "memberLevel": {
+         "title": "memberLevel"
+      },
+      "transaction": {
+         "title": "transaction"
+      },
+      "pointInfo": {
+         "title": "pointInfo"
+      },
+      "pointDesc": {
+         "title": "pointDesc"
+      },
+      "memberCard": {
+         "title": "memberCard"
       }
    },
    "validate": {

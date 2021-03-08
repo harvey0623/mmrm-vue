@@ -1,0 +1,46 @@
+<div class="tradeItem" ref="tradeItem">   
+   <div class="typeBox" ref="typeBox" @click="showDetail">
+      <div class="content">
+         <div class="storeInfo">
+            <div class="logoBox">
+               <img :src="brandLogo" alt="">
+               <span>{{ tradeInfo.brandTitle }}</span>
+            </div>
+            <div class="payment">{{ payment }}</div>
+         </div>
+         <ul class="invoiceInfo">
+            <li
+               class="invoiceRow"
+               v-for="meta in tradeInfo.meta"
+               :key="meta.value">
+               <div class="name">{{ meta.key }}</div>
+               <div class="colon">:</div>
+               <div class="value">{{ meta.value }}</div>
+            </li>
+         </ul>
+         <div class="getDetail" v-show="isLoading">載入交易詳情中...</div>
+      </div>
+   </div>
+   <div class="infoBox" v-show="isOpen">
+      <p class="title">消費品項</p>
+      <div class="content">
+         <ul class="itemList">
+            <li
+               v-for="(item,index) in tradeDetail.data.transaction_entries"
+               :key="index">
+               <p class="itemName">{{ item.title }}</p>
+               <div class="itemInfo">
+                  <div>{{ item.price }} x {{ item.quantity }}</div>
+                  <div>{{ item.total }}元</div>
+               </div>
+            </li>
+         </ul>
+         <ul class="summaryList">
+            <li class="total">
+               <div>合計:</div>
+               <div>{{ tradeDetail.data.amount }}元</div>
+            </li>
+         </ul>
+      </div>
+   </div>
+</div>

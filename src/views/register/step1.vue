@@ -4,6 +4,7 @@
 import { ref, reactive, onMounted, computed, watch } from '@vue/composition-api';
 import { termApi } from '@/api/term.js';
 import { registerList } from '@/composition-api/registerList.js';
+import { showPassword } from '@/composition-api/showPassword.js';
 import TermRow from '@/components/TermRow/index.vue';
 import TermPopup from '@/components/TermPopup/index.vue';
 export default {
@@ -13,10 +14,10 @@ export default {
          title: this.$i18n.t('page.register-1.title'),
       }
    },
-   setup(props, { emit, root }) {
+   setup(props, context) {
       let { genderList, questionList } = registerList();
-      let visible1 = ref(false);
-      let visible2 = ref(false);
+      let { isReady, visibleInfo, seeHandler } = showPassword(context);
+      let { emit, root } = context;
       let pwInput = ref(null);
       let confirmInput = ref(null);
       let form = ref(null);
@@ -41,19 +42,6 @@ export default {
       let hasTerms = computed(() => { //是否有條款資料
          return termsList.data.length > 0;
       });
-      let see1Handler = () => {
-         visible1.value = !visible1.value;
-      }
-      let see2Handler = () => {
-         visible2.value = !visible2.value;
-      }
-      let setInputType = ({ status, el }) => {
-         el.type = status ? 'text' : 'password';
-      }
-      let initInputType = () => {
-         setInputType({ status: visible1.value, el: pwInput.value });
-         setInputType({ status: visible2.value, el: confirmInput.value });
-      }
       let getTermData = async() => { //取得條款資料
          return await termApi.brefTerm({ type: ['register']}).then(res => {
             let termInfo = res.info.results.term_information;
@@ -91,14 +79,6 @@ export default {
          stepOption.isOpen = false;
       }
 
-      watch(visible1, (val) => {
-         setInputType({ status: val, el: pwInput.value });
-      });
-
-      watch(visible2, (val) => {
-         setInputType({ status: val, el: confirmInput.value });
-      });
-
       watch(canRetrive, async(val) => {
          if (val) {
             let step1Data = await root.$store.dispatch('auth/getStepData', 'step1');
@@ -111,14 +91,13 @@ export default {
 
       onMounted(async() => {
          emit('loading', true);
-         initInputType();
          let termData = await getTermData();
          termsList.data = convertTerms(termData);
          emit('checkSignup', (value) => canRetrive.value = value);
          emit('loading', false);
       });
 
-      return { genderList, questionList, visible1, visible2, termsList, stepSuccess, user, stepOption, canRetrive, pwInput, confirmInput, see1Handler, see2Handler, hasTerms, showTermContent, agreeHandler, stepFeedBack, submitHandler, form, term };
+      return { genderList, questionList, termsList, stepSuccess, user, stepOption, canRetrive, pwInput, confirmInput, hasTerms, showTermContent, agreeHandler, stepFeedBack, submitHandler, form, term, isReady, visibleInfo, seeHandler };
    },
    components: {
       TermRow,

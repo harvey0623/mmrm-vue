@@ -5,7 +5,7 @@
       </div>
       <validation-observer tag="div" class="formLayout" ref="form">
          <div class="formRow">
-            <p class="formTitle">帳號</p>
+            <p class="formTitle">手機號碼</p>
             <validation-provider
                tag="div"
                class="formContent"
@@ -14,9 +14,9 @@
                <input
                   type="number"
                   class="form-control"
-                  placeholder="為您的手機號碼"
+                  placeholder="請輸入新的手機號碼"
                   maxlength="10"
-                  v-model.trim="user.account"/>
+                  v-model.trim="user.mobile"/>
                <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
             </validation-provider>
          </div>
@@ -35,25 +35,16 @@
                   ref="pwInput"
                   v-model.trim="user.password"/>
                <div
-                  class="visibleBox" 
-                  :class="{ show: visibleInfo[0].show, hide: !visibleInfo[0].show }"
-                  @click="seeHandler('0')"
-                  v-if="isReady">
+                  class="visibleBox"
+                  :class="{ show: visible, hide: !visible }"
+                  @click="seeHandler">
                </div>
                <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
             </validation-provider>
          </div>
       </validation-observer>
       <div class="btnBox login">
-         <button @click="submitHandler" class="variation">登入</button>
-      </div>
-      <div class="linkBox">
-         <div>
-            <router-link to="/register">會員註冊</router-link>
-         </div>
-         <div>
-            <router-link to="/member/forgotPassword">忘記密碼</router-link>
-         </div>
+         <button @click="submitHandler" class="variation">確定</button>
       </div>
    </div>
    <Loading v-show="isLoading"></Loading>
@@ -61,6 +52,6 @@
       :isOpen="msgOption.isOpen"
       :message="msgOption.message"
       :eventName="msgOption.eventName"
-      @loginSure="loginHandler"
+      @fix="fixHandler"
    ></MessagePopup>
 </div>

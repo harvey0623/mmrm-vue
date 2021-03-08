@@ -69,6 +69,13 @@ body {
    }
 }
 
+//===分頁提示
+.pagTip {
+   margin-top: 15px;
+   color: map-get($fontColor, input);
+   text-align: center;
+}
+
 //===按鈕外層
 .btnBox {
    padding-left: 20px;
@@ -88,4 +95,45 @@ body {
       border: none;
       background-color: var(--variationMain);
    }
+}
+
+//===無資料顯示
+.emptyBlock {
+   padding-top: 50px;
+   >.emptyBg {
+      @include size(90px);
+      margin: 0 auto 46px;
+      @extend %bgImgCenter;
+   }
+   >p {
+      color: map-get($fontColor, input);
+      text-align: center;
+   }
+}
+
+//===sidebar啟動按鈕
+.toggleSidebar {
+   position: fixed;
+   right: 20px;
+   bottom: 20px;
+   @include size(50px);
+   border-radius: 50%;
+   background-image: url("~@/assets/img/page/btn_member_search_n_n@2x.png");
+   @extend %bgImgCenter;
+   cursor: pointer;
+   z-index: 1;
+}
+
+//===fixLink
+.fixBlock {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   @include size(100%, map-get($heightObj, basic));
+   line-height: map-get($heightObj, basic);
+   text-align: center;
+   color: #fff;
+   background-color: var(--variationMain);
+   cursor: pointer;
+   z-index: 8;
 }

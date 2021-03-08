@@ -1,0 +1,140 @@
+.point_section {
+   padding-bottom: map-get($heightObj, basic);
+}
+
+.point_section {
+   padding-top: 140px;
+   &.hasExpire {
+      padding-top: 180px;
+   }
+}
+
+.fixBox {
+   position: fixed;
+   left: 0;
+   top: 0;
+   width: 100%;
+}
+
+.pointIntro {
+   @extend %centerFlex;
+   flex-direction: column;
+   height: 140px;
+   padding: 20px;
+   color: #fff;
+   background-color: var(--variationMain);
+   >.pointName {
+      margin-bottom: 5px;
+   }
+   >.pointTotal {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      >.count {
+         margin-right: 10px;
+         font-size: 30px;
+         line-height: initial;
+      }
+   }
+   >.pointPeriod {
+      display: flex;
+      align-items: center;
+      >div {
+         @include elGutter(margin-right, 5px);
+      }
+   }
+}
+
+.contentBox {
+   padding-top: 140px;
+   padding-bottom: map-get($heightObj, basic);
+   &.big {
+      padding-top: 180px;
+   }
+}
+
+.expireBox {
+   @extend %centerFlex;
+   height: 40px;
+   color: #fff;
+   background-color: var(--variationSub);
+   cursor: pointer;
+   >.inner {
+      display: flex;
+      align-items: center;
+      >.expirePoint {
+         margin: 0 5px;
+      }
+      >.pointArrow {
+         @include size(15px);
+         margin-left: 5px;
+         background-image: url("~@/assets/img/page/btn_point_indicatorright_n_n@2x.png");
+         @extend %bgImgCenter;
+      }
+   }
+}
+
+.noRecord {
+   padding: 50px 20px 0;
+   >.pigBg{
+      @extend %bgImgCenter;
+      @include size(80px, 90px);
+      margin: 0 auto 40px;
+      background-image: url("~@/assets/img/page/img_member_pointhistory_empty_n@2x.png");
+   }
+   >.tipBox {
+      margin-bottom: 0;
+   }
+}
+
+.pagTip {
+   margin-top: 0;
+   margin-bottom: map-get($gutter, basic);
+}
+
+.recentlyExpireText {
+   margin-bottom: map-get($gutter, basic);
+}
+
+.pointHistoryList {
+   padding: 25px 20px;
+}
+
+.expireList {
+   >li {
+      @extend %bwtFlex;
+      @include elGutter(margin-bottom, map-get($gutter, basic));
+      color: map-get($fontColor, input);
+      .date {
+         margin-right: 5px;
+      }
+      .point {
+         margin-right: 5px;
+         color: var(--variationMain);
+      }
+   }
+}
+
+.tradeMetaList {
+   >li {
+      display: flex;
+      align-items: flex-start;
+      color: map-get($fontColor, input);
+      @include elGutter(margin-bottom, 15px);
+      >.title {
+         flex: 0 0 80px;
+      }
+      >.colon {
+         margin-right: 15px;
+         margin-left: 10px;
+      }
+      >.content {
+         flex: 1;
+         word-break: break-all;
+      }
+   }
+}
+
+.toggleSidebar {
+   bottom: 60px;
+}

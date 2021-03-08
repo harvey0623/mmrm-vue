@@ -29,10 +29,12 @@
                   ref="pwInput"
                   v-model.trim="user.password">
                <p class="dataName">密碼</p>
-               <div 
-                  class="visibleBox" @click="see1Handler"
-                  :class="{ show: visible1, hide: !visible1 }"
-               ></div>
+               <div
+                  class="visibleBox" 
+                  :class="{ show: visibleInfo[0].show, hide: !visibleInfo[0].show }"
+                  @click="seeHandler('0')"
+                  v-if="isReady">
+               </div>
                <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
             </validation-provider>
             <validation-provider
@@ -47,10 +49,12 @@
                   ref="confirmInput"
                   v-model.trim="user.confirmedPw">
                <p class="dataName">密碼確認</p>
-               <div 
-                  class="visibleBox" @click="see2Handler"
-                  :class="{ show: visible2, hide: !visible2 }"
-               ></div>
+               <div
+                  class="visibleBox" 
+                  :class="{ show: visibleInfo[1].show, hide: !visibleInfo[1].show }"
+                  @click="seeHandler('1')"
+                  v-if="isReady">
+               </div>
                <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
             </validation-provider>
          </div>

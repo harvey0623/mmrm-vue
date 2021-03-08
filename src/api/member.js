@@ -59,4 +59,50 @@ export const memberApi = {
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
+   async update_member_mobile(payload) { //更新會員手機
+      return await httpConfig({
+         url: '/member/update_member_mobile',
+         method: 'post',
+         data: {
+            mobile: crypto.wm_aes(payload.mobile),
+            password: crypto.wm_aes(payload.password)
+         }
+      }).then(res => res.data)
+         .catch(err => err.response.data);
+   },
+   async member_verify(payload) { //會員認證(更新手機號碼用)
+      return await httpConfig({
+         url: '/member/member_verify',
+         method: 'post',
+         data: payload
+      }).then(res => res.data)
+         .catch(err => err.response.data);
+   },
+   async update_member_password(payload) { //更新密碼
+      return await httpConfig({
+         url: '/member/update_member_password',
+         method: 'post',
+         data: {
+            old_password: crypto.wm_aes(payload.old_password),
+            new_password: crypto.wm_aes(payload.new_password)
+         }
+      }).then(res => res.data)
+         .catch(err => err.response.data);
+   },
+   async member_summary() { //會員資訊
+      return await httpConfig({
+         url: '/member/member_summary',
+         method: 'post',
+         data: {}
+      }).then(res => res.data)
+         .catch(err => err.response.data);
+   },
+   async member_card() { //會員條碼
+      return await httpConfig({
+         url: '/member/get_member_card',
+         method: 'post',
+         data: {}
+      }).then(res => res.data)
+         .catch(err => err.response.data);
+   }
 }

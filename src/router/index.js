@@ -12,6 +12,14 @@ import ForgotPassword from '@/views/member/forgotPassword.vue';
 import VerifyPassword from '@/views/member/verifyPassword.vue';
 import ResetPassword from '@/views/member/resetPassword.vue';
 import Maintain from '@/views/member/maintain.vue';
+import FixMobile from '@/views/member/fixMobile.vue';
+import MemberVerify from '@/views/member/memberVerify.vue';
+import UpdatePassword from '@/views/member/updatePassword.vue';
+import MemberLevel from '@/views/member/memberLevel.vue';
+import Transaction from '@/views/member/transaction.vue';
+import PointInfo from '@/views/member/pointInfo.vue';
+import PointDesc from '@/views/member/pointDesc.vue';
+import MemberCard from '@/views/member/memberCard.vue';
 import { cookie } from '@/plugins/cookie/index.js';
 import { checkIsLogin }  from '../middleware/checkIsLogin.js';
 
@@ -91,9 +99,66 @@ const routes = [
 				path: 'maintain',
 				component: Maintain,
 				meta: {
-					suth: true
+					auth: true
 				}
-			}
+			},
+			{
+				path: 'fixMobile',
+				component: FixMobile,
+				meta: {
+					auth: true
+				}
+			},
+			{
+				path: 'memberVerify',
+				component: MemberVerify,
+				meta: {
+					auth: true
+				}
+			},
+			{
+				path: 'updatePassword',
+				component: UpdatePassword,
+				meta: {
+					auth: true
+				}
+			},
+			{
+				path: 'level',
+				component: MemberLevel,
+				meta: {
+					auth: true
+				}
+			},
+			{
+				path: 'transaction',
+				component: Transaction,
+				meta: {
+					auth: true
+				}
+			},
+			{
+				path: 'pointInfo/:point_id(\\d+)',
+				component: PointInfo,
+				meta: {
+					auth: true
+				}
+			},
+			{
+				path: 'pointDesc/:point_id(\\d+)',
+				component: PointDesc,
+				name: 'pointDesc',
+				meta: {
+					auth: true
+				}
+			},
+			{
+				path: 'card',
+				component: MemberCard,
+				meta: {
+					auth: true
+				}
+			},
 		]
 	},
 	{
