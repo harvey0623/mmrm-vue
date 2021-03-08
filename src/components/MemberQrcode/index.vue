@@ -40,10 +40,10 @@ export default {
          return JSON.stringify(schema);
       }
       
-      let createQrcode = (cardData, vehicleCod) => { //產生qrcode圖型
+      let createQrcode = (value) => { //產生qrcode圖型
          new Qrious({
             element: qrcodeImg.value,
-            value: createQrcodeSchema(cardData, vehicleCod),
+            value,
             size: 220,
          });
       }
@@ -51,7 +51,8 @@ export default {
       watch(() => hasData.value, (val) => {
          if (!val) return;
          let { normalCode, vehicleCode } = toRefs(props.qrcodeInfo);
-         createQrcode(normalCode.value, vehicleCode.value );
+         let schemaText = createQrcodeSchema(normalCode.value, vehicleCode.value);
+         createQrcode(schemaText);
       }, {
          immediate: true
       });
