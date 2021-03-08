@@ -1,6 +1,6 @@
 <template>
    <li class="tabItem" @click="clickHandler">
-      {{ tabTitle }}
+      <p>{{ tabTitle }}</p>
       <span class="line" :class="{active: currentCouponType === tabType}"></span>
    </li>
 </template>
