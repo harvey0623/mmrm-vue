@@ -4,6 +4,7 @@
 import { ref, reactive, onMounted, computed, watch, onBeforeUnmount } from '@vue/composition-api';
 import { pointApi } from '@/api/point.js';
 import { memberApi } from '@/api/member.js';
+import { sidebarDate } from '@/composition-api/sidebarDate.js';
 import DateSidebar from '@/components/Sidebar/Date.vue';
 import PointPopup from '@/components/Popup/PointPopup.vue';
 import PointHistoryList from '@/components/PointHistoryList/index.vue';
@@ -17,7 +18,7 @@ export default {
       }
    },
    setup(props, { root }) {
-      let today = dayjs();
+      let { dateRange, dateFormat, msgOption, invalidHandler, invaildFeedback } = sidebarDate();
       let pointId = ref(0);
       let isLoading = ref(false);
       let currentPointAmount = ref('');
@@ -31,15 +32,6 @@ export default {
       let expiredPoint = reactive({ data: [] });
       let tempHistory = reactive({ data: [] });
       let pointHistory = reactive({ data: [] });
-      let dateRange = reactive({
-         start: today.subtract(6, 'month').format('YYYY-MM-DD'),
-         end: today.format('YYYY-MM-DD')
-      });
-      let msgOption = reactive({
-         isOpen: false,
-         message: '',
-         eventName: 'invaildFeedback'
-      });
 
       let hasUserPoint = computed(() => { //是否有使用者點數
          return !(_.isEmpty(userPoint.data));
@@ -91,12 +83,6 @@ export default {
          }, []);
       });
 
-      let dateFormat = computed(() => {
-         let start = dateRange.start.replace(/-/g, '/');
-         let end = dateRange.end.replace(/-/g, '/');
-         return { start, end };
-      });
-
       let hasPointHistory = computed(() => { //是否有點數交易資料
          return tempHistory.data.length > 0;
       });
@@ -135,13 +121,6 @@ export default {
          });
          userPoint.data = info.results.point_information[0];
       }
-
-      let invalidHandler = ({ msg }) => {
-         msgOption.message = msg;
-         msgOption.isOpen = true;
-      }
-
-      let invaildFeedback = () => msgOption.isOpen = false;
 
       let classifyByDate = () => { //分類點數資料
          let result = dateGroup.value.reduce((prev, current, index) => {
