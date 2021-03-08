@@ -5,7 +5,7 @@ import { ref, reactive, onMounted, computed } from '@vue/composition-api';
 import { couponApi } from '@/api/coupon.js';
 import TabItem from '@/components/TabItem/index.vue';
 export default {
-   name: '',
+   name: 'couponFolder',
    metaInfo() {
       return {
          title: this.$i18n.t('page.couponFolder.title'),
@@ -41,11 +41,11 @@ export default {
       let initCateogry = () => { //初始票券種類
          couponCategory.data = tabInfo.reduce((prev, current) => {
             prev[current.type] = { 
-               isFirst: true, 
-               currentPage: 0, 
-               data: [], 
+               type: current.type,
+               isFirst: true,
+               data: [],
+               currentPage: 0,
                scrollPos: 0,
-               type: current.type
             };
             return prev;
          }, {});
