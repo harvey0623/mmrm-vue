@@ -1,0 +1,13 @@
+<section class="folder_section">
+   <ul class="tabList">
+      <TabItem 
+         v-for="info in tabInfo"
+         :key="info.type"
+         :tabTitle="info.title"
+         :tabType="info.type"
+         :currentCouponType="currentCouponType"
+         @switchType="switchType"
+      ></TabItem>
+   </ul>
+   <div class="folder_wrap"></div>
+</section>

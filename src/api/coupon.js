@@ -1,5 +1,4 @@
 import { httpConfig } from './config.js';
-import { crypto } from '@/plugins/crypto/index.js';
 
 export const couponApi = {
    async my_coupon_list(payload) {
