@@ -20,6 +20,8 @@ import Transaction from '@/views/member/transaction.vue';
 import PointInfo from '@/views/member/pointInfo.vue';
 import PointDesc from '@/views/member/pointDesc.vue';
 import MemberCard from '@/views/member/memberCard.vue';
+import Coupon from '@/views/coupon/index.vue';
+import CouponFolder from '@/views/coupon/couponFolder.vue';
 import { cookie } from '@/plugins/cookie/index.js';
 import { checkIsLogin }  from '../middleware/checkIsLogin.js';
 
@@ -159,6 +161,23 @@ const routes = [
 					auth: true
 				}
 			},
+		]
+	},
+	{
+		path: '/coupon',
+		component: Coupon,
+		meta: {
+			auth: true
+		},
+		children: [
+			{
+				path: '',
+				redirect: '/'
+			},
+			{
+				path: 'folder',
+				component: CouponFolder
+			}
 		]
 	},
 	{

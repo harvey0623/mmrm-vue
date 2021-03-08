@@ -53,6 +53,9 @@
       },
       "memberCard": {
          "title": "memberCard"
+      },
+      "couponFolder": {
+         "title": "couponFolder"
       }
    },
    "validate": {

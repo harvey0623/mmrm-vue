@@ -53,6 +53,9 @@
       },
       "memberCard": {
          "title": "會員卡"
+      },
+      "couponFolder": {
+         "title": "票券匣"
       }
    },
    "validate": {
