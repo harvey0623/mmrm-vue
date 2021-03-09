@@ -10,38 +10,11 @@
       ></TabItem>
    </ul>
    <div class="folder_wrap">
-      <div class="tabContent" v-show="currentCouponType === 'valid'">
-         <div class="couponGroup">
-            valid
-         </div>
-         <!-- <div class="emptyBlock" v-show="noValidCoupon">
-            <div class="emptyBg"></div>
-            <p>您沒有票券呦～</p>
-         </div>
-         <div class="pagTip" v-show="isLoading">資料加載中...</div>
-         <div class="pagTip" v-show="validReach">已經到最底囉～</div> -->
-      </div>
-      <div class="tabContent" v-show="currentCouponType === 'invalid'">
-         <div class="couponGroup">
-            invalid
-         </div>
-         <!-- <div class="emptyBlock" v-show="noValidCoupon">
-            <div class="emptyBg"></div>
-            <p>您沒有票券呦～</p>
-         </div>
-         <div class="pagTip" v-show="isLoading">資料加載中...</div>
-         <div class="pagTip" v-show="validReach">已經到最底囉～</div> -->
-      </div>
-      <div class="tabContent" v-show="currentCouponType === 'transferred'">
-         <div class="couponGroup">
-            transferred
-         </div>
-         <!-- <div class="emptyBlock" v-show="noValidCoupon">
-            <div class="emptyBg"></div>
-            <p>您沒有票券呦～</p>
-         </div>
-         <div class="pagTip" v-show="isLoading">資料加載中...</div>
-         <div class="pagTip" v-show="validReach">已經到最底囉～</div> -->
-      </div>
+      <CouponTabContent
+         v-for="tab in tabInfo"
+         :key="tab.type"
+         :contentType="tab.type"
+         :currentCouponType="currentCouponType"
+      ></CouponTabContent>
    </div>
 </section>
