@@ -15,8 +15,8 @@ export default {
          title: this.$i18n.t('page.couponFolder.title'),
       }
    },
-   setup(props, context) {
-      let currentCouponType = ref('transferred');
+   setup(props, { root }) {
+      let currentCouponType = ref('valid');
       let couponCategory = reactive({ data: {} });
       let isLoading = ref(false);
       let tabInfo = reactive([
@@ -97,8 +97,11 @@ export default {
       let switchType = async(tabType) => { //切換票券類型
          if (tabType === currentCouponType.value) return;
          if (isLoading.value) return;
+         currentCategory.value = { key: 'scrollPos', value: window.pageYOffset };
          currentCouponType.value = tabType;
          if (currentCategory.value.isFirst) await getPagination();
+         await root.$nextTick();
+         window.scrollTo(0, currentCategory.value.scrollPos);
       }
 
       let integrateData = ({ couponList, couponInfo, brandInfo, storeInfo }) => { //整合資料
@@ -146,4 +149,11 @@ export default {
 }
 </script>
 
-<style lang="scss" src="./scss/couponFolder.scss" scoped></style>
+<style lang="scss" scoped>
+   .folder_section {
+      padding-top: map-get($heightObj, basic);
+   }
+   .folder_wrap {
+      padding: 20px 15px;
+   }
+</style>

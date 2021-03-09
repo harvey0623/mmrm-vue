@@ -53,13 +53,12 @@ export default {
       });
 
       let isReached = computed(() => {
-         return !isLoading.value && !hasNextPage && hasLists;
+         return !isLoading.value && !hasNextPage.value && hasLists.value;
       });
 
       let showEmpty = computed(() => {
-         return !isLoading.value && !hasNextPage && !hasLists;
+         return !isLoading.value && !hasNextPage.value && !hasLists.value;
       });
-
 
       return { isCorrespond, isReached, showEmpty };
    },
@@ -69,6 +68,10 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+   .emptyBlock {
+      >.emptyBg {
+         background-image: url("~@/assets/img/page/img_mycoupon_list_empty_n@2x.png");
+      }
+   }
 </style>
