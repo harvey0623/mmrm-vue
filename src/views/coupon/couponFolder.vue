@@ -7,6 +7,7 @@ import { brandApi } from '@/api/brand.js';
 import { storeApi } from '@/api/store.js';
 import TabItem from '@/components/TabItem/index.vue';
 import CouponTabContent from '@/components/CouponTabContent/index.vue';
+import _ from 'lodash';
 export default {
    name: 'couponFolder',
    metaInfo() {
@@ -15,7 +16,7 @@ export default {
       }
    },
    setup(props, context) {
-      let currentCouponType = ref('valid');
+      let currentCouponType = ref('transferred');
       let couponCategory = reactive({ data: {} });
       let isLoading = ref(false);
       let tabInfo = reactive([
@@ -23,6 +24,8 @@ export default {
          { type: 'invalid', title: '歷史票券' },
          { type: 'transferred', title: '轉贈紀錄' },
       ]);
+
+      let hasCategory = computed(() => !(_.isEmpty(couponCategory.data)));
 
       let currentCategory = computed({
          get() {
@@ -134,7 +137,7 @@ export default {
          getPagination();
       });
 
-      return { tabInfo, currentCouponType, switchType, couponCategory, isLoading };
+      return { tabInfo, couponCategory, currentCouponType, hasCategory, switchType, isLoading };
    },
    components: {
       TabItem,

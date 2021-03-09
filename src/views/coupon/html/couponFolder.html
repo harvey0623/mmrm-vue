@@ -9,12 +9,15 @@
          @switchType="switchType"
       ></TabItem>
    </ul>
-   <div class="folder_wrap">
+   <div class="folder_wrap" v-if="hasCategory">
       <CouponTabContent
          v-for="tab in tabInfo"
          :key="tab.type"
          :contentType="tab.type"
          :currentCouponType="currentCouponType"
+         :categoryData="couponCategory.data[tab.type]"
+         :isLoading="isLoading"
       ></CouponTabContent>
+      <p class="pagTip" v-show="isLoading">資料加在中...</p>
    </div>
 </section>
