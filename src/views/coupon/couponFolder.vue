@@ -17,6 +17,7 @@ export default {
    setup(props, context) {
       let currentCouponType = ref('valid');
       let couponCategory = reactive({ data: {} });
+      let isLoading = ref(false);
       let tabInfo = reactive([
          { type: 'valid', title: '我得票券' },
          { type: 'invalid', title: '歷史票券' },
@@ -48,10 +49,6 @@ export default {
             };
             return prev;
          }, {});
-      }
-
-      let switchType = (tabType) => { //切換票券類型
-         currentCouponType.value = tabType;
       }
 
       let getCouponList = async() => { //取得票券列表
@@ -94,6 +91,13 @@ export default {
          return Array.from(new Set(arr));
       }
 
+      let switchType = async(tabType) => { //切換票券類型
+         if (tabType === currentCouponType.value) return;
+         if (isLoading.value) return;
+         currentCouponType.value = tabType;
+         if (currentCategory.value.isFirst) await getPagination();
+      }
+
       let integrateData = ({ couponList, couponInfo, brandInfo, storeInfo }) => { //整合資料
          return couponList.reduce((prev, current) => {
             let coupon_id = current.coupon_id;
@@ -107,6 +111,7 @@ export default {
       }
 
       let getPagination = async() => { //取得分頁資料
+         isLoading.value = true;
          let intergationResult = [];
          let pagnationData = await getCouponList();
          let couponList = pagnationData.results.my_coupon_list;
@@ -120,6 +125,8 @@ export default {
          }
          currentCategory.value = { key: 'currentPage', value: pagnationData.next };
          currentCategory.value = { key: 'data', value: intergationResult };
+         currentCategory.value = { key: 'isFirst', value: false };
+         isLoading.value = false;
       }
 
       onMounted(async() => {
@@ -127,7 +134,7 @@ export default {
          getPagination();
       });
 
-      return { tabInfo, currentCouponType, switchType, couponCategory };
+      return { tabInfo, currentCouponType, switchType, couponCategory, isLoading };
    },
    components: {
       TabItem,
