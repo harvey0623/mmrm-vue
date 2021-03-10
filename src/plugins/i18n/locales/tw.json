@@ -56,6 +56,9 @@
       },
       "couponFolder": {
          "title": "票券匣"
+      },
+      "couponInfo": {
+         "title": "票券詳情"
       }
    },
    "validate": {

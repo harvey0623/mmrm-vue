@@ -1,5 +1,7 @@
 <template>
-   <router-link to="/" class="couponBlock">
+   <router-link 
+      :to="{ name: 'couponInfo', params:{ my_coupon_id: couponItem.my_coupon_id }}" 
+      class="couponBlock">
       <div class="couponBlockL">
          <div class="brandInfo">
             <div class="brandLogo" :style="brandLogo"></div>
