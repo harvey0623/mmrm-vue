@@ -1,7 +1,7 @@
 <template src="./html/couponFolder.html"></template>
 
 <script>
-import { ref, reactive, onMounted, computed } from '@vue/composition-api';
+import { ref, reactive, onMounted, computed, onUnmounted } from '@vue/composition-api';
 import { couponApi } from '@/api/coupon.js';
 import { brandApi } from '@/api/brand.js';
 import { storeApi } from '@/api/store.js';
@@ -135,9 +135,18 @@ export default {
          isLoading.value = false;
       }
 
+      let scrollHandler = async() => {
+         console.log('aaa');
+      }
+
       onMounted(async() => {
+         window.addEventListener('scroll', scrollHandler);
          couponCategory.data = initCateogry();
          getPagination();
+      });
+
+      onUnmounted(() => {
+         window.addEventListener('scroll', scrollHandler);
       });
 
       return { tabInfo, couponCategory, currentCouponType, hasCategory, switchType, isLoading };
