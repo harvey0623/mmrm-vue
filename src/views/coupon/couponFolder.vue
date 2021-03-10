@@ -136,7 +136,14 @@ export default {
       }
 
       let scrollHandler = async() => {
-         console.log('aaa');
+         if (isLoading.value) return;
+         let windowH = window.innerHeight;
+         let documentH = document.documentElement.scrollHeight;
+         let distance = documentH - windowH;
+         let currentPos = window.pageYOffset;
+         if ((currentPos >= distance * 0.95) && currentCategory.value.currentPage !== null) {
+            getPagination();
+         }
       }
 
       onMounted(async() => {
