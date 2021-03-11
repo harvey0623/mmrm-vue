@@ -177,6 +177,7 @@ const routes = [
 			},
 			{
 				path: 'folder',
+				name: 'couponFolder',
 				component: CouponFolder
 			},
 			{

@@ -1,7 +1,5 @@
 <template>
-   <router-link 
-      :to="{ name: 'couponInfo', params:{ my_coupon_id: couponItem.my_coupon_id }}" 
-      class="couponBlock">
+   <router-link :to="couponLink" class="couponBlock">
       <div class="couponBlockL">
          <div class="brandInfo">
             <div class="brandLogo" :style="brandLogo"></div>
@@ -104,7 +102,15 @@ export default {
          return couponItem.value[`${couponStatus.value}_datetime`];
       });
 
-      return { isAvailable, usageText, brandLogo, isNormal, availableStoreText, usageTimes, isHistory, deadlineTitle, historyTime, isTransfer };
+      let couponLink = computed(() => {
+         if (isNormal.value) {
+            return { name: 'couponInfo', params: { my_coupon_id: couponItem.value.my_coupon_id }};
+         } else {
+            return { name: 'couponFolder' };
+         }
+      });
+
+      return { isAvailable, usageText, brandLogo, isNormal, availableStoreText, usageTimes, isHistory, deadlineTitle, historyTime, isTransfer, couponLink };
    }
 }
 </script>
