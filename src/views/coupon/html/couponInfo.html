@@ -54,7 +54,21 @@
    </div>
    <Loading v-show="isLoading"></Loading>
 
-   <!-- <InputPopup>
-      
-   </InputPopup> -->
+   <InputPopup
+      :isOpen.sync="transferPopupOption.isOpen"
+      :showCancel="transferPopupOption.showCancel"
+      :popupTitle="transferPopupOption.popupTitle"
+      :message="transferPopupOption.message"
+      :inputType="transferPopupOption.inputType"
+      :eventName="transferPopupOption.eventName"
+      :validateRule="transferPopupOption.validateRule"
+      @transfer="transferHandler">
+   </InputPopup>
+
+   <MessagePopup
+      :isOpen="msgOption.isOpen"
+      :message="msgOption.message"
+      :eventName="msgOption.eventName"
+      @transferResult="transferResultHandler"
+   ></MessagePopup>
 </section>

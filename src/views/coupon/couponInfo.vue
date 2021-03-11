@@ -17,18 +17,25 @@ export default {
    setup(props, { root }) {
       let myCouponId = ref(0);
       let isLoading = ref(false);
+      let tempStatus = ref(false); //暫存票券轉贈結果
       let couponDetail = reactive({ data:{} });
       let couponInfo = reactive({ data: {} });
       let brandInfo = reactive({ data: {} });
       let storeInfo = reactive({ data: {} });
       let { statusText } = couponStateText();
       let transferPopupOption = reactive({
-         isOpen: true,
+         isOpen: false,
          showCancel: true,
          popupTitle: '請輸入轉贈手機號',
          message: '轉贈票券將會送出所有剩餘的可用次數',
          inputType: 'number',
-         
+         eventName: 'transfer',
+         validateRule: 'required|phone'
+      });
+      let msgOption = reactive({
+         isOpen: false,
+         message: '',
+         eventName: 'transferResult'
       });
 
       let hasCouponDetail = computed(() => {
@@ -155,8 +162,22 @@ export default {
          }).then(res => res.info.results.search_coupon_available_store_results[0])
       }
 
-      let transferCoupon = async(payload) => { //票券轉讓
-         return couponApi.transfer_my_coupon(payload);
+      let transferHandler = async(val) => { //票券轉贈
+         isLoading.value = true;
+         let { status, info } = await couponApi.transfer_my_coupon({
+            my_coupon_id: myCouponId.value,
+            account: val
+         }).then(res => res);
+         transferPopupOption.isOpen = false;
+         tempStatus.value = status;
+         msgOption.message = status ? `您的優惠券已轉贈成功，會員帳號${val}` : info.rcrm.RM;
+         msgOption.isOpen = true;
+         isLoading.value = false;
+      }
+
+      let transferResultHandler = () => {
+         if (tempStatus.value) root.$router.replace({ name: 'couponFolder' });
+         msgOption.isOpen = false;
       }
 
       let init = async() => {
@@ -177,7 +198,7 @@ export default {
          init();
       });
 
-      return { isLoading, couponBackgroundImage, couponTitle, couponDuration, couponTransferredText, brandTitle, brandBackgroundImage, totalUageTimes, remainedUageTimes, allStoreAvailable, storeCount, couponDesc, couponStatusText, couponIsAvailable, canUsageCoupon, canTransferred };
+      return { isLoading, couponBackgroundImage, couponTitle, couponDuration, couponTransferredText, brandTitle, brandBackgroundImage, totalUageTimes, remainedUageTimes, allStoreAvailable, storeCount, couponDesc, couponStatusText, couponIsAvailable, canUsageCoupon, canTransferred, transferPopupOption, transferHandler, msgOption, transferResultHandler };
    }
 }
 </script>

@@ -31,6 +31,7 @@ export const couponApi = {
          method: 'post',
          data: { ...payload }
       }).then(res => res.data)
+         .catch(err => err.response.data);
       return result;
    }
 }
