@@ -90,13 +90,9 @@ export default {
       let canUsageCoupon = computed(() => { //使用條件
          if (!hasCouponDetail.value) return false;
          let couponStatus = couponDetail.data.status;
-         if (canTransferred.value) {
-            let whiteList = ['available', 'notyet'];
-            return whiteList.includes(couponStatus);
-         } else {
-            let whiteList = ['available'];
-            return whiteList.includes(couponStatus);
-         }
+         let whiteList = ['available'];
+         if (canTransferred.value) whiteList.push('notyet');
+         return whiteList.includes(couponStatus);
       });
 
       let brandTitle = computed(() => {
