@@ -47,7 +47,7 @@
    <div class="couponDesc" v-html="couponDesc"></div>
    <div class="fixBlock">
       <div class="normalBlock" v-if="canUsageCoupon">
-         <div v-if="canTransferred">我要轉贈</div>
+         <div v-if="true" @click="transferPopupOption.isOpen = true">我要轉贈</div>
          <div v-if="couponIsAvailable">我要使用</div>
       </div>
       <div class="usedBlock" v-else>{{ couponStatusText }}</div>
