@@ -5,6 +5,7 @@ import { ref, reactive, onMounted, computed, watch } from '@vue/composition-api'
 import { couponApi } from '@/api/coupon.js';
 import { brandApi } from '@/api/brand.js';
 import { storeApi } from '@/api/store.js';
+import { couponStateText } from '@/composition-api/couponStatus.js';
 import _ from 'lodash';
 export default {
    name: 'couponInfo',
@@ -20,14 +21,7 @@ export default {
       let couponInfo = reactive({ data: {} });
       let brandInfo = reactive({ data: {} });
       let storeInfo = reactive({ data: {} });
-      let statusText = {
-         notyet: '尚未開始',
-         available: '可使用',
-         expired: '已逾期',
-         obsolete: '已失效',
-         redeemed: '已使用',
-         transferred: '已轉贈'
-      };
+      let { statusText } = couponStateText();
 
       let hasCouponDetail = computed(() => {
          return !(_.isEmpty(couponDetail.data));
@@ -127,10 +121,6 @@ export default {
          return storeInfo.data.store_ids.length;
       });
 
-      watch(() => root.$route, (val) => {
-         myCouponId.value = parseInt(val.params.my_coupon_id);
-      });
-
       let getCouponDetail = async() => { //取得票券詳情
          return couponApi.my_coupon_detail({
             my_coupon_id: myCouponId.value
@@ -157,17 +147,22 @@ export default {
          }).then(res => res.info.results.search_coupon_available_store_results[0])
       }
 
-      onMounted(async() => {
+      let init = async() => {
          isLoading.value = true;
          myCouponId.value = parseInt(root.$route.params.my_coupon_id);
          couponDetail.data = await getCouponDetail();
          couponInfo.data = await getCouponInfo([couponDetail.data.coupon_id]);
          brandInfo.data = await getBrandInfo([couponInfo.data.brand_ids[0]]);
          storeInfo.data = await getStoreInfo([couponDetail.data.coupon_id]);
-
-         console.log(couponDetail.data);
-         console.log(couponInfo.data);
          isLoading.value = false;
+      }
+
+      watch(() => root.$route, () => {
+         init();
+      });
+
+      onMounted(() => {
+         init();
       });
 
       return { isLoading, couponBackgroundImage, couponTitle, couponDuration, couponTransferredText, brandTitle, brandBackgroundImage, totalUageTimes, remainedUageTimes, allStoreAvailable, storeCount, couponDesc, couponStatusText, couponIsAvailable, canUsageCoupon, canTransferred };

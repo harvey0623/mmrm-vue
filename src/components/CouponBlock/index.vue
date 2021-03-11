@@ -28,6 +28,7 @@
 
 <script>
 import { computed, toRefs } from '@vue/composition-api';
+import { couponStateText } from '@/composition-api/couponStatus.js';
 export default {
    props: {
       couponItem: {
@@ -37,14 +38,7 @@ export default {
    },
    setup(props, context) {
       let { couponItem } = toRefs(props);
-      let statusText = {
-         notyet: '尚未開始',
-         available: '可使用',
-         expired: '已逾期',
-         obsolete: '已失效',
-         redeemed: '已使用',
-         transferred: '已轉贈'
-      };
+      let { statusText } = couponStateText();
       let timeStatus = {
          expired: '逾期時間',
          obsolete: '失效時間',
