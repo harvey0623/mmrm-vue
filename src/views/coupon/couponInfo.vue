@@ -22,6 +22,14 @@ export default {
       let brandInfo = reactive({ data: {} });
       let storeInfo = reactive({ data: {} });
       let { statusText } = couponStateText();
+      let transferPopupOption = reactive({
+         isOpen: true,
+         showCancel: true,
+         popupTitle: '請輸入轉贈手機號',
+         message: '轉贈票券將會送出所有剩餘的可用次數',
+         inputType: 'number',
+         
+      });
 
       let hasCouponDetail = computed(() => {
          return !(_.isEmpty(couponDetail.data));
@@ -145,6 +153,10 @@ export default {
          return storeApi.searchAvailableStore({
             coupon_ids: couponIds
          }).then(res => res.info.results.search_coupon_available_store_results[0])
+      }
+
+      let transferCoupon = async(payload) => { //票券轉讓
+         return couponApi.transfer_my_coupon(payload);
       }
 
       let init = async() => {
