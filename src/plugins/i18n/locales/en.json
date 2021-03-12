@@ -59,6 +59,9 @@
       },
       "couponInfo": {
          "title": "couponInfo"
+      },
+      "couponCard": {
+         "title": "couponCard"
       }
    },
    "validate": {

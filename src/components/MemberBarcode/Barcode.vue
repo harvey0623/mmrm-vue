@@ -36,4 +36,12 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.codeItem {
+   @include elGutter(margin-bottom, 25px);
+   text-align: center;
+   >svg {
+      max-width: 100%;
+   }
+}
+</style>

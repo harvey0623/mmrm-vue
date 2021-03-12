@@ -6,6 +6,7 @@ import { memberApi } from '@/api/member.js';
 import { levelApi } from '@/api/level.js';
 import MemberQrcode from '@/components/MemberQrcode/index.vue';
 import MemberBarCode from '@/components/MemberBarcode/index.vue';
+import { operateBarcode } from '@/composition-api/operateBarcode.js';
 import _ from 'lodash';
 export default {
    name: 'memberCard',
@@ -18,14 +19,9 @@ export default {
       let isLoading = ref(false);
       let memberName = ref('');
       let memberLevel = ref('');
-      let barcodeTypeId = ref(1);
-      let barcodeMapping = { 1: '切換一維條碼', 2: '切換二維條碼' };
       let qrcodeInfo = reactive({ data: {} });
       let barcodeList = reactive({ data: [] });
-
-      let barcodeTypeText = computed(() => {
-         return barcodeMapping[barcodeTypeId.value];
-      });
+      let { barcodeTypeId, barcodeTypeText, switchBarcodeType } = operateBarcode();
 
       let hasQrcodeInfo = computed(() => { //是否有qrcode資料
          return !(_.isEmpty(qrcodeInfo.data));
@@ -34,10 +30,6 @@ export default {
       let hasBarcodeList = computed(() => { //是否有條碼資料
          return barcodeList.data.length > 0;
       });
-
-      let switchBarcodeType = () => { //切換條碼類型
-         barcodeTypeId.value = barcodeTypeId.value === 1 ? 2 : 1;
-      }
 
       onMounted(async () => {
          isLoading.value = true;
@@ -68,4 +60,4 @@ export default {
 }
 </script>
 
-<style lang="scss" src="./scss/memberCard.scss"></style>
+<style lang="scss" src="./scss/memberCard.scss" scoped></style>

@@ -1,0 +1,35 @@
+<section class="couponCard_section">
+   <div class="mask">
+		<div class="colorBlock"></div>
+		<div class="maskInner">
+			<div class="panel">
+				<div class="closeBg"></div>
+				<div class="codeText" @click="switchBarcodeType">{{ barcodeTypeText }}</div>
+				<img :src="brandLogo" class="brandLogo" v-show="hasBrandLogo">
+			</div>
+			<div class="cardBox">
+				<div class="cardHead">
+					<div class="name">{{ couponName }}</div>
+					<div class="duration">使用期限: {{ couponDuration }}</div>
+				</div>
+				<div class="cardBody">
+					<div class="cardInner">
+                  <div id="qrcode" :class="['codeBox', { active: barcodeTypeId === 1 }]">
+                     <!-- <MemberQrcode
+                        v-if="hasQrcodeInfo"
+                        :qrcodeInfo="qrcodeInfo.data"
+                     ></MemberQrcode> -->
+                  </div>
+                  <div id="barCodeBox" :class="['codeBox', { active: barcodeTypeId === 2 }]">
+                     <!-- <MemberBarCode 
+                        v-if="hasBarcodeList"
+                        :barcodeList="barcodeList.data"
+                     ></MemberBarCode> -->
+                  </div>
+               </div>
+				</div>
+			</div>
+		</div>
+	</div>
+   <Loading v-show="isLoading"></Loading>
+</section>

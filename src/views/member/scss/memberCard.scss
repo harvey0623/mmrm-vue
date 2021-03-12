@@ -86,14 +86,6 @@ $basicRadius: map-get($radius, basic);
    }
 }
 
-.codeItem {
-   @include elGutter(margin-bottom, 25px);
-   text-align: center;
-   >svg {
-      max-width: 100%;
-   }
-}
-
 //===swiper style
 .barcode-container{
    padding: 20px 0 60px;

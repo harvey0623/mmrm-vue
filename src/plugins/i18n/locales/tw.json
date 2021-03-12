@@ -59,6 +59,9 @@
       },
       "couponInfo": {
          "title": "票券詳情"
+      },
+      "couponCard": {
+         "title": "折價卡"
       }
    },
    "validate": {

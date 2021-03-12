@@ -23,6 +23,7 @@ import MemberCard from '@/views/member/memberCard.vue';
 import Coupon from '@/views/coupon/index.vue';
 import CouponFolder from '@/views/coupon/couponFolder.vue';
 import CouponInfo from '@/views/coupon/couponInfo.vue';
+import CouponCard from '@/views/coupon/couponCard.vue';
 import { cookie } from '@/plugins/cookie/index.js';
 import { checkIsLogin }  from '../middleware/checkIsLogin.js';
 
@@ -184,6 +185,11 @@ const routes = [
 				path: 'info/:my_coupon_id(\\d+)',
 				name: 'couponInfo',
 				component: CouponInfo
+			},
+			{
+				path: 'card/:my_coupon_id(\\d+)',
+				name: 'couponCard',
+				component: CouponCard
 			},
 		]
 	},

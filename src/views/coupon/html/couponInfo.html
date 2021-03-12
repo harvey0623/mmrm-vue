@@ -48,7 +48,10 @@
    <div class="fixBlock">
       <div class="normalBlock" v-if="canUsageCoupon">
          <div v-if="true" @click="transferPopupOption.isOpen = true">我要轉贈</div>
-         <div v-if="couponIsAvailable">我要使用</div>
+         <router-link 
+            :to="{name: 'couponCard', params:{ my_coupon_id: myCouponId }}" 
+            v-if="couponIsAvailable"
+         >我要使用</router-link>
       </div>
       <div class="usedBlock" v-else>{{ couponStatusText }}</div>
    </div>

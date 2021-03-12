@@ -140,10 +140,11 @@ $inputColor: map-get($fontColor, input);
    display: flex;
    line-height: initial;
    background-color: var(--variationMain);
-   >div {
+   >* {
       position: relative;
       flex: 1;
       line-height: map-get($heightObj, basic);
+      color: #fff;
       &:after {
          content: '';
          position: absolute;

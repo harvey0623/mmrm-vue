@@ -198,7 +198,7 @@ export default {
          init();
       });
 
-      return { isLoading, couponBackgroundImage, couponTitle, couponDuration, couponTransferredText, brandTitle, brandBackgroundImage, totalUageTimes, remainedUageTimes, allStoreAvailable, storeCount, couponDesc, couponStatusText, couponIsAvailable, canUsageCoupon, canTransferred, transferPopupOption, transferHandler, msgOption, transferResultHandler };
+      return { myCouponId, isLoading, couponBackgroundImage, couponTitle, couponDuration, couponTransferredText, brandTitle, brandBackgroundImage, totalUageTimes, remainedUageTimes, allStoreAvailable, storeCount, couponDesc, couponStatusText, couponIsAvailable, canUsageCoupon, canTransferred, transferPopupOption, transferHandler, msgOption, transferResultHandler };
    }
 }
 </script>
