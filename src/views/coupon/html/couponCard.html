@@ -15,16 +15,17 @@
 				<div class="cardBody">
 					<div class="cardInner">
                   <div id="qrcode" :class="['codeBox', { active: barcodeTypeId === 1 }]">
-                     <!-- <MemberQrcode
+                     <MemberQrcode
                         v-if="hasQrcodeInfo"
                         :qrcodeInfo="qrcodeInfo.data"
-                     ></MemberQrcode> -->
+                        cardType="coupon"
+                     ></MemberQrcode>
                   </div>
                   <div id="barCodeBox" :class="['codeBox', { active: barcodeTypeId === 2 }]">
-                     <!-- <MemberBarCode 
+                     <MemberBarCode 
                         v-if="hasBarcodeList"
                         :barcodeList="barcodeList.data"
-                     ></MemberBarCode> -->
+                     ></MemberBarCode>
                   </div>
                </div>
 				</div>
