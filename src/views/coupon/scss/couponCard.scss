@@ -1,10 +1,5 @@
 $basicRadius: map-get($radius, basic);
 
-%bgStyle {
-   background-size: 100% 100%;
-   background-position: center top;
-}
-
 .couponCard_section {
    min-height: 100vh;
 }
@@ -140,15 +135,6 @@ $basicRadius: map-get($radius, basic);
    >svg {
       max-width: 100%;
    }
-}
-
-@media (max-width: 375px) {
-   .special.swiper-container {
-      height: 520px;
-      .codeItem {
-         width: 520px;
-      }
-   } 
 }
 
 @media (max-width: 360px) {
