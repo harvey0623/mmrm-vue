@@ -24,6 +24,8 @@ import Coupon from '@/views/coupon/index.vue';
 import CouponFolder from '@/views/coupon/couponFolder.vue';
 import CouponInfo from '@/views/coupon/couponInfo.vue';
 import CouponCard from '@/views/coupon/couponCard.vue';
+import Activity from '@/views/activity/index.vue';
+import ActivityList from '@/views/activity/activityList.vue';
 import { cookie } from '@/plugins/cookie/index.js';
 import { checkIsLogin }  from '../middleware/checkIsLogin.js';
 
@@ -190,6 +192,23 @@ const routes = [
 				path: 'card/:my_coupon_id(\\d+)',
 				name: 'couponCard',
 				component: CouponCard
+			},
+		]
+	},
+	{
+		path: '/activity',
+		component: Activity,
+		meta: {
+			auth: true
+		},
+		children: [
+			{
+				path: '',
+				redirect: '/'
+			},
+			{
+				path: 'list',
+				component: ActivityList
 			},
 		]
 	},

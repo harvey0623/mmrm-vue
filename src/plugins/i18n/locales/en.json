@@ -62,6 +62,9 @@
       },
       "couponCard": {
          "title": "couponCard"
+      },
+      "activityList": {
+         "title": "activityList"
       }
    },
    "validate": {

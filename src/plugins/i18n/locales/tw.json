@@ -62,6 +62,9 @@
       },
       "couponCard": {
          "title": "折價卡"
+      },
+      "activityList": {
+         "title": "票券活動列表"
       }
    },
    "validate": {
