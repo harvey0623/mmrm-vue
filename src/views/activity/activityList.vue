@@ -1,9 +1,8 @@
-<template src="./html/activityList.html">
-
-</template>
+<template src="./html/activityList.html"></template>
 
 <script>
 import { ref, reactive, onMounted, computed } from '@vue/composition-api';
+import { activityApi } from '@/api/activity.js';
 export default {
    name: 'activityList',
       metaInfo() {
@@ -12,6 +11,9 @@ export default {
       }
    },
    setup(props, context) {
+      
+   },
+   components: {
       
    }
 }
