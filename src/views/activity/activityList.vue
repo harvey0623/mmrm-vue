@@ -11,7 +11,11 @@ export default {
       }
    },
    setup(props, context) {
-      
+          
+
+      onMounted(async()=> {
+         
+      });
    },
    components: {
       
