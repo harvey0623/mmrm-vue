@@ -1,3 +1,41 @@
 <section class="activity_section">
-   activity
+   <div class="controlPanel">
+      <div class="layoutBox">
+         <LayoutItem
+            v-for="layout in layoutList"
+            :key="layout.id"
+            :layoutId="layout.id"
+            :layoutClass="layout.class"
+            :currentLayoutId="currentLayoutId"
+            @layout="switchLayout"
+         ></LayoutItem>
+      </div>
+      <div class="pointDesc" @click="pointPopupOption.isOpen = true">
+         <PointSlider 
+            v-if="hasPointSlider"
+            :slideList="pointSlider.data"
+         ></PointSlider>
+      </div>
+      <div class="text">篩選</div>
+   </div>
+
+   <PointPopup
+      :isOpen.sync="pointPopupOption.isOpen"
+      :pointTitle="pointPopupOption.title"
+      :showPointAmount="pointPopupOption.showPointAmount">
+      <ul class="myPointList" v-show="hasPointSlider">
+         <li 
+            v-for="item in pointSlider.data"
+            :key="item.pointId">
+            <div>{{ item.title }}</div>
+            <div>
+               <span class="amount">{{ item.amount }}</span>
+               <span>點</span>
+            </div>
+         </li>
+      </ul>
+   </PointPopup>
+
+   <Loading v-show="isLoading"></Loading>
+
 </section>
