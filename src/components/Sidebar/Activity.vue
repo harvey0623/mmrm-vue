@@ -6,6 +6,7 @@ import { brandApi } from '@/api/brand.js';
 import { activityApi } from '@/api/activity.js';
 import { pointApi } from '@/api/point.js';
 import BrandCriteriaItem from '@/components/CriteriaItem/Brand.vue';
+import PointCriteriaItem from '@/components/CriteriaItem/Point.vue';
 import _ from 'lodash';
 export default {
    props: {
@@ -15,13 +16,10 @@ export default {
       }
    },
    setup(props, { emit }) {
-      let subId = ref('sub1');
+      let subId = ref('sub2');
       let brandCondition = reactive({ data: [] });
       let pointCondition = reactive({ data: [] });
-      let redeemType = {
-         free: '點數兌換',
-         redeem_code: '代碼兌換'
-      };
+      let redeemType = { free: '點數兌換', redeem_code: '代碼兌換' };
 
       let backHandler = () => { //選單返回
          if (subId.value !== '') return showSubMenu('');
@@ -35,8 +33,9 @@ export default {
          obj.checked = status;
       }
 
-      let clearAllBrand = () => { //清除全部品牌
-         brandCondition.data.forEach(item => item.checked = false);
+      let clearAll = (type) => { //清除類別選項
+         if (type === 'brand') brandCondition.data.forEach(item => item.checked = false);
+         if (type === 'point') pointCondition.data.forEach(item => item.checked = false);
       }
 
       let createBrandCriteria = (data) => { //產生品牌條件
@@ -115,6 +114,13 @@ export default {
          return nonePointArr.concat(existedPointArr);
       }
 
+      let changePointStatus = ({ id, category, status }) => {
+         let obj = pointCondition.data.find(item => {
+            return item.category === category && item.id === id;
+         });
+         obj.checked = status;
+      }
+
       let getAboutPoint = async() => {
          let brefResult = await activityApi.briefCoupon().then(res => res.info.results.redeem_types);
          let allPointInfo = null;
@@ -128,10 +134,11 @@ export default {
          await getAboutPoint();
       });
 
-      return { backHandler, subId, showSubMenu, brandCondition, changeBrandStatus, clearAllBrand, pointCondition }
+      return { backHandler, subId, showSubMenu, brandCondition, changeBrandStatus, clearAll, pointCondition, changePointStatus }
    },
    components: {
-      BrandCriteriaItem
+      BrandCriteriaItem,
+      PointCriteriaItem
    }
 }
 </script>

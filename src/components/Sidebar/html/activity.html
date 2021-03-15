@@ -24,7 +24,7 @@
    </ul>
    <div class="subMenu brandMenu" :class="{show: subId === 'sub1'}">
       <div class="clearAll">
-         <span @click="clearAllBrand">全部清除</span>
+         <span @click="clearAll('brand')">全部清除</span>
       </div>
       <ul class="criteriaList">
          <BrandCriteriaItem
@@ -40,20 +40,18 @@
    </div>
    <div class="subMenu pointMenu" :class="{show: subId === 'sub2'}">
       <div class="clearAll">
-         <span>全部清除</span>
+         <span @click="clearAll('point')">全部清除</span>
       </div>
       <ul class="criteriaList">
-         <!-- <li v-for="(point,index) in pointList" :key="index">
-            <label>
-               <div class="criteriaTitle">
-                  <span>{{ point.title }}</span>
-               </div>
-               <input 
-                  type="checkbox" class="hookCheckbox" 
-                  :value="point.id" :checked="point.checked"
-                  @change="pointChange(point.category, $event)">
-            </label>
-         </li> -->
+         <PointCriteriaItem
+            v-for="(condition,index) in pointCondition.data"
+            :key="index"
+            :itemId="condition.id"
+            :title="condition.title"
+            :checked="condition.checked"
+            :category="condition.category"
+            @status="changePointStatus"
+         ></PointCriteriaItem>
       </ul>
    </div>
 </div>
