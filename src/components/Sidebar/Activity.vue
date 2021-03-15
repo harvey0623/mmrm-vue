@@ -6,6 +6,7 @@ import { brandApi } from '@/api/brand.js';
 import { activityApi } from '@/api/activity.js';
 import { pointApi } from '@/api/point.js';
 import BrandCriteriaItem from '@/components/CriteriaItem/Brand.vue';
+import _ from 'lodash';
 export default {
    props: {
       isOpen: {
@@ -16,6 +17,11 @@ export default {
    setup(props, { emit }) {
       let subId = ref('sub1');
       let brandCondition = reactive({ data: [] });
+      let pointCondition = reactive({ data: [] });
+      let redeemType = {
+         free: '點數兌換',
+         redeem_code: '代碼兌換'
+      };
 
       let backHandler = () => { //選單返回
          if (subId.value !== '') return showSubMenu('');
@@ -29,7 +35,11 @@ export default {
          obj.checked = status;
       }
 
-      let createBrandCriteria = (data) => {
+      let clearAllBrand = () => { //清除全部品牌
+         brandCondition.data.forEach(item => item.checked = false);
+      }
+
+      let createBrandCriteria = (data) => { //產生品牌條件
          return data.reduce((prev, current) => {
             let { brand_id, title, feature_image_small } = current;
             prev.push({ brand_id, title, url: feature_image_small.url, checked: true });
@@ -44,11 +54,81 @@ export default {
          brandCondition.data = createBrandCriteria(brandInfo);
       }
 
+      let getPointInfo = async({ key, ids }) => { //取得點資訊
+         let method = key === 'point_ids' ? 'pointInfo' : 'externalPointInfo';
+         let result = await pointApi[method]({ point_id: ids, full_info: false })
+                  .then(res => res.info.results.point_information);
+         return _.cloneDeep(result);
+      }
+
+      let gatherBrefPoint = async(data) => {
+         let lists = [];
+         for (let key in data) {
+            if (key === 'redeem_type') continue;
+            let pointData = await getPointInfo({ key, ids: data[key] });
+            pointData.forEach(item => item.category = key);
+            lists = lists.concat(pointData);
+         }
+         return lists;
+      }
+
+      let createPointCriteria = ({ brefResult, allPointInfo }) => { //產生點數條件
+         let exceptPoint = brefResult.filter(item => item.redeem_type !== 'point');
+         let existedPointArr = [];
+         let nonePointArr = exceptPoint.reduce((prev, current) => {
+            let currentType = current.redeem_type;
+            prev.push({
+               id: currentType, 
+               title: redeemType[currentType],
+               type: currentType,
+               category: 'basic',
+               checked: true
+            });
+            return prev;
+         }, []);
+         if (allPointInfo !== null) {
+            let includePoint = brefResult.find(item => item.redeem_type === 'point');
+            let categoryPoint = {};
+            for (let key in includePoint) {
+               if (key !== 'redeem_type') categoryPoint[key] = includePoint[key];
+            }
+            existedPointArr = allPointInfo.reduce((prev, current) => {
+               let categoryName = '';
+               for (let key in categoryPoint) {
+                  let isIdInclude = categoryPoint[key].includes(current.point_id);
+                  let isSameCategory = current.category === key;
+                  if (isIdInclude && isSameCategory) {
+                     categoryName = key;
+                     break;
+                  }
+               }
+               prev.push({
+                  id: current.point_id,
+                  title: `點數兌換-${current.title}`,
+                  type: 'point',
+                  category: categoryName,
+                  checked: true
+               });
+               return prev;
+            }, []);
+         }
+         return nonePointArr.concat(existedPointArr);
+      }
+
+      let getAboutPoint = async() => {
+         let brefResult = await activityApi.briefCoupon().then(res => res.info.results.redeem_types);
+         let allPointInfo = null;
+         let obj = brefResult.find(item => item.redeem_type === 'point');
+         if (obj !== undefined) allPointInfo = await gatherBrefPoint(obj);
+         pointCondition.data = createPointCriteria({ brefResult, allPointInfo });
+      }
+
       onMounted(async() => {
          await getAboutBrand();
+         await getAboutPoint();
       });
 
-      return { backHandler, subId, showSubMenu, brandCondition, changeBrandStatus }
+      return { backHandler, subId, showSubMenu, brandCondition, changeBrandStatus, clearAllBrand, pointCondition }
    },
    components: {
       BrandCriteriaItem
@@ -56,6 +136,4 @@ export default {
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
