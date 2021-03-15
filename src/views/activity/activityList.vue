@@ -8,6 +8,7 @@ import { pointApi } from '@/api/point.js';
 import LayoutItem from '@/components/LayoutItem/index.vue';
 import PointSlider from '@/components/PointSlider/index.vue';
 import PointPopup from '@/components/Popup/PointPopup.vue';
+import ActivitySidebar from '@/components/Sidebar/Activity.vue';
 export default {
    name: 'activityList',
       metaInfo() {
@@ -18,6 +19,8 @@ export default {
    setup(props, context) {
       let currentLayoutId = ref('a');
       let isLoading = ref(false);
+      let isSidebarOpen = ref(true);
+      let pointSlider = reactive({ data: [] });
       let layoutList = reactive([
          { id: 'a', class: 'layoutA' },
          { id: 'b', class: 'layoutB' }
@@ -27,13 +30,12 @@ export default {
          title: '目前擁有點數',
          showPointAmount: false
       });
-      let pointSlider = reactive({ data: [] });
 
-      let hasPointSlider = computed(() => {
+      let hasPointSlider = computed(() => { //是否有點數輪播資料
          return pointSlider.data.length > 0;
       });
 
-      let switchLayout = (id) => {
+      let switchLayout = (id) => { //切換板形
          currentLayoutId.value = id;
       }
 
@@ -64,12 +66,13 @@ export default {
          isLoading.value = false;
       });
 
-      return { currentLayoutId, isLoading, layoutList, switchLayout, pointSlider, hasPointSlider, pointPopupOption };
+      return { currentLayoutId, isLoading, layoutList, isSidebarOpen, switchLayout, pointSlider, hasPointSlider, pointPopupOption };
    },
    components: {
       LayoutItem,
       PointSlider,
-      PointPopup
+      PointPopup,
+      ActivitySidebar
    }
 }
 </script>

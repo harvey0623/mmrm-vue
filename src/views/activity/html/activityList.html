@@ -16,7 +16,7 @@
             :slideList="pointSlider.data"
          ></PointSlider>
       </div>
-      <div class="text">篩選</div>
+      <div class="text" @click="isSidebarOpen = true">篩選</div>
    </div>
 
    <PointPopup
@@ -36,6 +36,11 @@
       </ul>
    </PointPopup>
 
+   <ActivitySidebar
+      :isOpen.sync="isSidebarOpen"
+   ></ActivitySidebar>
+
    <Loading v-show="isLoading"></Loading>
+   <div class="sidebarCover" :class="{show: isSidebarOpen}"></div>
 
 </section>

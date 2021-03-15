@@ -1,0 +1,59 @@
+<div id="sidebar" :class="{show: isOpen}">
+   <div class="sidebarPanel">
+      <div class="sureText" @click="backHandler">取消</div>
+      <div class="seekText">篩選</div>
+      <div class="sureText">確認</div>
+   </div>
+   <ul class="sidebarFilter">
+      <li @click="showSubMenu('sub1')">
+         <div class="filterTitle">選擇品牌</div>
+         <div class="filterItem">
+            <span>全部</span>
+            <span class="count">{{ 10 }}</span>
+            <span class="arrowBox"></span>
+         </div> 
+      </li>
+      <li @click="showSubMenu('sub2')">
+         <div class="filterTitle">兌換方式</div>
+         <div class="filterItem">
+            <span>全部</span>
+            <span class="count">{{ 10 }}</span>
+            <span class="arrowBox"></span>
+         </div> 
+      </li>
+   </ul>
+   <div class="subMenu brandMenu" :class="{show: subId === 'sub1'}">
+      <div class="clearAll">
+         <span>全部清除</span>
+      </div>
+      <ul class="criteriaList">
+         <BrandCriteriaItem
+            v-for="condition in brandCondition.data"
+            :key="condition.brand_id"
+            :itemId="condition.brand_id"
+            :title="condition.title"
+            :imgUrl="condition.url"
+            :checked="condition.checked"
+            @status="changeBrandStatus"
+         ></BrandCriteriaItem>
+      </ul>
+   </div>
+   <!-- <div class="subMenu pointMenu" :class="{show: subId === 'sub2'}">
+      <div class="clearAll">
+         <span @click="clearAllPoint">{{ clearText }}</span>
+      </div>
+      <ul class="criteriaList">
+         <li v-for="(point,index) in pointList" :key="index">
+            <label>
+               <div class="criteriaTitle">
+                  <span>{{ point.title }}</span>
+               </div>
+               <input 
+                  type="checkbox" class="hookCheckbox" 
+                  :value="point.id" :checked="point.checked"
+                  @change="pointChange(point.category, $event)">
+            </label>
+         </li>
+      </ul>
+   </div> -->
+</div>
