@@ -19,8 +19,9 @@ export default {
    setup(props, context) {
       let currentLayoutId = ref('a');
       let isLoading = ref(false);
-      let isSidebarOpen = ref(true);
+      let isSidebarOpen = ref(false);
       let pointSlider = reactive({ data: [] });
+      let tempParams = reactive({ data: {} });
       let layoutList = reactive([
          { id: 'a', class: 'layoutA' },
          { id: 'b', class: 'layoutB' }
@@ -60,13 +61,20 @@ export default {
          pointSlider.data = integratePoint({ pointSummary, pointInfo });
       }
 
+      let filterHandler = (params) => {
+         isLoading.value = true;
+         tempParams.data = params;
+         
+
+         isLoading.value = false;
+      }
+
       onMounted(async() => {
          isLoading.value = true;
          await createPointSlider();
-         isLoading.value = false;
       });
 
-      return { currentLayoutId, isLoading, layoutList, isSidebarOpen, switchLayout, pointSlider, hasPointSlider, pointPopupOption };
+      return { currentLayoutId, isLoading, layoutList, isSidebarOpen, switchLayout, pointSlider, hasPointSlider, pointPopupOption, filterHandler };
    },
    components: {
       LayoutItem,

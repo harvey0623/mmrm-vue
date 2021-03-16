@@ -38,6 +38,7 @@
 
    <ActivitySidebar
       :isOpen.sync="isSidebarOpen"
+      @filter="filterHandler"
    ></ActivitySidebar>
 
    <Loading v-show="isLoading"></Loading>

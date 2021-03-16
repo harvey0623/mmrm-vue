@@ -155,12 +155,37 @@ export default {
          pointCondition.data = createPointCriteria({ brefResult, allPointInfo });
       }
 
+      let createFilterParams = () => { //產生搜尋條件
+         let brandIds = brandCondition.data.filter(item => item.checked).map(item => item.brand_id);
+         let redeemTypes = pointCondition.data.filter(item => item.checked).map(item => item.type);
+         redeemTypes = redeemTypes.length !== 0 ? redeemTypes : pointCondition.data.map(item => item.type);
+         redeemTypes = Array.from(new Set(redeemTypes));
+         let pointCategory = {};
+         if (redeemTypes.includes('point')) {
+            pointCategory = pointCondition.data.reduce((prev, current) => {
+               let { id, checked, type, category } = current;
+               if (checked && type === 'point') {
+                  if (prev[type] === undefined) prev[category] = [id];
+                  else prev[category].push(id);
+               }
+               return prev;
+            }, {});
+         }
+         return { brand_ids: brandIds, redeem_types: redeemTypes, ...pointCategory };
+      }
+
+      let confirmHandler = () => {
+         let params = createFilterParams();
+         emit('filter', params);
+      }
+
       onMounted(async() => {
          await getAboutBrand();
          await getAboutPoint();
+         confirmHandler();
       });
 
-      return { backHandler, subId, showSubMenu, brandCondition, changeBrandStatus, clearAll, pointCondition, changePointStatus, checkedBrandCount, allBrandSelected, checkedPointCount, allPointSelected }
+      return { backHandler, subId, showSubMenu, brandCondition, changeBrandStatus, clearAll, pointCondition, changePointStatus, checkedBrandCount, allBrandSelected, checkedPointCount, allPointSelected, confirmHandler }
    },
    components: {
       BrandCriteriaItem,
