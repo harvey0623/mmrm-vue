@@ -17,7 +17,7 @@ export const activityApi = {
       }).then(res => res.data);
       return result;
    },
-   async couponActivityInfo(payload) {
+   async couponInfo(payload) {
       let result = await httpConfig({
          url: '/activity/coupon_activity_information',
          method: 'post',

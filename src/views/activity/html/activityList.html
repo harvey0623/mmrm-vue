@@ -39,6 +39,7 @@
    <ActivitySidebar
       :isOpen.sync="isSidebarOpen"
       @filter="filterHandler"
+      ref="activitySidebar"
    ></ActivitySidebar>
 
    <Loading v-show="isLoading"></Loading>

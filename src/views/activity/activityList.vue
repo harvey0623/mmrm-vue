@@ -20,8 +20,13 @@ export default {
       let currentLayoutId = ref('a');
       let isLoading = ref(false);
       let isSidebarOpen = ref(false);
+      let activitySidebar = ref(null);
+      let currentPage = ref(0);
+      let systemTime = ref('');
       let pointSlider = reactive({ data: [] });
       let tempParams = reactive({ data: {} });
+      let activityIds = reactive({ data: [] });
+      let activityList = reactive({ data: [] });
       let layoutList = reactive([
          { id: 'a', class: 'layoutA' },
          { id: 'b', class: 'layoutB' }
@@ -36,13 +41,17 @@ export default {
          return pointSlider.data.length > 0;
       });
 
+      let hasActivity = computed(() => { //是否有活動
+         return activityIds.data.length > 0;
+      });
+
       let switchLayout = (id) => { //切換板形
          currentLayoutId.value = id;
       }
 
       let gatherPointIds = (data) => data.map(item => item.point_id);
 
-      let integratePoint = ({ pointSummary, pointInfo }) => {
+      let integratePoint = ({ pointSummary, pointInfo }) => { //整合點數
          return pointSummary.reduce((prev, current) => {
             let pointId = current.point_id;
             let obj = pointInfo.find(item => item.point_id === pointId);
@@ -61,11 +70,38 @@ export default {
          pointSlider.data = integratePoint({ pointSummary, pointInfo });
       }
 
-      let filterHandler = (params) => {
+      let searchCoupon = async() => {
+         return await activityApi.searchCoupon({
+            ...tempParams.data,
+            offset: currentPage.value
+         }).then(res => res.info)
+      }
+
+      let getPagination = async() => {
+         let searchResult = await searchCoupon();
+         currentPage.value = searchResult.next;
+         systemTime.value = searchResult.results.system_datetime || '';
+         let ids = searchResult.results.coupon_activity_ids;
+         activityIds.data = ids !== undefined ? ids : [];
+         if (!hasActivity.value) {
+            activityList.data = [];
+            return;
+         }
+         let activityInfo = await activityApi.couponInfo({
+            coupon_activity_ids: activityIds.data,
+            full_info: false
+         }).then(res => res.info);
+         console.log(activityInfo);
+      }
+
+      let filterHandler = async(params) => {
          isLoading.value = true;
          tempParams.data = params;
-         
+         currentPage.value = 0;
+         await getPagination();
 
+         isSidebarOpen.value = false;
+         activitySidebar.value.showSubMenu('');
          isLoading.value = false;
       }
 
@@ -74,7 +110,7 @@ export default {
          await createPointSlider();
       });
 
-      return { currentLayoutId, isLoading, layoutList, isSidebarOpen, switchLayout, pointSlider, hasPointSlider, pointPopupOption, filterHandler };
+      return { currentLayoutId, isLoading, layoutList, isSidebarOpen, switchLayout, pointSlider, hasPointSlider, pointPopupOption, filterHandler, activitySidebar, systemTime, activityList };
    },
    components: {
       LayoutItem,
