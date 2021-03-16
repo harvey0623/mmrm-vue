@@ -165,7 +165,7 @@ export default {
             pointCategory = pointCondition.data.reduce((prev, current) => {
                let { id, checked, type, category } = current;
                if (checked && type === 'point') {
-                  if (prev[type] === undefined) prev[category] = [id];
+                  if (prev[category] === undefined) prev[category] = [id];
                   else prev[category].push(id);
                }
                return prev;
