@@ -105,7 +105,16 @@ export default {
          return result;
       }
 
-      let getPagination = async() => {
+      let intergateActivityAndBrand = async({ mergePointResult, brandInfo }) => { //合併品牌  
+         return mergePointResult.reduce((prev, current) => {
+            let brandId = current.brand_id;
+            let obj = brandInfo.find(item => item.brand_id === brandId);
+            prev.push({ ...current, brandInfo: obj !== undefined ? obj : null });
+            return prev;
+         }, []);
+      }
+
+      let getPagination = async(isPag) => {
          let searchResult = await activityApi.searchCoupon({ 
             ...tempParams.data, 
             offset: currentPage.value 
@@ -122,19 +131,20 @@ export default {
             coupon_activity_ids: activityIds.data,
             full_info: false 
          }).then(res => res.info.results.coupon_activity_information);
-         // let brandIds = gatherBrandId(activityInfo);
-         // let brandInfo = await brandApi.brand_information({ brand_ids: brandIds, full_info: false })
-         //    .then(res => res.info.results.brand_information);
-         // console.log(activityInfo)
-         let intergatedResult = await integrateActivityAndPoint(activityInfo);
-         console.log(intergatedResult);
+         let brandIds = gatherBrandId(activityInfo);
+         let brandInfo = await brandApi.brand_information({ brand_ids: brandIds, full_info: false })
+            .then(res => res.info.results.brand_information);
+         let mergePointResult = await integrateActivityAndPoint(activityInfo);
+         let mergeBrandREsult = await intergateActivityAndBrand({ mergePointResult, brandInfo });
+         if (isPag) activityList.data = activityList.data.concat(mergeBrandREsult);
+         else activityList.data = mergeBrandREsult;
       }
 
       let filterHandler = async(params) => {
          isLoading.value = true;
          tempParams.data = params;
          currentPage.value = 0;
-         await getPagination();
+         await getPagination(false);
 
          isSidebarOpen.value = false;
          activitySidebar.value.showSubMenu('');
