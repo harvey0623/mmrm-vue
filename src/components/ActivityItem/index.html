@@ -1,0 +1,24 @@
+<li class="activityItem">
+   <router-link to="/" class="topBlock" :class="{other:currentLayoutId !== 'a'}">
+      <div class="bgBlock" :style="activityBg">
+         <div class="statusCover" v-if="!isOpening">
+            <span>{{ usageText }}</span>
+         </div>
+         <div class="countdownBlock" v-if="false">
+            <div class="clockBg"></div>
+            <p class="time" ref="time">{{  }}</p>  
+         </div>   
+      </div>
+      <div class="desc">
+         <div class="intro">
+            <div class="brandBg" :style="brandLogo"></div>
+            <span class="brandTitle">{{ activityInfo.brandInfo.title }}</span>
+         </div>
+         <div class="activityTitle">{{ activityInfo.title }}</div>
+         <div class="duration">兌換時間: {{ activityDuration }}</div>
+      </div>
+   </router-link>
+   <div class="bottomBlock">
+      <p class="variationMainPoint">{{ exchangeText }}</p>
+   </div>
+</li>

@@ -10,6 +10,7 @@ import LayoutItem from '@/components/LayoutItem/index.vue';
 import PointSlider from '@/components/PointSlider/index.vue';
 import PointPopup from '@/components/Popup/PointPopup.vue';
 import ActivitySidebar from '@/components/Sidebar/Activity.vue';
+import ActivityItem from '@/components/ActivityItem/index.vue';
 export default {
    name: 'activityList',
       metaInfo() {
@@ -20,10 +21,12 @@ export default {
    setup(props, context) {
       let currentLayoutId = ref('a');
       let isLoading = ref(false);
+      let isPagLoading = ref(false);
       let isSidebarOpen = ref(false);
       let activitySidebar = ref(null);
       let currentPage = ref(0);
       let systemTime = ref('');
+      let projectTime = ref(15552000 * 1000);
       let pointSlider = reactive({ data: [] });
       let tempParams = reactive({ data: {} });
       let activityIds = reactive({ data: [] });
@@ -44,6 +47,10 @@ export default {
 
       let hasActivity = computed(() => { //是否有活動
          return activityIds.data.length > 0;
+      });
+
+      let showEmptyBlock = computed(() => {
+         return !isLoading.value && !hasActivity.value;
       });
 
       let switchLayout = (id) => { //切換板形
@@ -156,13 +163,14 @@ export default {
          await createPointSlider();
       });
 
-      return { currentLayoutId, isLoading, layoutList, isSidebarOpen, switchLayout, pointSlider, hasPointSlider, pointPopupOption, filterHandler, activitySidebar, systemTime, activityList };
+      return { currentLayoutId, isLoading, layoutList, isSidebarOpen, switchLayout, pointSlider, hasPointSlider, pointPopupOption, filterHandler, activitySidebar, systemTime, activityList, isPagLoading, showEmptyBlock, activityList, projectTime };
    },
    components: {
       LayoutItem,
       PointSlider,
       PointPopup,
-      ActivitySidebar
+      ActivitySidebar,
+      ActivityItem
    }
 }
 </script>
