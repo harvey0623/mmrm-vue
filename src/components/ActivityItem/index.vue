@@ -1,7 +1,8 @@
 <template src="./index.html"></template>
 
 <script>
-import { ref, reactive, onMounted, computed, toRefs } from '@vue/composition-api';
+import { ref, reactive, onMounted, computed, toRefs, onUnmounted, watch } from '@vue/composition-api';
+import Countdown from '@/plugins/countdown/index.js';
 export default {
    props: {
       activityInfo: {
@@ -11,10 +12,19 @@ export default {
       currentLayoutId: {
          type: String,
          required: true
+      },
+      systemTime: {
+         type: String,
+         required: true
+      },
+      projectTime: {
+         type: Number,
+         required: true
       }
    },
    setup(props, { emit }) {
-      let { activityInfo } = toRefs(props);
+      let countdownObj = null;
+      let { activityInfo, systemTime, projectTime } = toRefs(props);
       let isFinish = ref(false);
       let usageStatus = {
          opening: '已開啟',
@@ -23,9 +33,9 @@ export default {
       };
       let redeemStatus = {
          free: '免費兌換',
-         redeem_code: '兌換碼兌換',
-         point: '點數兌換',
+         redeem_code: '兌換碼兌換'
       };
+      let timeInfo = reactive({ day: 0, hour: 0, minute: 0 });
 
       let isOpening = computed(() => activityInfo.value.status === 'opening');
 
@@ -57,6 +67,19 @@ export default {
          return normalArr.concat(externalArr).join(' / ');
       });
 
+      let isCountdown = computed(() => { //是否要倒數
+         let systemTimeStamp = new Date(systemTime.value).getTime();
+         let endTimeStamp = new Date(activityInfo.value.end_datetime).getTime();
+         let diff = endTimeStamp - systemTimeStamp;
+         if (diff <= 0) return false;
+         let isLess = diff < projectTime.value;
+         return isOpening.value && isLess;
+      });
+
+      let remainedTime = computed(() => { //剩餘時間字串
+         return `${timeInfo.day}天${timeInfo.hour}時${timeInfo.minute}分`;
+      });
+
       let getPointInfoText = (key) => { //整合數資訊字串
          if (activityInfo.value[key] === undefined) return [];
          return activityInfo.value[key].reduce((prev, current) => {
@@ -68,11 +91,36 @@ export default {
          }, []);
       }
 
-      onMounted(() => {
+      let startCountdown = () => { //到數
+         countdownObj = new Countdown({ deadline: activityInfo.value.end_datetime });
+         countdownObj.on('update', (payload) => {
+            let { day, hour, minute } = payload;
+            timeInfo.day = day;
+            timeInfo.hour = hour;
+            timeInfo.minute = minute;
+         });
+         countdownObj.on('finish', () => isFinish.value = true);
+         countdownObj.start();
+      }
 
+      watch(() => isCountdown.value, (val) => {
+         if (val) {
+            startCountdown();
+         } else {
+            if (countdownObj !== null) countdownObj.pause();
+            isFinish.value = false;
+         }
       });
 
-      return { usageText, isOpening, activityBg, activityDuration, brandLogo, exchangeText, isFinish }
+      onMounted(() => {
+         if (isCountdown.value) startCountdown();
+      });
+
+      onUnmounted(() => {
+         if (countdownObj !== null) countdownObj.pause();
+      });
+
+      return { usageText, isOpening, activityBg, activityDuration, brandLogo, exchangeText, isFinish, isCountdown, remainedTime }
    }
 }
 </script>

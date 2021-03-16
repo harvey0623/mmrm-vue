@@ -1,12 +1,12 @@
-<li class="activityItem">
+<li class="activityItem" :class="{ hide: isFinish }">
    <router-link to="/" class="topBlock" :class="{other:currentLayoutId !== 'a'}">
       <div class="bgBlock" :style="activityBg">
          <div class="statusCover" v-if="!isOpening">
             <span>{{ usageText }}</span>
          </div>
-         <div class="countdownBlock" v-if="false">
+         <div class="countdownBlock" v-if="isCountdown">
             <div class="clockBg"></div>
-            <p class="time" ref="time">{{  }}</p>  
+            <p class="time">{{ remainedTime }}</p>
          </div>   
       </div>
       <div class="desc">

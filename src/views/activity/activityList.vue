@@ -26,7 +26,7 @@ export default {
       let activitySidebar = ref(null);
       let currentPage = ref(0);
       let systemTime = ref('');
-      let projectTime = ref(15552000 * 1000);
+      let projectTime = ref(2207520000000); //暫訂7年
       let pointSlider = reactive({ data: [] });
       let tempParams = reactive({ data: {} });
       let activityIds = reactive({ data: [] });
