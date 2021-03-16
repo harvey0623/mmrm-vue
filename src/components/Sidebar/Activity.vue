@@ -16,10 +16,36 @@ export default {
       }
    },
    setup(props, { emit }) {
-      let subId = ref('sub2');
+      let subId = ref('');
       let brandCondition = reactive({ data: [] });
       let pointCondition = reactive({ data: [] });
       let redeemType = { free: '點數兌換', redeem_code: '代碼兌換' };
+
+      let totalBrand = computed(() => {
+         return brandCondition.data.length;
+      });
+
+      let checkedBrandCount = computed(() => {
+         let checkedList = brandCondition.data.filter(item => item.checked);
+         return checkedList.length;
+      });
+
+      let allBrandSelected = computed(() => {
+         return totalBrand.value === checkedBrandCount.value;
+      });
+
+      let totalPoint = computed(() => {
+         return pointCondition.data.length;
+      });
+
+      let checkedPointCount = computed(() => {
+         let checkedList = pointCondition.data.filter(item => item.checked);
+         return checkedList.length;
+      });
+
+      let allPointSelected = computed(() => {
+         return totalPoint.value === checkedPointCount.value;
+      });
 
       let backHandler = () => { //選單返回
          if (subId.value !== '') return showSubMenu('');
@@ -134,7 +160,7 @@ export default {
          await getAboutPoint();
       });
 
-      return { backHandler, subId, showSubMenu, brandCondition, changeBrandStatus, clearAll, pointCondition, changePointStatus }
+      return { backHandler, subId, showSubMenu, brandCondition, changeBrandStatus, clearAll, pointCondition, changePointStatus, checkedBrandCount, allBrandSelected, checkedPointCount, allPointSelected }
    },
    components: {
       BrandCriteriaItem,

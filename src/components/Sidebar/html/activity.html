@@ -8,16 +8,16 @@
       <li @click="showSubMenu('sub1')">
          <div class="filterTitle">選擇品牌</div>
          <div class="filterItem">
-            <span>全部</span>
-            <span class="count">{{ 10 }}</span>
+            <span v-show="allBrandSelected">全部</span>
+            <span class="count" v-show="!allBrandSelected">{{ checkedBrandCount }}</span>
             <span class="arrowBox"></span>
          </div> 
       </li>
       <li @click="showSubMenu('sub2')">
          <div class="filterTitle">兌換方式</div>
          <div class="filterItem">
-            <span>全部</span>
-            <span class="count">{{ 10 }}</span>
+            <span v-show="allPointSelected">全部</span>
+            <span class="count" v-show="!allPointSelected">{{ checkedPointCount }}</span>
             <span class="arrowBox"></span>
          </div> 
       </li>
