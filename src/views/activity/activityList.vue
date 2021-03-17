@@ -28,7 +28,7 @@ export default {
       let currentPage = ref(0);
       let systemTime = ref('');
       let projectTime = ref(2207520000000); //暫訂7年
-      let tempExchabgeStatus = ref(false);
+      let tempExchangeStatus = ref(false);
       let pointSlider = reactive({ data: [] });
       let tempSearchParams = reactive({ data: {} });
       let activityIds = reactive({ data: [] });
@@ -189,11 +189,15 @@ export default {
          isLoading.value = true;
          tempSearchParams.data = params;
          currentPage.value = 0;
+         window.removeEventListener('scroll', scrollHandler);
          await getPagination(false);
          window.scrollTo(0, 0);
-         isSidebarOpen.value = false;
-         activitySidebar.value.showSubMenu('');
-         isLoading.value = false;
+         setTimeout(() => {
+            isSidebarOpen.value = false;
+            activitySidebar.value.showSubMenu('');
+            window.addEventListener('scroll', scrollHandler);
+            isLoading.value = false;
+         }, 50);
       }
 
       let scrollHandler = async() => {
@@ -278,7 +282,7 @@ export default {
          }
 
          let exchangeResult = await exchangeHandler(params);
-         tempExchabgeStatus.value = exchangeResult.status;
+         tempExchangeStatus.value = exchangeResult.status;
          tipOption.message = exchangeResult.status ? '兌換成功' : exchangeResult.errMsg;
          if (exchangeResult.status) {
             root.$storage.setSessionItem('redeemInfo', exchangeResult.redeemInfo);
@@ -299,6 +303,7 @@ export default {
       }
 
       let tipFeedBack = () => {
+         if (tempExchangeStatus.value) root.$router.push('/activity/success');
          tipOption.isOpen = false;
       }
 

@@ -68,6 +68,9 @@
       },
       "activityInfo": {
          "title": "活動票券詳情"
+      },
+      "exchangeOk": {
+         "title": "兌換成功"
       }
    },
    "validate": {
