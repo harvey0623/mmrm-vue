@@ -18,7 +18,7 @@ export default {
          title: this.$i18n.t('page.activityList.title'),
       }
    },
-   setup(props, context) {
+   setup(props, { root }) {
       let currentLayoutId = ref('a');
       let isLoading = ref(false);
       let isPagLoading = ref(false);
@@ -27,6 +27,7 @@ export default {
       let currentPage = ref(0);
       let systemTime = ref('');
       let projectTime = ref(2207520000000); //暫訂7年
+      let tempExchabgeStatus = ref(false);
       let pointSlider = reactive({ data: [] });
       let tempParams = reactive({ data: {} });
       let activityIds = reactive({ data: [] });
@@ -35,10 +36,33 @@ export default {
          { id: 'a', class: 'layoutA' },
          { id: 'b', class: 'layoutB' }
       ]);
+      let tempActivityParams = reactive({ 
+         activityId: 0,
+         redeemType: '',
+         pointId: 0,
+         pointCategory: ''
+      });
       let pointPopupOption = reactive({
          isOpen: false,
          title: '目前擁有點數',
          showPointAmount: false
+      });
+      let msgOption = reactive({
+         isOpen: false,
+         message: '',
+         eventName: 'free'
+      });
+      let codePopupOption = reactive({
+         isOpen: false,
+         showCancel: true,
+         popupTitle: '請輸入兌換碼',
+         eventName: 'transfer',
+         validateRule: 'required'
+      });
+      let tipOption = reactive({
+         isOpen: false,
+         message: '',
+         eventName: 'tipFeedBack'
       });
 
       let hasPointSlider = computed(() => { //是否有點數輪播資料
@@ -182,6 +206,56 @@ export default {
          }
       }
 
+      let readyToExchange = ({ activityId, redeemType, status }) => {
+         if (status !== 'opening') return;
+         let targetObj = activityList.data.find(item => item.coupon_activity_id === activityId);
+         tempActivityParams.activityId = activityId;
+         tempActivityParams.redeemType = redeemType;
+         if (redeemType === 'free') {
+            msgOption.isOpen = true;
+            msgOption.message = `確定要免費兌換「${targetObj.title}」嗎?`;
+         } else if (redeemType === 'redeem_code') {
+            codePopupOption.isOpen = true;
+         } else {
+            
+         }
+      }
+
+      let gatherExchangeParams = async(val) => { //取得兌換參數
+         msgOption.isOpen = false;
+         codePopupOption.isOpen = false;
+         isLoading.value = true;
+         let params = { coupon_activity_id: tempActivityParams.activityId };
+         let exchangeType = tempActivityParams.redeemType;
+         if (exchangeType === 'redeem_code') {
+            params.redeem_code = val;
+         }
+
+         let exchangeResult = await exchangeHandler(params);
+         tipOption.isOpen = true;
+         tempExchabgeStatus.value = exchangeResult.status;
+         tipOption.message = exchangeResult.status ? '兌換成功' : exchangeResult.errMsg;
+         if (exchangeResult.status) {
+            root.$storage.setSessionItem('redeemInfo', exchangeResult.redeemInfo);
+         }
+         isLoading.value = false;
+      }
+
+      let exchangeHandler = async(params) => {
+         let { status, info } = await activityApi.redeemCoupon(params)
+            .then(res => res)
+            .catch(err => err.response);
+         return { 
+            status, 
+            errMsg: status ? '' : info.rcrm.RM, 
+            redeemInfo: info.results.coupon_redeem_result 
+         };
+      }
+
+      let tipFeedBack = () => {
+         tipOption.isOpen = false;
+      }
+
       onMounted(async() => {
          isLoading.value = true;
          window.addEventListener('scroll', scrollHandler);
@@ -192,7 +266,7 @@ export default {
          window.removeEventListener('scroll', scrollHandler);
       });
 
-      return { currentLayoutId, isLoading, layoutList, isSidebarOpen, switchLayout, pointSlider, hasPointSlider, pointPopupOption, filterHandler, activitySidebar, systemTime, activityList, isPagLoading, showEmptyBlock, activityList, projectTime, reachBottom };
+      return { currentLayoutId, isLoading, layoutList, isSidebarOpen, switchLayout, pointSlider, hasPointSlider, pointPopupOption, filterHandler, activitySidebar, systemTime, activityList, isPagLoading, showEmptyBlock, activityList, projectTime, reachBottom, readyToExchange, msgOption, codePopupOption, gatherExchangeParams, tipOption, tipFeedBack };
    },
    components: {
       LayoutItem,

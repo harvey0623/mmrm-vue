@@ -32,6 +32,7 @@
             :systemTime="systemTime"
             :projectTime="projectTime"
             :currentLayoutId="currentLayoutId"
+            @ready="readyToExchange"
          ></ActivityItem>
       </ul>
       <div class="pagTip" v-show="isPagLoading">資料加載中...</div>
@@ -61,7 +62,30 @@
       ref="activitySidebar"
    ></ActivitySidebar>
 
-   <Loading v-show="isLoading"></Loading>
-   <div class="sidebarCover" :class="{show: isSidebarOpen}"></div>
+   <MessagePopup
+      :isOpen="msgOption.isOpen"
+      :message="msgOption.message"
+      :eventName="msgOption.eventName"
+      @free="gatherExchangeParams"
+   ></MessagePopup>
 
+   <InputPopup
+      :isOpen.sync="codePopupOption.isOpen"
+      :showCancel="codePopupOption.showCancel"
+      :popupTitle="codePopupOption.popupTitle"
+      :eventName="codePopupOption.eventName"
+      :validateRule="codePopupOption.validateRule"
+      @transfer="gatherExchangeParams">
+   </InputPopup>
+
+   <MessagePopup
+      :isOpen="tipOption.isOpen"
+      :message="tipOption.message"
+      :eventName="tipOption.eventName"
+      @tipFeedBack="tipFeedBack"
+   ></MessagePopup>
+
+   <Loading v-show="isLoading"></Loading>
+
+   <div class="sidebarCover" :class="{show: isSidebarOpen}"></div>
 </section>

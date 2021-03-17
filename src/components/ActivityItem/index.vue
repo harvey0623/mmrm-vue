@@ -103,6 +103,14 @@ export default {
          countdownObj.start();
       }
 
+      let wantToExchange = () => {
+         emit('ready', {
+            activityId: activityInfo.value.coupon_activity_id,
+            redeemType: activityInfo.value.redeem_type,
+            status: activityInfo.value.status
+         });
+      }
+
       watch(() => isCountdown.value, (val) => {
          if (val) {
             startCountdown();
@@ -120,7 +128,7 @@ export default {
          if (countdownObj !== null) countdownObj.pause();
       });
 
-      return { usageText, isOpening, activityBg, activityDuration, brandLogo, exchangeText, isFinish, isCountdown, remainedTime }
+      return { usageText, isOpening, activityBg, activityDuration, brandLogo, exchangeText, isFinish, isCountdown, remainedTime, wantToExchange }
    }
 }
 </script>
