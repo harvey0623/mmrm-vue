@@ -65,6 +65,9 @@
       },
       "activityList": {
          "title": "票券活動列表"
+      },
+      "activityInfo": {
+         "title": "活動票券詳情"
       }
    },
    "validate": {

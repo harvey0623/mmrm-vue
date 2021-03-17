@@ -65,6 +65,9 @@
       },
       "activityList": {
          "title": "activityList"
+      },
+      "activityInfo": {
+         "title": "activityInfo"
       }
    },
    "validate": {

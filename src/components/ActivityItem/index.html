@@ -1,5 +1,7 @@
 <li class="activityItem" :class="{ hide: isFinish }">
-   <router-link to="/" class="topBlock" :class="{other:currentLayoutId !== 'a'}">
+   <router-link 
+      :to="{name: 'activityInfo', params: {activity_id: activityInfo.coupon_activity_id }}" 
+      class="topBlock" :class="{other:currentLayoutId !== 'a'}">
       <div class="bgBlock" :style="activityBg">
          <div class="statusCover" v-if="!isOpening">
             <span>{{ usageText }}</span>

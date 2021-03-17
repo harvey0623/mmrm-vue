@@ -56,7 +56,7 @@ export default {
       let hasNextPage = computed(() => currentPage.value !== null);
 
       let reachBottom = computed(() => { //資料是否已到底
-         return !isPagLoading.value && !hasNextPage.value && hasActivity.value;
+         return !isLoading.value && !isPagLoading.value && !hasNextPage.value && hasActivity.value;
       });
 
       let switchLayout = (id) => { //切換板形
