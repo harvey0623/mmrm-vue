@@ -60,7 +60,12 @@ export default {
       });
 
       let switchLayout = (id) => { //切換板形
+         if (isPagLoading.value) return;
+         window.removeEventListener('scroll', scrollHandler);
          currentLayoutId.value = id;
+         setTimeout(() => {
+            window.addEventListener('scroll', scrollHandler);
+         }, 50);
       }
 
       let gatherPointIds = (data) => data.map(item => item.point_id);
@@ -158,7 +163,7 @@ export default {
          tempParams.data = params;
          currentPage.value = 0;
          await getPagination(false);
-
+         window.scrollTo(0, 0);
          isSidebarOpen.value = false;
          activitySidebar.value.showSubMenu('');
          isLoading.value = false;
