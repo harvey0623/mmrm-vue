@@ -30,9 +30,10 @@ export default {
       let projectTime = ref(2207520000000); //暫訂7年
       let tempExchabgeStatus = ref(false);
       let pointSlider = reactive({ data: [] });
-      let tempParams = reactive({ data: {} });
+      let tempSearchParams = reactive({ data: {} });
       let activityIds = reactive({ data: [] });
       let activityList = reactive({ data: [] });
+      let pickerItem = reactive({ data: [{ id: 'a', value: 'hello' }] });
       let layoutList = reactive([
          { id: 'a', class: 'layoutA' },
          { id: 'b', class: 'layoutB' }
@@ -160,7 +161,7 @@ export default {
 
       let getPagination = async(isPag) => {
          let searchResult = await activityApi.searchCoupon({ 
-            ...tempParams.data, 
+            ...tempSearchParams.data, 
             offset: currentPage.value 
          }).then(res => res.info);
          currentPage.value = searchResult.next;
@@ -186,7 +187,7 @@ export default {
 
       let filterHandler = async(params) => {
          isLoading.value = true;
-         tempParams.data = params;
+         tempSearchParams.data = params;
          currentPage.value = 0;
          await getPagination(false);
          window.scrollTo(0, 0);
@@ -232,6 +233,12 @@ export default {
          return result;
       }
 
+      let selectPoint = ({ id, category }) => { //選擇點數
+         tempActivityParams.pointId = id;
+         tempActivityParams.pointCategory = category;
+         gatherExchangeParams();
+      }
+
       let readyToExchange = ({ activityId, redeemType, status }) => {
          if (status !== 'opening') return;
          let targetObj = activityList.data.find(item => item.coupon_activity_id === activityId);
@@ -250,12 +257,13 @@ export default {
                tempActivityParams.pointCategory = category;
                msgOption.isOpen = true;
                msgOption.message = `確定要用${value}兌換「${targetObj.title}」嗎?`;
+            } else {
+               pickerItem.data = pickerLists;
             }
          }
       }
 
       let gatherExchangeParams = async(val) => { //取得兌換參數
-         console.log(tempActivityParams);
          msgOption.isOpen = false;
          codePopupOption.isOpen = false;
          isLoading.value = true;
@@ -270,12 +278,12 @@ export default {
          }
 
          let exchangeResult = await exchangeHandler(params);
-         tipOption.isOpen = true;
          tempExchabgeStatus.value = exchangeResult.status;
          tipOption.message = exchangeResult.status ? '兌換成功' : exchangeResult.errMsg;
          if (exchangeResult.status) {
             root.$storage.setSessionItem('redeemInfo', exchangeResult.redeemInfo);
          }
+         tipOption.isOpen = true;
          isLoading.value = false;
       }
 
@@ -304,7 +312,7 @@ export default {
          window.removeEventListener('scroll', scrollHandler);
       });
 
-      return { currentLayoutId, isLoading, layoutList, isSidebarOpen, switchLayout, pointSlider, hasPointSlider, pointPopupOption, filterHandler, activitySidebar, systemTime, activityList, isPagLoading, showEmptyBlock, activityList, projectTime, reachBottom, readyToExchange, msgOption, codePopupOption, gatherExchangeParams, tipOption, tipFeedBack };
+      return { currentLayoutId, isLoading, layoutList, isSidebarOpen, switchLayout, pointSlider, hasPointSlider, pointPopupOption, filterHandler, activitySidebar, systemTime, activityList, isPagLoading, showEmptyBlock, activityList, projectTime, reachBottom, readyToExchange, msgOption, codePopupOption, gatherExchangeParams, tipOption, tipFeedBack, pickerItem, selectPoint };
    },
    components: { LayoutItem, PointSlider, PointPopup, ActivitySidebar, ActivityItem, PointPicker }
 }

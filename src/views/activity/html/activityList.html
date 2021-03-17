@@ -88,7 +88,10 @@
       @tipFeedBack="tipFeedBack"
    ></MessagePopup>
 
-   <PointPicker></PointPicker>
+   <PointPicker
+      :pickerItem="pickerItem"
+      @selectPoint="selectPoint"
+   ></PointPicker>
 
    <Loading v-show="isLoading"></Loading>
 

@@ -6,7 +6,10 @@
 let mobileSelector = null;
 export default {
    props: {
-
+      pickerItem: {
+         type: Object,
+         required: true
+      }
    },
    methods: {
       initPicker() {
@@ -20,10 +23,13 @@ export default {
             textColor: '#292929',
             triggerDisplayData: false,
             wheels: [{
-               data: [{ id: '', value: '' }]
+               data: this.pickerItem.data
             }],
             callback: (index, data) => {
-               console.log(data);
+               this.$emit('selectPoint', {
+                  id: data[0].id,
+                  category: data[0].category
+               });
             }
          });
       }
@@ -32,7 +38,14 @@ export default {
       this.initPicker();
    },
    watch: {
-
+      pickerItem: {
+         deep: true,
+         handler(val) {
+            mobileSelector.updateWheel(0, val.data);
+            mobileSelector.locatePosition(0, 0);
+            mobileSelector.show();
+         }
+      }
    }
 }
 </script>
