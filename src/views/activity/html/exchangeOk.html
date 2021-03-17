@@ -1,0 +1,37 @@
+<section class="success_section">
+   <div class="okBlock">
+      <h3>兌換成功</h3>
+      <p>優惠券已收納至我的券匣中，記得來看看呦</p>
+   </div>
+   <ul class="okList">
+      <li v-for="(meta,index) in metaInfo.data" :key="index">
+         <div class="title">{{ meta.key }}</div>
+         <div class="colon">:</div>
+         <div class="content">{{ meta.value }}</div>
+      </li>
+   </ul>
+   <div class="couponPanel">
+      <div class="left">
+         <router-link to="/coupon/folder" class="linkBlock" replace>
+            <div class="itemA"></div>
+            <p>我的券匣</p>
+         </router-link>
+      </div>
+      <div class="center" @click="useCoupon">
+         <div class="linkBlock">
+            <div class="itemB"></div>
+            <p>立即使用</p>
+         </div>
+      </div>
+      <div class="right">
+         <router-link to="/activity/list" class="linkBlock" replace>
+            <div class="itemC"></div>
+            <p>繼續兌換</p>
+         </router-link>
+      </div>
+   </div>
+
+   <Loading v-show="isLoading"></Loading>
+
+   <OptionPopup></OptionPopup>
+</section>

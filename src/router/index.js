@@ -215,7 +215,7 @@ const routes = [
 			{
 				path: 'info/:activity_id(\\d+)',
 				name: 'activityInfo',
-				component: ActivityInfo  //ExchangeOk
+				component: ActivityInfo
 			},
 			{
 				path: 'success',
