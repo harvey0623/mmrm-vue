@@ -11,6 +11,7 @@ import PointSlider from '@/components/PointSlider/index.vue';
 import PointPopup from '@/components/Popup/PointPopup.vue';
 import ActivitySidebar from '@/components/Sidebar/Activity.vue';
 import ActivityItem from '@/components/ActivityItem/index.vue';
+import PointPicker from '@/components/PointPicker/index.vue';
 export default {
    name: 'activityList',
       metaInfo() {
@@ -49,14 +50,15 @@ export default {
       });
       let msgOption = reactive({
          isOpen: false,
+         showCancel: true,
          message: '',
-         eventName: 'free'
+         eventName: 'gather'
       });
       let codePopupOption = reactive({
          isOpen: false,
          showCancel: true,
          popupTitle: '請輸入兌換碼',
-         eventName: 'transfer',
+         eventName: 'gather',
          validateRule: 'required'
       });
       let tipOption = reactive({
@@ -206,6 +208,30 @@ export default {
          }
       }
 
+      let createPickerList = (targetActivity) => { //產生點數選項
+         let categoryArr = ['point_condition', 'external_point_condition'];
+         let result = [];
+         categoryArr.forEach(category => {
+            if (targetActivity[category] === undefined) return false;
+            let lists = targetActivity[category].reduce((prev, current) => {
+               let pointId = current.point_id;
+               let obj = targetActivity.pointInfo.find(item => {
+                  return item.point_id === pointId && item.category === category;
+               });
+               prev.push({
+                  id: pointId,
+                  title: obj.title,
+                  value: `${obj.title} : ${current.amount}點`,
+                  amount: current.amount,
+                  category
+               });
+               return prev;
+            }, []);
+            result = result.concat(lists);
+         });
+         return result;
+      }
+
       let readyToExchange = ({ activityId, redeemType, status }) => {
          if (status !== 'opening') return;
          let targetObj = activityList.data.find(item => item.coupon_activity_id === activityId);
@@ -216,12 +242,20 @@ export default {
             msgOption.message = `確定要免費兌換「${targetObj.title}」嗎?`;
          } else if (redeemType === 'redeem_code') {
             codePopupOption.isOpen = true;
-         } else {
-            
+         } else if (redeemType === 'point') {
+            let pickerLists = createPickerList(targetObj);
+            if (pickerLists.length === 1) {
+               let { id, category, value } = pickerLists[0];
+               tempActivityParams.pointId = id;
+               tempActivityParams.pointCategory = category;
+               msgOption.isOpen = true;
+               msgOption.message = `確定要用${value}兌換「${targetObj.title}」嗎?`;
+            }
          }
       }
 
       let gatherExchangeParams = async(val) => { //取得兌換參數
+         console.log(tempActivityParams);
          msgOption.isOpen = false;
          codePopupOption.isOpen = false;
          isLoading.value = true;
@@ -229,6 +263,10 @@ export default {
          let exchangeType = tempActivityParams.redeemType;
          if (exchangeType === 'redeem_code') {
             params.redeem_code = val;
+         } else if (exchangeType === 'point') {
+            let { pointCategory } = tempActivityParams;
+            let key = pointCategory === 'point_condition' ? 'point_id' : 'external_point_id';
+            params[key] = tempActivityParams.pointId;
          }
 
          let exchangeResult = await exchangeHandler(params);
@@ -268,13 +306,7 @@ export default {
 
       return { currentLayoutId, isLoading, layoutList, isSidebarOpen, switchLayout, pointSlider, hasPointSlider, pointPopupOption, filterHandler, activitySidebar, systemTime, activityList, isPagLoading, showEmptyBlock, activityList, projectTime, reachBottom, readyToExchange, msgOption, codePopupOption, gatherExchangeParams, tipOption, tipFeedBack };
    },
-   components: {
-      LayoutItem,
-      PointSlider,
-      PointPopup,
-      ActivitySidebar,
-      ActivityItem
-   }
+   components: { LayoutItem, PointSlider, PointPopup, ActivitySidebar, ActivityItem, PointPicker }
 }
 </script>
 

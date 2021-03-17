@@ -62,11 +62,13 @@
       ref="activitySidebar"
    ></ActivitySidebar>
 
+   <!-- 兌換提示 -->
    <MessagePopup
-      :isOpen="msgOption.isOpen"
+      :isOpen.sync="msgOption.isOpen"
       :message="msgOption.message"
+      :showCancel="msgOption.showCancel"
       :eventName="msgOption.eventName"
-      @free="gatherExchangeParams"
+      @gather="gatherExchangeParams"
    ></MessagePopup>
 
    <InputPopup
@@ -75,15 +77,18 @@
       :popupTitle="codePopupOption.popupTitle"
       :eventName="codePopupOption.eventName"
       :validateRule="codePopupOption.validateRule"
-      @transfer="gatherExchangeParams">
+      @gather="gatherExchangeParams">
    </InputPopup>
 
+   <!-- 兌換結果 -->
    <MessagePopup
       :isOpen="tipOption.isOpen"
       :message="tipOption.message"
       :eventName="tipOption.eventName"
       @tipFeedBack="tipFeedBack"
    ></MessagePopup>
+
+   <PointPicker></PointPicker>
 
    <Loading v-show="isLoading"></Loading>
 
