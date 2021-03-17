@@ -1,7 +1,7 @@
 <template src="./html/activityList.html"></template>
 
 <script>
-import { ref, reactive, onMounted, computed } from '@vue/composition-api';
+import { ref, reactive, onMounted, computed, onUnmounted } from '@vue/composition-api';
 import { activityApi } from '@/api/activity.js';
 import { memberApi } from '@/api/member.js';
 import { pointApi } from '@/api/point.js';
@@ -49,8 +49,14 @@ export default {
          return activityIds.data.length > 0;
       });
 
-      let showEmptyBlock = computed(() => {
+      let showEmptyBlock = computed(() => { //顯示無資料區塊
          return !isLoading.value && !hasActivity.value;
+      });
+
+      let hasNextPage = computed(() => currentPage.value !== null);
+
+      let reachBottom = computed(() => { //資料是否已到底
+         return !isPagLoading.value && !hasNextPage.value && hasActivity.value;
       });
 
       let switchLayout = (id) => { //切換板形
@@ -158,12 +164,30 @@ export default {
          isLoading.value = false;
       }
 
+      let scrollHandler = async() => {
+         if (isPagLoading.value) return;
+         let windowH = window.innerHeight;
+         let documentH = document.documentElement.scrollHeight;
+         let distance = documentH - windowH;
+         let currentPos = window.pageYOffset;
+         if ((currentPos >= distance * 0.95) && hasNextPage.value) {
+            isPagLoading.value = true;
+            await getPagination(true);
+            isPagLoading.value = false;
+         }
+      }
+
       onMounted(async() => {
          isLoading.value = true;
+         window.addEventListener('scroll', scrollHandler);
          await createPointSlider();
       });
 
-      return { currentLayoutId, isLoading, layoutList, isSidebarOpen, switchLayout, pointSlider, hasPointSlider, pointPopupOption, filterHandler, activitySidebar, systemTime, activityList, isPagLoading, showEmptyBlock, activityList, projectTime };
+      onUnmounted(() => {
+         window.removeEventListener('scroll', scrollHandler);
+      });
+
+      return { currentLayoutId, isLoading, layoutList, isSidebarOpen, switchLayout, pointSlider, hasPointSlider, pointPopupOption, filterHandler, activitySidebar, systemTime, activityList, isPagLoading, showEmptyBlock, activityList, projectTime, reachBottom };
    },
    components: {
       LayoutItem,

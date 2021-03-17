@@ -34,8 +34,8 @@
             :currentLayoutId="currentLayoutId"
          ></ActivityItem>
       </ul>
-      <!-- <div class="pagTip" v-show="pagLoading">資料加載中...</div>
-      <div class="pagTip" v-show="reachBottom">已經到最底囉～</div> -->
+      <div class="pagTip" v-show="isPagLoading">資料加載中...</div>
+      <div class="pagTip" v-show="reachBottom">已經到最底囉～</div>
    </div>
 
    <PointPopup
