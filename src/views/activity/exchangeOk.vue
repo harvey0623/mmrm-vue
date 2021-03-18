@@ -18,6 +18,10 @@ export default {
       let couponIds = reactive([]);
       let myCouponDetail = reactive([]);
       let couponList = reactive({ data: [] });
+      let couponPopupOption = reactive({
+         title: '請選擇票券',
+         isOpen: false
+      });
       
       let assignData = () => {
          let storageData = root.$storage.getSessionItem('redeemInfo');
@@ -44,10 +48,6 @@ export default {
          }, []);
       }
 
-      let useCoupon = () => { //使用票券
-         console.log('aaa');
-      }
-
       onMounted(async() => {
          isLoading.value = true;
          assignData();
@@ -58,10 +58,11 @@ export default {
             full_info: false
          }).then(res => res.info.results.coupon_information);
          couponList.data = intergateCoupon(couponInfo);
+         console.log(couponList)
          isLoading.value = false;
       });
       
-      return { isLoading, metaInfo, couponList, useCoupon, OptionPopup };
+      return { isLoading, metaInfo, couponList, couponPopupOption };
    },
    components: {
       OptionPopup

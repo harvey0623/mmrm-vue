@@ -17,7 +17,7 @@
             <p>我的券匣</p>
          </router-link>
       </div>
-      <div class="center" @click="useCoupon">
+      <div class="center" @click="couponPopupOption.isOpen = true">
          <div class="linkBlock">
             <div class="itemB"></div>
             <p>立即使用</p>
@@ -33,5 +33,17 @@
 
    <Loading v-show="isLoading"></Loading>
 
-   <OptionPopup></OptionPopup>
+   <OptionPopup
+      :isOpen.sync="couponPopupOption.isOpen"
+      :popupTitle="couponPopupOption.title">
+      <template v-slot:default>
+         <router-link
+            v-for="coupon in couponList.data"
+            :key="coupon.my_coupon_id"
+            :to="{ name: 'couponInfo', params:{ my_coupon_id:coupon.my_coupon_id }}"
+            class="couponItem"
+            replace
+         >{{ coupon.title }}</router-link>
+      </template>
+   </OptionPopup>
 </section>

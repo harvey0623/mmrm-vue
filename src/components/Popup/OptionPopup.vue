@@ -1,14 +1,11 @@
 <template>
-   <div class="mypopup optionPopup">
+   <div class="mypopup optionPopup" v-show="isOpen">
       <div class="popup-content">
-         <div class="popup-header">請選擇票券</div>
+         <div class="popup-header">{{ popupTitle }}</div>
          <div class="popup-body">
-            <div
-					class="couponItem" >
-					<a href="javascript:;">{{ 'hello' }}</a>
-				</div>
+            <slot></slot>
          </div>
-         <div class="popup-footer">取消</div>
+         <div class="popup-footer" @click="closeHandler">取消</div>
       </div>   
    </div>
 </template>
@@ -19,10 +16,16 @@ export default {
       isOpen: {
          type: Boolean,
          default: false
+      },
+      popupTitle: {
+         type: String,
+         default: ''
       }
    },
-   computed: {
-
+   methods: {
+      closeHandler() {
+         this.$emit('update:isOpen', false);
+      }
    }
 }
 </script>
@@ -37,13 +40,12 @@ export default {
       .popup-body {
          padding: 0;
          .couponItem {
+            display: block;
             height: map-get($heightObj, basic);
             line-height: map-get($heightObj, basic);
+            color: map-get($fontColor, modalCancel);
             border-bottom: 1px solid $borderColor;
             text-align: center;
-            >a {
-               color: map-get($fontColor, modalCancel);
-            }
          }
       }
       .popup-footer {
