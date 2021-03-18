@@ -34,15 +34,11 @@
       <div class="couponIntro">
          <div class="title">兌換此活動可獲得以下票券</div>
          <div class="content">
-            <!-- <coupon-block
-               v-for="coupon in couponBlock"
+            <RedeemCoupon
+               v-for="coupon in couponList.data"
                :key="coupon.coupon_id"
-               :info="coupon"
-               :pageurl="pageUrl.couponInfo"
-               :brandlist="brandList"
-               :reverse="true"
-               :multiplebrand="isMultipleBrand"
-            ></coupon-block> -->
+               :couponItem="coupon"
+            ></RedeemCoupon>
          </div>
       </div>
    </div>
@@ -51,8 +47,8 @@
 
    <!-- 操作按鈕 -->
    <div class="fixBlock">
-      <div class="termActiveButton" >{{  }}</div>
-      <div class="usedBlock">{{  }}</div>
+      <div class="termActiveButton" v-if="activityIsOpening">{{ redeemTypeText }}</div>
+      <div class="usedBlock" v-else>{{ usageText }}</div>
    </div>
 
    <Loading v-show="isLoading"></Loading>

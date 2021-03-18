@@ -71,6 +71,9 @@
       },
       "exchangeOk": {
          "title": "兌換成功"
+      },
+      "redeemCouponInfo": {
+         "title": "兌換票券資訊"
       }
    },
    "validate": {

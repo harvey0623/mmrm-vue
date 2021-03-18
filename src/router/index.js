@@ -28,6 +28,7 @@ import Activity from '@/views/activity/index.vue';
 import ActivityList from '@/views/activity/activityList.vue';
 import ActivityInfo from '@/views/activity/activityInfo.vue';
 import ExchangeOk from '@/views/activity/exchangeOk.vue';
+import ActivityCoupon from '@/views/activity/activityCoupon.vue';
 import { cookie } from '@/plugins/cookie/index.js';
 import { checkIsLogin }  from '../middleware/checkIsLogin.js';
 
@@ -216,6 +217,11 @@ const routes = [
 				path: 'info/:activity_id(\\d+)',
 				name: 'activityInfo',
 				component: ActivityInfo
+			},
+			{
+				path: 'coupon/:coupon_id(\\d+)',
+				name: 'activityCoupon',
+				component: ActivityCoupon
 			},
 			{
 				path: 'success',

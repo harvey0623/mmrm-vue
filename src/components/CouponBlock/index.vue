@@ -20,7 +20,7 @@
             </template> 
          </div>
       </div>
-      <div class="couponBlockR">
+      <div class="couponBlockR" :style="couponImage">
          <div class="usageCover" v-show="!isAvailable">{{ usageText }}</div>
       </div>
    </router-link>
@@ -44,6 +44,12 @@ export default {
          obsolete: '失效時間',
          redeemed: '使用時間',
       };
+
+      let couponImage = computed(() => {
+         let url = couponItem.value.couponInfo.feature_image.url;
+         if (!url) return {};
+         else return { backgroundImage: `url(${url})` };
+      });
 
       let couponStatus = computed(() => { //票券狀態
          return couponItem.value.status;
@@ -104,7 +110,7 @@ export default {
          }
       });
 
-      return { isAvailable, usageText, brandLogo, isNormal, availableStoreText, usageTimes, isHistory, deadlineTitle, historyTime, isTransfer, couponLink };
+      return { couponImage ,isAvailable, usageText, brandLogo, isNormal, availableStoreText, usageTimes, isHistory, deadlineTitle, historyTime, isTransfer, couponLink };
    }
 }
 </script>

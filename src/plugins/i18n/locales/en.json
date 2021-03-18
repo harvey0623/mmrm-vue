@@ -71,6 +71,9 @@
       },
       "exchangeOk": {
          "title": "exchangeOk"
+      },
+      "redeemCouponInfo": {
+         "title": "redeemCouponInfo"
       }
    },
    "validate": {
