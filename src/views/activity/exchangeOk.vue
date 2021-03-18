@@ -58,7 +58,6 @@ export default {
             full_info: false
          }).then(res => res.info.results.coupon_information);
          couponList.data = intergateCoupon(couponInfo);
-         console.log(couponList)
          isLoading.value = false;
       });
       

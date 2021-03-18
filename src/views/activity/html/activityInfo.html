@@ -1,3 +1,59 @@
 <section class="activityInfo_section">
-   activityInfo
+   <div class="banner">
+      <div class="inner"></div>
+   </div>
+   <div class="wrap">
+      <div class="activityIntro">
+         <div class="activityName">{{ activityTitle }}</div>
+         <ul class="intorList">
+            <li>
+               <div class="title">兌換時間</div>
+               <div class="colon">:</div>
+               <div class="content">{{ activityDuration }}</div>
+            </li>
+            <li v-for="(meta,index) in activityMeta" :key="index">
+               <div class="title">{{ meta.key }}</div>
+               <div class="colon">:</div>
+               <div class="content">{{ meta.value }}</div>
+            </li>
+         </ul>
+         <div class="line"></div>
+         <div class="brandLogo" :style="brandLogoBg"></div>
+      </div>
+      <div class="pointIntro">
+         <div class="title">使用以下任一種點數兌換</div>
+         <ul class="conditionList">
+            <li>
+               <div class="name">{{  }}</div>
+               <div class="content">
+                  {{  }}<span>點</span>
+               </div>
+            </li>
+         </ul>
+      </div>
+      <div class="couponIntro">
+         <div class="title">兌換此活動可獲得以下票券</div>
+         <div class="content">
+            <!-- <coupon-block
+               v-for="coupon in couponBlock"
+               :key="coupon.coupon_id"
+               :info="coupon"
+               :pageurl="pageUrl.couponInfo"
+               :brandlist="brandList"
+               :reverse="true"
+               :multiplebrand="isMultipleBrand"
+            ></coupon-block> -->
+         </div>
+      </div>
+   </div>
+
+   <div class="activityDesc" v-html="activityContent"></div>
+
+   <!-- 操作按鈕 -->
+   <div class="fixBlock">
+      <div class="termActiveButton" >{{  }}</div>
+      <div class="usedBlock">{{  }}</div>
+   </div>
+
+   <Loading v-show="isLoading"></Loading>
 </section>
