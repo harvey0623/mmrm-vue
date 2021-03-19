@@ -22,6 +22,7 @@ export default {
       let activityInfo = reactive({ data: {} });
       let activityBrandLogo = ref('');
       let couponList = reactive({ data: [] });
+      let tempStatus = ref(false);
       let redeemStatus = {
          free: '免費兌換',
          redeem_code: '兌換碼兌換',
@@ -32,6 +33,24 @@ export default {
          unopened: '尚未開始',
          closed: '已結束'
       };
+      let doubleCheckOption = reactive({
+         isOpen: false,
+         showCancel: true,
+         message: '',
+         eventName: 'ready'
+      });
+      let codePopupOption = reactive({
+         isOpen: false,
+         showCancel: true,
+         popupTitle: '請輸入兌換碼',
+         eventName: 'exchange',
+         validateRule: 'required'
+      });
+      let msgOption = reactive({
+         isOpen: false,
+         message: '',
+         eventName: 'finish'
+      });
 
       let hasActivityInfo = computed(() => {
          return !(_.isEmpty(activityInfo.data));
@@ -118,6 +137,55 @@ export default {
          }, []);
       }
 
+      let exchangeHandler = async(params) => {
+         let { status, info } = await activityApi.redeemCoupon(params)
+            .then(res => res)
+            .catch(err => err.response);
+         return { 
+            status, 
+            errMsg: status ? '' : info.rcrm.RM, 
+            redeemInfo: info.results.coupon_redeem_result 
+         };
+      }
+
+      let readyExchange = () => {
+         let redeemType = activityInfo.data.redeem_type;
+         if (redeemType === 'free') {
+            doubleCheckOption.isOpen = true;
+            doubleCheckOption.message = `您確定要免費兌換「${activityTitle.value}」嗎?`;
+         } else if (redeemType === 'redeem_code') {
+            codePopupOption.isOpen = true;
+         }
+      }
+
+      let processHandler = async(val) => {
+         isLoading.value = true;
+         doubleCheckOption.isOpen = false;
+         codePopupOption.isOpen = false;
+         let params = { coupon_activity_id: activityInfo.data.coupon_activity_id };
+         let redeemType = activityInfo.data.redeem_type;
+         if (redeemType === 'redeem_code') {
+            params.redeem_code = val;
+         } else if (redeemType === 'point') {
+
+         }
+         let { status:exchangeStatus, errMsg, redeemInfo } = await exchangeHandler(params);
+         tempStatus.value = exchangeStatus;
+         if (exchangeStatus) {
+            root.$storage.setSessionItem('redeemInfo', redeemInfo);
+            msgOption.message = '兌換成功';
+         } else {
+            msgOption.message = errMsg;
+         }
+         msgOption.isOpen = true;
+         isLoading.value = false;
+      }
+
+      let finishHandler = () => {
+         if (tempStatus.value) root.$router.push('/activity/success');
+         msgOption.isOpen = false;
+      }
+
       onMounted(async() => {
          isLoading.value = true;
          activityId.value = parseInt(root.$route.params.activity_id);
@@ -135,7 +203,7 @@ export default {
          isLoading.value = false;
       });
 
-      return { isLoading, activityTitle, activityDuration, activityMeta, activityContent, activityBrandLogo, brandLogoBg, activityIsOpening, redeemTypeText, usageText, couponList }
+      return { isLoading, activityTitle, activityDuration, activityMeta, activityContent, activityBrandLogo, brandLogoBg, activityIsOpening, redeemTypeText, usageText, couponList, readyExchange, doubleCheckOption, processHandler, exchangeHandler, msgOption, finishHandler, codePopupOption }
    },
    components: {
       RedeemCoupon

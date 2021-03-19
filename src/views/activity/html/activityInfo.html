@@ -47,9 +47,40 @@
 
    <!-- 操作按鈕 -->
    <div class="fixBlock">
-      <div class="termActiveButton" v-if="activityIsOpening">{{ redeemTypeText }}</div>
+      <div 
+         class="termActiveButton" 
+         v-if="activityIsOpening" 
+         @click="readyExchange"
+      >{{ redeemTypeText }}</div>
       <div class="usedBlock" v-else>{{ usageText }}</div>
    </div>
+
+   <!-- 準備兌換 -->
+   <MessagePopup
+      :isOpen.sync="doubleCheckOption.isOpen"
+      :message="doubleCheckOption.message"
+      :showCancel="doubleCheckOption.showCancel"
+      :eventName="doubleCheckOption.eventName"
+      @ready="processHandler"
+   ></MessagePopup>
+
+   <!-- 代碼兌換 -->
+   <InputPopup
+      :isOpen.sync="codePopupOption.isOpen"
+      :showCancel="codePopupOption.showCancel"
+      :popupTitle="codePopupOption.popupTitle"
+      :eventName="codePopupOption.eventName"
+      :validateRule="codePopupOption.validateRule"
+      @exchange="processHandler">
+   </InputPopup>
+
+   <!-- 兌換結果訊息 -->
+   <MessagePopup
+      :isOpen.sync="msgOption.isOpen"
+      :message="msgOption.message"
+      :eventName="msgOption.eventName"
+      @finish="finishHandler"
+   ></MessagePopup>
 
    <Loading v-show="isLoading"></Loading>
 </section>
