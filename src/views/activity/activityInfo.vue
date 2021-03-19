@@ -1,16 +1,17 @@
 <template src="./html/activityInfo.html"></template>
 
 <script>
+import _ from 'lodash';
 import { ref, reactive, onMounted, computed } from '@vue/composition-api';
 import { activityApi } from '@/api/activity.js';
 import { brandApi } from '@/api/brand.js';
 import { storeApi } from '@/api/store.js';
 import { couponApi } from '@/api/coupon.js';
-// import { pointApi } from '@/api/point.js';
+import { pointApi } from '@/api/point.js';
 import RedeemCoupon from '@/components/CouponBlock/RedeemCoupon.vue';
-import _ from 'lodash';
+import PointPicker from '@/components/PointPicker/index.vue';
 export default {
-   name: 'activityList',
+   name: 'activityInfo',
       metaInfo() {
       return {
          title: this.$i18n.t('page.activityInfo.title'),
@@ -22,6 +23,7 @@ export default {
       let activityInfo = reactive({ data: {} });
       let activityBrandLogo = ref('');
       let couponList = reactive({ data: [] });
+      let pickerItem = reactive({ data: [] });
       let tempStatus = ref(false);
       let redeemStatus = {
          free: '免費兌換',
@@ -99,6 +101,11 @@ export default {
          return usageStatus[activityInfo.data.status];
       });
 
+      let isPointType = computed(() => {
+         if (!hasActivityInfo.value) return false;
+         return activityInfo.data.redeem_type === 'point';
+      });
+
       let getActivityInfo = async() => {
          return activityApi.couponInfo({
             coupon_activity_ids: [activityId.value],
@@ -128,6 +135,16 @@ export default {
          return Array.from(new Set(arr));
       }
 
+      let getPointCategoryInfo = async(key) => { //取得點數分類資訊
+         if (activityInfo.data[key] === undefined) return [];
+         let pointIds = activityInfo.data[key].map(item => item.point_id);
+         let method = key === 'point_condition' ? 'pointInfo' : 'externalPointInfo';
+         let result = await pointApi[method]({ point_id: pointIds, full_info: false })
+            .then(res => res.info.results.point_information);
+         result.forEach(item => item.category = key);
+         return _.cloneDeep(result);
+      }
+
       let intergateCoupon = ({ couponInfo, brandInfo, storeInfo }) => { //整和票券
          return couponInfo.reduce((prev, current) => {
             let targetBrand = brandInfo.find(item => item.brand_id === current.brand_ids[0]);
@@ -135,6 +152,30 @@ export default {
             prev.push({ ...current, brandInfo: targetBrand, storeInfo: targetStore });
             return prev;
          }, []);
+      }
+
+      let createPickList = (pointInfo) => { //產生點數下拉清單
+         let categoryArr = ['point_condition', 'external_point_condition'];
+         let result = [];
+         categoryArr.forEach(category => {
+            if (activityInfo.data[category] === undefined) return false;
+            let conditionArr = activityInfo.data[category].reduce((prev, current) => {
+               let pointId = current.point_id;
+               let obj = pointInfo.find(item => {
+                  return item.point_id === pointId && item.category === category;
+               });
+               prev.push({
+                  id: pointId,
+                  title: obj.title,
+                  value: `${obj.title} : ${current.amount}點`,
+                  amount: current.amount,
+                  category
+               });
+               return prev;
+            }, []);
+            result = result.concat(conditionArr);
+         });
+         return result;
       }
 
       let exchangeHandler = async(params) => {
@@ -192,21 +233,30 @@ export default {
          activityInfo.data = await getActivityInfo();
          let { brand_id, coupon_ids } = activityInfo.data;
          activityBrandLogo.value = await getBrandInfo([brand_id])
-         .then(res => res[0].feature_image_small.url);
+            .then(res => res[0].feature_image_small.url);
          let couponInfo = await getCouponInfo(coupon_ids);
          let brandIds = getBrandIds(couponInfo);
          let brandInfo = await getBrandInfo(brandIds);
          let storeInfo = await storeApi.searchAvailableStore({ coupon_ids })
             .then(res => res.info.results.search_coupon_available_store_results);
-
          couponList.data = intergateCoupon({ couponInfo, brandInfo, storeInfo });
+
+         if (isPointType.value) {
+            let normalPoint = await getPointCategoryInfo('point_condition');
+            let externalPoint = await getPointCategoryInfo('external_point_condition');
+            let allPoint = normalPoint.concat(externalPoint);
+            pickerItem.data = createPickList(allPoint);
+            // if (this.pointListThanOne) this.initIosPicker();
+         }
+
          isLoading.value = false;
       });
 
-      return { isLoading, activityTitle, activityDuration, activityMeta, activityContent, activityBrandLogo, brandLogoBg, activityIsOpening, redeemTypeText, usageText, couponList, readyExchange, doubleCheckOption, processHandler, exchangeHandler, msgOption, finishHandler, codePopupOption }
+      return { isLoading, activityTitle, activityDuration, activityMeta, activityContent, activityBrandLogo, brandLogoBg, activityIsOpening, redeemTypeText, usageText, couponList, readyExchange, doubleCheckOption, processHandler, exchangeHandler, msgOption, finishHandler, codePopupOption, isPointType, pickerItem }
    },
    components: {
-      RedeemCoupon
+      RedeemCoupon,
+      PointPicker
    }
 }
 </script>
