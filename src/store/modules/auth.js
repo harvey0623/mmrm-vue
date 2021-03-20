@@ -29,6 +29,9 @@ export const authStore = {
       checkAuthCookie({ commit }) {
          let mmrmToken = cookie.get('mmrmToken');
          commit('setLogin', mmrmToken !== undefined);
+
+         let test = cookie.get('mmrmToken', { domain: 'mmrm-server.herokuapp.com' });
+         console.log(test)
       },
       async login({ commit }, payload) { //登入
          let loginResult = await authApi.login(payload);
