@@ -20,8 +20,10 @@ export default {
    setup(props, { root }) {
       let isLoading = ref(false);
       let activityId = ref(0);
-      let activityInfo = reactive({ data: {} });
       let activityBrandLogo = ref('');
+      let pointPicker = ref(null);
+      let usePointPicker = ref(false);
+      let activityInfo = reactive({ data: {} });
       let couponList = reactive({ data: [] });
       let pickerItem = reactive({ data: [] });
       let tempStatus = ref(false);
@@ -136,6 +138,17 @@ export default {
          }).then(res => res.info.results.coupon_information);
       }
 
+      let exchangeHandler = async(params) => {
+         let { status, info } = await activityApi.redeemCoupon(params)
+            .then(res => res)
+            .catch(err => err.response);
+         return { 
+            status, 
+            errMsg: status ? '' : info.rcrm.RM, 
+            redeemInfo: info.results.coupon_redeem_result 
+         };
+      }
+
       let getBrandIds = (data) => {
          let arr = data.reduce((prev, current) => {
             prev = prev.concat(current.brand_ids);
@@ -187,15 +200,10 @@ export default {
          return result;
       }
 
-      let exchangeHandler = async(params) => {
-         let { status, info } = await activityApi.redeemCoupon(params)
-            .then(res => res)
-            .catch(err => err.response);
-         return { 
-            status, 
-            errMsg: status ? '' : info.rcrm.RM, 
-            redeemInfo: info.results.coupon_redeem_result 
-         };
+      let selectPoint = ({ id, category }) => {
+         tempPointInfo.pointId = id;
+         tempPointInfo.category = category;
+         processHandler();
       }
 
       let readyExchange = () => {
@@ -214,6 +222,8 @@ export default {
                doubleCheckOption.message = `
                   您確定要用${tempPointInfo.title}${pickerItem.data[0].amount}點
                      兌換「${activityTitle.value}」嗎?`;
+            } else {
+               pointPicker.value.show();
             }
          }
       }
@@ -266,12 +276,13 @@ export default {
             let externalPoint = await getPointCategoryInfo('external_point_condition');
             let allPoint = normalPoint.concat(externalPoint);
             pickerItem.data = createPickList(allPoint);
+            if (moreThanOnePickerItem.value) usePointPicker.value = true;
          }
 
          isLoading.value = false;
       });
 
-      return { isLoading, activityTitle, activityDuration, activityMeta, activityContent, activityBrandLogo, brandLogoBg, activityIsOpening, redeemTypeText, usageText, couponList, readyExchange, doubleCheckOption, processHandler, exchangeHandler, msgOption, finishHandler, codePopupOption, isPointType, pickerItem, moreThanOnePickerItem }
+      return { isLoading, activityTitle, activityDuration, activityMeta, activityContent, activityBrandLogo, brandLogoBg, activityIsOpening, redeemTypeText, usageText, couponList, readyExchange, doubleCheckOption, processHandler, exchangeHandler, msgOption, finishHandler, codePopupOption, isPointType, pickerItem, moreThanOnePickerItem, usePointPicker, selectPoint, pointPicker }
    },
    components: {
       RedeemCoupon,

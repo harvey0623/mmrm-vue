@@ -80,7 +80,12 @@
       @finish="finishHandler"
    ></MessagePopup>
 
-   <!-- <PointPicker></PointPicker> -->
+   <PointPicker
+      v-if="usePointPicker"
+      :pickerItem="pickerItem"
+      @selectPoint="selectPoint"
+      ref="pointPicker"
+   ></PointPicker>
 
    <Loading v-show="isLoading"></Loading>
 </section>

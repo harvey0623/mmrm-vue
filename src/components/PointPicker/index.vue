@@ -32,6 +32,10 @@ export default {
                });
             }
          });
+      },
+      show() {
+         mobileSelector.show();
+         mobileSelector.locatePosition(0, 0);
       }
    },
    mounted() {
