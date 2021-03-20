@@ -53,6 +53,11 @@ export default {
          message: '',
          eventName: 'finish'
       });
+      let tempPointInfo = reactive({
+         title: '',
+         pointId: 0,
+         category: ''
+      });
 
       let hasActivityInfo = computed(() => {
          return !(_.isEmpty(activityInfo.data));
@@ -104,6 +109,10 @@ export default {
       let isPointType = computed(() => {
          if (!hasActivityInfo.value) return false;
          return activityInfo.data.redeem_type === 'point';
+      });
+
+      let moreThanOnePickerItem = computed(() => {
+         return pickerItem.data.length > 1;
       });
 
       let getActivityInfo = async() => {
@@ -196,6 +205,16 @@ export default {
             doubleCheckOption.message = `您確定要免費兌換「${activityTitle.value}」嗎?`;
          } else if (redeemType === 'redeem_code') {
             codePopupOption.isOpen = true;
+         } else {
+            if (!moreThanOnePickerItem.value) {
+               tempPointInfo.title = pickerItem.data[0].title;
+               tempPointInfo.pointId = pickerItem.data[0].id;
+               tempPointInfo.category = pickerItem.data[0].category;
+               doubleCheckOption.isOpen = true;
+               doubleCheckOption.message = `
+                  您確定要用${tempPointInfo.title}${pickerItem.data[0].amount}點
+                     兌換「${activityTitle.value}」嗎?`;
+            }
          }
       }
 
@@ -208,7 +227,8 @@ export default {
          if (redeemType === 'redeem_code') {
             params.redeem_code = val;
          } else if (redeemType === 'point') {
-
+            let key = tempPointInfo.category === 'point_condition' ? 'point_id' : 'external_point_id';
+            params[key] = tempPointInfo.pointId;
          }
          let { status:exchangeStatus, errMsg, redeemInfo } = await exchangeHandler(params);
          tempStatus.value = exchangeStatus;
@@ -246,13 +266,12 @@ export default {
             let externalPoint = await getPointCategoryInfo('external_point_condition');
             let allPoint = normalPoint.concat(externalPoint);
             pickerItem.data = createPickList(allPoint);
-            // if (this.pointListThanOne) this.initIosPicker();
          }
 
          isLoading.value = false;
       });
 
-      return { isLoading, activityTitle, activityDuration, activityMeta, activityContent, activityBrandLogo, brandLogoBg, activityIsOpening, redeemTypeText, usageText, couponList, readyExchange, doubleCheckOption, processHandler, exchangeHandler, msgOption, finishHandler, codePopupOption, isPointType, pickerItem }
+      return { isLoading, activityTitle, activityDuration, activityMeta, activityContent, activityBrandLogo, brandLogoBg, activityIsOpening, redeemTypeText, usageText, couponList, readyExchange, doubleCheckOption, processHandler, exchangeHandler, msgOption, finishHandler, codePopupOption, isPointType, pickerItem, moreThanOnePickerItem }
    },
    components: {
       RedeemCoupon,
