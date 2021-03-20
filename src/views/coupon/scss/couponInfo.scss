@@ -7,7 +7,7 @@ $inputColor: map-get($fontColor, input);
 .couponInfo_section {
    background-color: #fff;
    padding-bottom: map-get($heightObj, basic);
-   // min-height: 100vh;
+   min-height: 100vh;
 }
 
 .banner {
