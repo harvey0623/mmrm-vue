@@ -1,12 +1,14 @@
 <template>
-   <div class="entranceBlock" v-show="showBlock">
+   <div class="entranceBlock" v-show="hasLists">
       <h2>{{ title }}</h2>
       <div class="serviceBox">
          <ServiceItem
-            v-for="list in serviceList"
-            :key="list.iconClass"
-            :iconClass="list.iconClass"
+            v-for="list in serviceLists"
+            :key="list.itemType"
+            :title="list.title"
             :path="list.path"
+            :icon="list.icon"
+            :itemType="list.itemType"
             @logout="$emit('logout')"
          ></ServiceItem>
       </div>
@@ -14,6 +16,7 @@
 </template>
 
 <script>
+import { computed, toRefs } from '@vue/composition-api';
 import ServiceItem from './ServiceItem.vue';
 export default {
    props: {
@@ -23,30 +26,23 @@ export default {
       },
       lists: {
          type: Array,
-         default() {
-            return []
-         }
+         required: true
       },
       isLogin: {
          type: Boolean,
          required: true
       }
    },
-   computed: {
-      serviceList() {
-         let notAuth = this.lists.filter(list => !list.auth); //一定要顯示
-         let needLogin = this.lists.filter(list => { //必須要再登入才顯示
-            return list.showInLogin && this.isLogin;
-         });
-         let notNeedLogin = this.lists.filter(list => { //登出狀態下才顯示
-            return !list.showInLogin && !this.isLogin;
-         });
-         let result = notAuth.concat(needLogin, notNeedLogin);
-         return Array.from(new Set(result));
-      },
-      showBlock() {
-         return this.serviceList.length !== 0;
-      }
+   setup(props, context) {
+      let { lists, isLogin } = toRefs(props);
+      
+      let serviceLists = computed(() => {
+         return lists.value.filter(list => list.auth === isLogin.value);
+      });
+      
+      let hasLists = computed(() => serviceLists.value.length > 0);
+
+      return { serviceLists ,hasLists };
    },
    components: {
       ServiceItem
@@ -61,8 +57,8 @@ export default {
       @include elGutter(margin-bottom, map-get($gutter, basic));
       background-color: #fff;
       border-radius: 10px;
-      > h2 {
-         margin-bottom: map-get($gutter, basic);
+      >h2 {
+         margin-bottom: map-get($gutter, basic) + 5px;
          text-align: center;
          color: var(--variationMain);
          font-weight: 400;

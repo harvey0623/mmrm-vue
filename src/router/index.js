@@ -38,7 +38,10 @@ const routes = [
 	{
 		path: '/',
 		name: 'home',
-		component: Home
+		component: Home,
+		meta: {
+			layout: 'default'
+		}
 	},
 	{
 		path: '/login',

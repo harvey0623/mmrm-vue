@@ -1,26 +1,33 @@
 <template>
-   <router-link 
-      :to="path" 
-      :class="['serviceItem', iconClass]"
-      @click.native="clickHandler"
-   ></router-link>
+   <router-link :to="path" class="serviceItem" @click.native="clickHandler">
+      <i :class="icon"></i>
+      <span>{{ title }}</span>
+   </router-link>
 </template>
 
 <script>
 export default {
    props: {
-      iconClass: {
+      title: {
          type: String,
-         default: ''
+         required: true
       },
       path: {
          type: String,
-         default: '/'
+         required: true
+      },
+      icon: {
+         type: String,
+         required: true
+      },
+      itemType: {
+         type: String,
+         required: true
       }
    },
    methods: {
       async clickHandler(evt) {
-         if (this.iconClass !== 'logout') return;
+         if (this.itemType !== 'logout') return;
          evt.preventDefault();
          this.$emit('logout');
       }
@@ -28,4 +35,18 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./ServiceItem.scss" scoped></style>
+<style lang="scss" scoped>
+   .serviceItem {
+      width: 25%;
+      margin-bottom: map-get($gutter, basic) + 5px;
+      color: var(--variationMain);
+      text-align: center;
+      >* {
+         display: block;
+      }
+      >i {
+         font-size: 30px;
+         margin-bottom: 5px;
+      }
+   }
+</style>

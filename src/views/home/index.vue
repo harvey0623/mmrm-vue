@@ -3,10 +3,10 @@
       <div class="mycontainer">
          <EntranceBlock
             v-for="service in serviceList"
-            :key="service.id"
+            :key="service.itemType"
             :title="service.title"
             :lists="service.lists"
-            :isLogin="service.isLogin"
+            :isLogin="isLogin"
             @logout="logoutHandler"
          ></EntranceBlock>
       </div>
@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { ref, reactive, computed } from '@vue/composition-api';
 import EntranceBlock from '@/components/EntranceBlock/index.vue';
 export default {
    name: 'home',
@@ -23,51 +24,42 @@ export default {
          title: this.$i18n.t('page.home.title'),
       }
    },
-   data: () => ({
-      blockData: [
+   setup(props, { root }) {
+      let isLoading = ref(false);
+      let serviceList = reactive([
          {
-            id: 'member-service',
-            title: '會員服務',
+            itemType: 'member',
+            title: '會員項目',
             lists: [
-               { iconClass: 'memberCard', path: '/', auth: true, showInLogin: true },
-               { iconClass: 'myCoupon', path: '/', auth: true, showInLogin: true },
-               { iconClass: 'message', path: '/', auth: true, showInLogin: true },
-               { iconClass: 'login', path: '/login', auth: true, showInLogin: false },
-               { iconClass: 'maintain', path: '/member/maintain', auth: true, showInLogin: true },
-               { iconClass: 'logout', path: '/', auth: true, showInLogin: true },
+               { itemType: 'login', title: '登入',path: '/login', auth: false, 
+                  icon: 'fas fa-sign-in-alt' },
+               { itemType: 'maintain', title: '會員資料', path: '/member/maintain', auth: true, icon: 'fas fa-users-cog' },
+               { itemType: 'card', title: '會員條碼', path: '/member/card', auth: true, icon: 'fas fa-qrcode' },
+               { itemType: 'level', title: '會員等級', path: '/member/level', auth: true, icon: 'fas fa-tasks' },
+               { itemType: 'transaction', title: '交易紀錄', path: '/member/transaction', auth: true, icon: 'fas fa-history' },
+               { itemType: 'point', title: '點數資訊', path: '/member/pointInfo/12', auth: true, icon: 'fas fa-coins' },
+               { itemType: 'logout', title: '登出', path: '/', auth: true, icon: 'fas fa-sign-out-alt' }
             ]
          },
          {
-            id: 'other-service',
-            title: '其他服務',
+            itemType: 'ticket',
+            title: '票券項目',
             lists: [
-               { iconClass: 'news', path: '/', auth: false, showInLogin: false },
-               { iconClass: 'exchangeCoupon', path: '/', auth: true, showInLogin: true },
-               { iconClass: 'exchangePoint', path: '/', auth: true, showInLogin: true },
-               { iconClass: 'menu', path: '/', auth: false, showInLogin: false },
-               { iconClass: 'about', path: '/', auth: false, showInLogin: false },
+               { itemType: 'coupon', title: '票券匣', path: '/coupon/folder', auth: true, icon: 'fas fa-ticket-alt' },
+               { itemType: 'activity', title: '兌換活動', path: '/activity/list', auth: true, icon: 'fas fa-exchange-alt' },
             ]
          }
-      ],
-      isLoading: false
-   }),
-   computed: {
-      isLogin() {
-         return this.$store.state.auth.isLogin;
-      },
-      serviceList() {
-         return this.blockData.reduce((prev, current) => {
-            prev.push({ ...current, isLogin: this.isLogin });
-            return prev;
-         }, []);
+      ]);
+
+      let isLogin = computed(() => root.$store.state.auth.isLogin);
+
+      let logoutHandler = async() => {
+         isLoading.value = true;
+         await root.$store.dispatch('auth/logout');
+         isLoading.value = false;
       }
-   },
-   methods: {
-      async logoutHandler() {
-         this.isLoading = true;
-         await this.$store.dispatch('auth/logout');
-         this.isLoading = false;
-      }
+
+      return { isLoading, serviceList, isLogin, logoutHandler };
    },
    components: {
       EntranceBlock

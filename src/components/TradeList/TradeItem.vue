@@ -42,7 +42,7 @@ export default {
          await root.$nextTick();
          if (isOpen.value) {
             let offsetTop = tradeItem.value.offsetTop;
-            window.scrollTo(0, offsetTop - 20);
+            window.scrollTo(0, offsetTop - 20 - 45);
          }
       }
       
