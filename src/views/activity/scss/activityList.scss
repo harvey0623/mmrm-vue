@@ -11,7 +11,7 @@ $basicHeight: map-get($heightObj, basic);
 .controlPanel {
    position: fixed;
    left: 0;
-   top: 0;
+   top: $basicHeight;
    @include size(100%, $basicHeight);
    padding: 0 20px;
    @extend %bwtFlex;

@@ -40,7 +40,7 @@ const routes = [
 		name: 'home',
 		component: Home,
 		meta: {
-			layout: 'panel'
+			layout: 'default'
 		}
 	},
 	{

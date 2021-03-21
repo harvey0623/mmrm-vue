@@ -51,7 +51,7 @@ export default {
          ...mapMutations({ set: 'setLogoutPopup' })
       },
       layoutName() {
-         return this.$route.meta.layout !== undefined ? 'PanelLayout' : 'DefaultLayout';
+         return this.$route.meta.layout !== undefined ? 'DefaultLayout' : 'PanelLayout';
       }
    },
    methods: {

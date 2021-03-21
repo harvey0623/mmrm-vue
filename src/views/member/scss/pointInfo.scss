@@ -12,7 +12,7 @@
 .fixBox {
    position: fixed;
    left: 0;
-   top: 0;
+   top: map-get($heightObj, basic);
    width: 100%;
 }
 
