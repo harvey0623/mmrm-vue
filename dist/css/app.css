@@ -598,7 +598,7 @@ textarea {
 .tabList {
   position: fixed;
   left: 0;
-  top: 0;
+  top: 45px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -1051,13 +1051,13 @@ textarea {
 .summaryList > li.total {
     color: #e60012;
 }
-.tipBox {
-  margin-top: 15px;
-  margin-bottom: 0;
-}
 
 .emptyBlock > .emptyBg[data-v-56064a03] {
   background-image: url(../img/img_member_txnhistory_empty_n@2x.7a5d2829.png);
+}
+.tipBox[data-v-56064a03] {
+  margin-top: 15px;
+  margin-bottom: 0;
 }
 
 .point-content > .point-header.center[data-v-cd9b81e2] {
@@ -1187,7 +1187,7 @@ li > .title[data-v-7c404056] {
 .fixBox[data-v-a6cdc67a] {
   position: fixed;
   left: 0;
-  top: 0;
+  top: 45px;
   width: 100%;
 }
 .pointIntro[data-v-a6cdc67a] {
@@ -2152,7 +2152,7 @@ li > .title[data-v-7c404056] {
 .controlPanel {
   position: fixed;
   left: 0;
-  top: 0;
+  top: 45px;
   width: 100%;
   height: 45px;
   padding: 0 20px;
@@ -2757,6 +2757,28 @@ li > .title[data-v-7c404056] {
 .usedBlock[data-v-081cff6b] {
   background-color: #c9c9c9;
   color: #797979;
+}
+
+.panelLayout[data-v-a3392122] {
+  padding-top: 45px;
+}
+.panelLayout .fixedPanel[data-v-a3392122] {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 45px;
+    padding-left: 15px;
+    background-color: #fff;
+    border-bottom: 1px solid lightgray;
+    z-index: 11;
+}
+.panelLayout .fixedPanel > a[data-v-a3392122] {
+      display: inline-block;
+      height: 100%;
+      font-size: 30px;
+      line-height: 45px;
+      color: var(--variationMain);
 }
 
 #loading {
