@@ -21,11 +21,11 @@ import { mapState, mapMutations } from 'vuex';
 export default {
    metaInfo() {
       return {
-         title: "",
-         titleTemplate: "%s | MMRM",
+         title: '',
+         titleTemplate: '%s | MMRM',
          meta: [
-            { property: "og:image", content: "" },
-            { property: "og:description", content: "project" },
+            { property: 'og:image', content: '' },
+            { property: 'og:description', content: 'project' },
          ],
       };
    },
