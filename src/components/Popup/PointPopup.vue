@@ -2,9 +2,9 @@
    <div class="pointPopup" v-show="isOpen">
       <div class="closeIcon" @click="closeHandler"></div>
       <div class="point-content">
-         <div class="point-header">
+         <div class="point-header" :class="{center: !showPointAmount}">
             <p>{{ pointTitle }}</p>
-            <p>{{ pointAmount }} 點</p>
+            <p v-show="showPointAmount">{{ pointAmount }} 點</p>
          </div>
          <div class="point-body">
             <slot></slot>
@@ -27,6 +27,10 @@ export default {
       pointAmount: {
          type: [Number, String],
          default: 0
+      },
+      showPointAmount: {
+         type: Boolean,
+         default: true
       }
    },
    methods: {
@@ -66,6 +70,9 @@ export default {
          border-radius: $radius $radius 0 0;
          background-color: var(--variationMain);
          color: #fff;
+         &.center {
+            @extend %centerFlex;
+         }
       }
       >.point-body {
          border-radius: 0 0 $radius $radius;

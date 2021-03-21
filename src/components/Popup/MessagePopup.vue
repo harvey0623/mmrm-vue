@@ -8,8 +8,8 @@
             <p>{{ message }}</p>
          </div>
          <div class="popup-footer">
-            <div v-show="showCancel" @click="closeHandler">取消</div>
             <div @click="confirmHandler">確定</div>
+            <div v-show="showCancel" @click="closeHandler">取消</div>
          </div>
       </div>
    </div>

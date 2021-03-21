@@ -1,0 +1,57 @@
+<div id="sidebar" :class="{show: isOpen}">
+   <div class="sidebarPanel">
+      <div class="sureText" @click="backHandler">取消</div>
+      <div class="seekText">篩選</div>
+      <div class="sureText" @click="confirmHandler">確認</div>
+   </div>
+   <ul class="sidebarFilter">
+      <li @click="showSubMenu('sub1')">
+         <div class="filterTitle">選擇品牌</div>
+         <div class="filterItem">
+            <span v-show="allBrandSelected">全部</span>
+            <span class="count" v-show="!allBrandSelected">{{ checkedBrandCount }}</span>
+            <span class="arrowBox"></span>
+         </div> 
+      </li>
+      <li @click="showSubMenu('sub2')">
+         <div class="filterTitle">兌換方式</div>
+         <div class="filterItem">
+            <span v-show="allPointSelected">全部</span>
+            <span class="count" v-show="!allPointSelected">{{ checkedPointCount }}</span>
+            <span class="arrowBox"></span>
+         </div> 
+      </li>
+   </ul>
+   <div class="subMenu brandMenu" :class="{show: subId === 'sub1'}">
+      <div class="clearAll">
+         <span @click="clearAll('brand')">全部清除</span>
+      </div>
+      <ul class="criteriaList">
+         <BrandCriteriaItem
+            v-for="condition in brandCondition.data"
+            :key="condition.brand_id"
+            :itemId="condition.brand_id"
+            :title="condition.title"
+            :imgUrl="condition.url"
+            :checked="condition.checked"
+            @status="changeBrandStatus"
+         ></BrandCriteriaItem>
+      </ul>
+   </div>
+   <div class="subMenu pointMenu" :class="{show: subId === 'sub2'}">
+      <div class="clearAll">
+         <span @click="clearAll('point')">全部清除</span>
+      </div>
+      <ul class="criteriaList">
+         <PointCriteriaItem
+            v-for="(condition,index) in pointCondition.data"
+            :key="index"
+            :itemId="condition.id"
+            :title="condition.title"
+            :checked="condition.checked"
+            :category="condition.category"
+            @status="changePointStatus"
+         ></PointCriteriaItem>
+      </ul>
+   </div>
+</div>

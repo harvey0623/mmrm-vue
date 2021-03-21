@@ -1,4 +1,3 @@
-$basicRadius: map-get($radius, basic);
 %bgStyle {
    background-size: 100% 100%;
    background-position: center top;
@@ -83,14 +82,6 @@ $basicRadius: map-get($radius, basic);
       left: 0;
       opacity: 1;
       pointer-events: auto;
-   }
-}
-
-.codeItem {
-   @include elGutter(margin-bottom, 25px);
-   text-align: center;
-   >svg {
-      max-width: 100%;
    }
 }
 

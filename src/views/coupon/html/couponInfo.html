@@ -1,0 +1,77 @@
+<section class="couponInfo_section">
+   <div class="banner">
+      <div class="inner" :style="couponBackgroundImage"></div>
+   </div>
+   <div class="couponIntro">
+      <div class="couponName">{{ couponTitle }}</div>
+      <ul class="intorList">
+         <li>
+            <div class="title">使用期限</div>
+            <div class="colon">:</div>
+            <div class="content">{{ couponDuration }}</div>
+         </li>
+         <li>
+            <div class="title">適用品牌</div>
+            <div class="colon">:</div>
+            <div class="content">{{ brandTitle }}</div>
+         </li>
+         <li>
+            <div class="title">轉贈票券</div>
+            <div class="colon">:</div>
+            <div class="content">{{ couponTransferredText }}</div>
+         </li>
+      </ul>
+      <div class="brandLogo" :style="brandBackgroundImage"></div>
+   </div>
+   <div class="usageBox">
+      <div class="storeBox">
+         <div class="title arrow">適用門市</div>
+         <div class="content">
+            <template v-if="allStoreAvailable">
+               <span class="unit">全門市適用</span>
+            </template>
+            <template v-else>
+               <span class="number">{{ storeCount }}</span>
+               <span class="unit">家</span>
+            </template>
+         </div>
+      </div>
+      <div class="countBox">
+         <div class="title">可用次數</div>
+         <div class="content">
+            <span class="number">{{ remainedUageTimes }}</span>
+            <span class="unit"> / {{ totalUageTimes }} 次</span>
+         </div>
+      </div>
+   </div>
+   <div class="couponDesc" v-html="couponDesc"></div>
+   <div class="fixBlock">
+      <div class="normalBlock" v-if="canUsageCoupon">
+         <div v-if="true" @click="transferPopupOption.isOpen = true">我要轉贈</div>
+         <router-link 
+            :to="{name: 'couponCard', params:{ my_coupon_id: myCouponId }}" 
+            v-if="couponIsAvailable"
+         >我要使用</router-link>
+      </div>
+      <div class="usedBlock" v-else>{{ couponStatusText }}</div>
+   </div>
+   <Loading v-show="isLoading"></Loading>
+
+   <InputPopup
+      :isOpen.sync="transferPopupOption.isOpen"
+      :showCancel="transferPopupOption.showCancel"
+      :popupTitle="transferPopupOption.popupTitle"
+      :message="transferPopupOption.message"
+      :inputType="transferPopupOption.inputType"
+      :eventName="transferPopupOption.eventName"
+      :validateRule="transferPopupOption.validateRule"
+      @transfer="transferHandler">
+   </InputPopup>
+
+   <MessagePopup
+      :isOpen="msgOption.isOpen"
+      :message="msgOption.message"
+      :eventName="msgOption.eventName"
+      @transferResult="transferResultHandler"
+   ></MessagePopup>
+</section>

@@ -1,0 +1,99 @@
+<section class="activity_section">
+   <div class="controlPanel">
+      <div class="layoutBox">
+         <LayoutItem
+            v-for="layout in layoutList"
+            :key="layout.id"
+            :layoutId="layout.id"
+            :layoutClass="layout.class"
+            :currentLayoutId="currentLayoutId"
+            @layout="switchLayout"
+         ></LayoutItem>
+      </div>
+      <div class="pointDesc" @click="pointPopupOption.isOpen = true">
+         <PointSlider 
+            v-if="hasPointSlider"
+            :slideList="pointSlider.data"
+         ></PointSlider>
+      </div>
+      <div class="text" @click="isSidebarOpen = true">篩選</div>
+   </div>
+
+   <div class="list_wrap">
+      <div class="emptyBlock" v-show="showEmptyBlock">
+         <div class="emptyBg"></div>
+         <p>目前沒有優惠活動呦！</p>
+      </div>
+      <ul class="activityList" v-show="!showEmptyBlock">
+         <ActivityItem
+            v-for="activity in activityList.data"
+            :key="activity.coupon_activity_id"
+            :activityInfo="activity"
+            :systemTime="systemTime"
+            :projectTime="projectTime"
+            :currentLayoutId="currentLayoutId"
+            @ready="readyToExchange"
+         ></ActivityItem>
+      </ul>
+      <div class="pagTip" v-show="isPagLoading">資料加載中...</div>
+      <div class="pagTip" v-show="reachBottom">已經到最底囉～</div>
+   </div>
+
+   <PointPopup
+      :isOpen.sync="pointPopupOption.isOpen"
+      :pointTitle="pointPopupOption.title"
+      :showPointAmount="pointPopupOption.showPointAmount">
+      <ul class="myPointList" v-show="hasPointSlider">
+         <li 
+            v-for="item in pointSlider.data"
+            :key="item.pointId">
+            <div>{{ item.title }}</div>
+            <div>
+               <span class="amount">{{ item.amount }}</span>
+               <span>點</span>
+            </div>
+         </li>
+      </ul>
+   </PointPopup>
+
+   <ActivitySidebar
+      :isOpen.sync="isSidebarOpen"
+      @filter="filterHandler"
+      ref="activitySidebar"
+   ></ActivitySidebar>
+
+   <!-- 兌換提示 -->
+   <MessagePopup
+      :isOpen.sync="msgOption.isOpen"
+      :message="msgOption.message"
+      :showCancel="msgOption.showCancel"
+      :eventName="msgOption.eventName"
+      @gather="gatherExchangeParams"
+   ></MessagePopup>
+
+   <InputPopup
+      :isOpen.sync="codePopupOption.isOpen"
+      :showCancel="codePopupOption.showCancel"
+      :popupTitle="codePopupOption.popupTitle"
+      :eventName="codePopupOption.eventName"
+      :validateRule="codePopupOption.validateRule"
+      @gather="gatherExchangeParams">
+   </InputPopup>
+
+   <!-- 兌換結果 -->
+   <MessagePopup
+      :isOpen="tipOption.isOpen"
+      :message="tipOption.message"
+      :eventName="tipOption.eventName"
+      @tipFeedBack="tipFeedBack"
+   ></MessagePopup>
+
+   <PointPicker
+      :pickerItem="pickerItem"
+      @selectPoint="selectPoint"
+   ></PointPicker>
+
+   <Loading v-show="isLoading"></Loading>
+
+   <div class="sidebarCover" :class="{show: isSidebarOpen}"></div>
+</section>

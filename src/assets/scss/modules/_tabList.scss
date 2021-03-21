@@ -1,0 +1,28 @@
+.tabList {
+   position: fixed;
+   left: 0;
+   top: 0;
+   width: 100%;
+   display: flex;
+   align-items: center;
+   background-color: #fff;
+   z-index: 10;
+   >.tabItem {
+      flex: 1;
+      position: relative;
+      height: map-get($heightObj, basic);
+      text-align: center;
+      line-height: map-get($heightObj, basic);
+      color: map-get($fontColor, formTitle);
+      cursor: pointer;
+      >.line {
+         position: absolute;
+         left: 0;
+         bottom: 0;
+         @include size(100%, 2px);
+         &.active {
+            background-color: var(--variationMain);
+         }
+      }
+   }
+}

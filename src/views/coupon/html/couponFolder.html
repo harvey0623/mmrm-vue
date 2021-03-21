@@ -1,0 +1,23 @@
+<section class="folder_section">
+   <ul class="tabList">
+      <TabItem 
+         v-for="info in tabInfo"
+         :key="info.type"
+         :tabTitle="info.title"
+         :tabType="info.type"
+         :currentCouponType="currentCouponType"
+         @switchType="switchType"
+      ></TabItem>
+   </ul>
+   <div class="folder_wrap" v-if="hasCategory">
+      <CouponTabContent
+         v-for="tab in tabInfo"
+         :key="tab.type"
+         :contentType="tab.type"
+         :currentCouponType="currentCouponType"
+         :categoryData="couponCategory.data[tab.type]"
+         :isLoading="isLoading"
+      ></CouponTabContent>
+      <p class="pagTip" v-show="isLoading">資料加載中...</p>
+   </div>
+</section>

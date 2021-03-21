@@ -1,0 +1,51 @@
+$basicHeight: map-get($heightObj, basic);
+
+.layoutBox {
+   transform: translateY(3px);
+}
+
+.activity_section {
+   padding-top: $basicHeight;
+}
+
+.controlPanel {
+   position: fixed;
+   left: 0;
+   top: 0;
+   @include size(100%, $basicHeight);
+   padding: 0 20px;
+   @extend %bwtFlex;
+   background-color: #fff;
+   z-index: 1;
+   >.text {
+      color: map-get($fontColor, search);
+      text-align: right;
+      cursor: pointer;
+   }
+}
+
+.pointDesc {
+   position: relative;
+   color: map-get($fontColor, input);  
+}
+
+.myPointList {
+   >li {
+      @extend %bwtFlex;
+      @include elGutter(margin-bottom, 15px);
+      .amount {
+         margin-right: 5px;
+         color: var(--variationMain);
+      }
+   }
+}
+
+.list_wrap {
+   padding: 20px 15px;
+} 
+
+.emptyBlock {
+   >.emptyBg {
+      background-image: url("~@/assets/img/page/img_activity_empty_n_n@2x.png");
+   }
+}

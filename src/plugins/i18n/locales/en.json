@@ -53,6 +53,27 @@
       },
       "memberCard": {
          "title": "memberCard"
+      },
+      "couponFolder": {
+         "title": "couponFolder"
+      },
+      "couponInfo": {
+         "title": "couponInfo"
+      },
+      "couponCard": {
+         "title": "couponCard"
+      },
+      "activityList": {
+         "title": "activityList"
+      },
+      "activityInfo": {
+         "title": "activityInfo"
+      },
+      "exchangeOk": {
+         "title": "exchangeOk"
+      },
+      "redeemCouponInfo": {
+         "title": "redeemCouponInfo"
       }
    },
    "validate": {

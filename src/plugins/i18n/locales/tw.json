@@ -53,6 +53,27 @@
       },
       "memberCard": {
          "title": "會員卡"
+      },
+      "couponFolder": {
+         "title": "票券匣"
+      },
+      "couponInfo": {
+         "title": "票券詳情"
+      },
+      "couponCard": {
+         "title": "折價卡"
+      },
+      "activityList": {
+         "title": "票券活動列表"
+      },
+      "activityInfo": {
+         "title": "活動票券詳情"
+      },
+      "exchangeOk": {
+         "title": "兌換成功"
+      },
+      "redeemCouponInfo": {
+         "title": "兌換票券資訊"
       }
    },
    "validate": {

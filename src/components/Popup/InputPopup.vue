@@ -16,14 +16,15 @@
                      :type="inputType"
                      class="form-control"
                      :placeholder="placeholder"
-                     v-model.trim="inputValue">
+                     v-model.trim="inputValue"
+                     v-focus="isOpen">
                   <p class="errMsg" v-show="errors.length !== 0">{{ errors[0] }}</p>
                </validation-provider>
             </validation-observer>
          </div>
          <div class="popup-footer">
-            <div v-show="showCancel" @click="closeHandler">取消</div>
             <div @click="confirmHandler">確定</div>
+            <div v-show="showCancel" @click="closeHandler">取消</div>
          </div>
       </div>
    </div>
@@ -65,8 +66,15 @@ export default {
          default: ''
       }
    },
+   directives: {
+      focus: {
+         update(el, binding) {
+            if (binding.value) el.focus();
+         }
+      }
+   },
    data: () => ({
-      inputValue: '1qaz2wsx'
+      inputValue: ''
    }),
    methods: {
       closeHandler() {
@@ -76,6 +84,14 @@ export default {
          let isValid = await this.$refs.form.validate();
          if (!isValid) return;
          this.$emit(this.eventName, this.inputValue);
+      }
+   },
+   watch: {
+      isOpen(val) {
+         if (val) {
+            this.inputValue = '';
+            this.$refs.form.reset();
+         }
       }
    }
 }

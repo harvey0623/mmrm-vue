@@ -1,0 +1,91 @@
+<section class="activityInfo_section">
+   <div class="banner">
+      <div class="inner"></div>
+   </div>
+   <div class="wrap">
+      <div class="activityIntro">
+         <div class="activityName">{{ activityTitle }}</div>
+         <ul class="intorList">
+            <li>
+               <div class="title">兌換時間</div>
+               <div class="colon">:</div>
+               <div class="content">{{ activityDuration }}</div>
+            </li>
+            <li v-for="(meta,index) in activityMeta" :key="index">
+               <div class="title">{{ meta.key }}</div>
+               <div class="colon">:</div>
+               <div class="content">{{ meta.value }}</div>
+            </li>
+         </ul>
+         <div class="line" v-if="!isPointType"></div>
+         <div class="brandLogo" :style="brandLogoBg"></div>
+      </div>
+      <div class="pointIntro" v-if="isPointType">
+         <div class="title">使用以下任一種點數兌換</div>
+         <ul class="conditionList">
+            <li v-for="(point,index) in pickerItem.data" :key="index">
+               <div class="name">{{ point.title }}</div>
+               <div class="content">{{ point.amount }}<span>點</span></div>
+            </li>
+         </ul>
+      </div>
+      <div class="couponIntro">
+         <div class="title">兌換此活動可獲得以下票券</div>
+         <div class="content">
+            <RedeemCoupon
+               v-for="coupon in couponList.data"
+               :key="coupon.coupon_id"
+               :couponItem="coupon"
+            ></RedeemCoupon>
+         </div>
+      </div>
+   </div>
+
+   <div class="activityDesc" v-html="activityContent"></div>
+
+   <!-- 操作按鈕 -->
+   <div class="fixBlock">
+      <div 
+         class="termActiveButton" 
+         v-if="activityIsOpening" 
+         @click="readyExchange"
+      >{{ redeemTypeText }}</div>
+      <div class="usedBlock" v-else>{{ usageText }}</div>
+   </div>
+
+   <!-- 準備兌換 -->
+   <MessagePopup
+      :isOpen.sync="doubleCheckOption.isOpen"
+      :message="doubleCheckOption.message"
+      :showCancel="doubleCheckOption.showCancel"
+      :eventName="doubleCheckOption.eventName"
+      @ready="processHandler"
+   ></MessagePopup>
+
+   <!-- 代碼兌換 -->
+   <InputPopup
+      :isOpen.sync="codePopupOption.isOpen"
+      :showCancel="codePopupOption.showCancel"
+      :popupTitle="codePopupOption.popupTitle"
+      :eventName="codePopupOption.eventName"
+      :validateRule="codePopupOption.validateRule"
+      @exchange="processHandler">
+   </InputPopup>
+
+   <!-- 兌換結果訊息 -->
+   <MessagePopup
+      :isOpen.sync="msgOption.isOpen"
+      :message="msgOption.message"
+      :eventName="msgOption.eventName"
+      @finish="finishHandler"
+   ></MessagePopup>
+
+   <PointPicker
+      v-if="usePointPicker"
+      :pickerItem="pickerItem"
+      @selectPoint="selectPoint"
+      ref="pointPicker"
+   ></PointPicker>
+
+   <Loading v-show="isLoading"></Loading>
+</section>
