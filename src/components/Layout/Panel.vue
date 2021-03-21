@@ -2,7 +2,7 @@
    <div class="panelLayout">
       <div class="fixedPanel">
          <router-link to="/">
-            <i class="las la-home"></i>
+            <i class="fas fa-home"></i>
          </router-link>
       </div>
       <slot></slot>
@@ -31,7 +31,7 @@ export default {
          >a {
             display: inline-block;
             height: 100%;
-            font-size: 30px;
+            font-size: 25px;
             line-height: $basicHeight;
             color: var(--variationMain);
          }

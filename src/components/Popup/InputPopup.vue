@@ -74,7 +74,7 @@ export default {
       }
    },
    data: () => ({
-      inputValue: ''
+      inputValue: '1qaz2wsx'
    }),
    methods: {
       closeHandler() {
