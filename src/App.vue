@@ -1,6 +1,8 @@
 <template>
    <div id="app">
-      <router-view></router-view>
+      <component :is="layoutName">
+         <router-view></router-view>
+      </component>
       <MessagePopup
          :isOpen="openExpirePopup"
          :message="expireOption.message"
@@ -47,6 +49,9 @@ export default {
       openLogoutPopup: {
          ...mapState({ get: 'openLogoutPopup' }),
          ...mapMutations({ set: 'setLogoutPopup' })
+      },
+      layoutName() {
+         return this.$route.meta.layout !== undefined ? 'PanelLayout' : 'DefaultLayout';
       }
    },
    methods: {

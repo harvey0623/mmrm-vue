@@ -1,11 +1,11 @@
 <template>
-	<div class="defaultLayout">
-		<slot></slot>
-	</div>
+   <div class="panelLayout">
+      <slot></slot>
+   </div>
 </template>
 
 <script>
 export default {
-	
+
 }
 </script>
