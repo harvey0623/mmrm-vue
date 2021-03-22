@@ -38,7 +38,7 @@ export default {
 <style lang="scss" scoped>
    .serviceItem {
       width: 25%;
-      margin-bottom: map-get($gutter, basic) + 5px;
+      margin-bottom: map-get($gutter, basic) + 15px;
       color: var(--variationMain);
       text-align: center;
       >* {
