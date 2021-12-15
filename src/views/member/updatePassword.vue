@@ -18,15 +18,16 @@ export default {
       let updateSuccess =  ref(false);
       let form = ref(null);
       let user = reactive({
-         old_password: 'abc123',
-         new_password: 'abc123',
-         confrimPw: 'abc123'
+         old_password: '',
+         new_password: '',
+         confrimPw: ''
       });
       let msgOption = reactive({
          isOpen: false,
          message: '',
          eventName: 'updateFeedBack',
       });
+
       let submitHandler = async() => {
          let isValid = await form.value.validate();
          if (!isValid) return;
@@ -34,6 +35,7 @@ export default {
          await updateHandler();
          isLoading.value = false;
       };
+
       let updateHandler = async() => {
          let { status, info } = await memberApi.update_member_password({
             old_password: user.old_password,
@@ -43,6 +45,7 @@ export default {
          msgOption.isOpen = true;
          msgOption.message = status ? '更新密碼成功' : info.rcrm.RM;
       };
+      
       let updateFeedBack = async() => {
          if (updateSuccess.value) root.$router.replace('/member/maintain');
          msgOption.isOpen = false;
