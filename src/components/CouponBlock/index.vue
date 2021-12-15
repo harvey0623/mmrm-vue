@@ -3,7 +3,7 @@
       <div class="couponBlockL">
          <div class="brandInfo">
             <div class="brandLogo" :style="brandLogo"></div>
-            <span>{{ couponItem.brandInfo.title }}</span>
+            <span>{{ brandTitle }}</span>
          </div>
          <div class="couponTitle">{{ couponItem.couponInfo.title }}</div>
          <div class="detail">
@@ -63,7 +63,13 @@ export default {
          return statusText[couponStatus.value];
       });
 
+      let brandTitle = computed(() => {
+         if (couponItem.value.brandInfo === null) return '品牌名稱';
+         return couponItem.value.brandInfo.title || '';
+      });
+
       let brandLogo = computed(() => {
+         if (couponItem.value.brandInfo === null) return {};
          let url = couponItem.value.brandInfo.feature_image_big.url;
          if (!url) return {};
          else return { backgroundImage: `url(${url})` };
@@ -110,7 +116,7 @@ export default {
          }
       });
 
-      return { couponImage ,isAvailable, usageText, brandLogo, isNormal, availableStoreText, usageTimes, isHistory, deadlineTitle, historyTime, isTransfer, couponLink };
+      return { couponImage ,isAvailable, usageText, brandTitle, brandLogo, isNormal, availableStoreText, usageTimes, isHistory, deadlineTitle, historyTime, isTransfer, couponLink };
    }
 }
 </script>

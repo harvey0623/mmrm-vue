@@ -55,28 +55,28 @@ export default {
       }
 
       let getCouponList = async() => { //取得票券列表
-         return await couponApi.my_coupon_list({
+         return couponApi.my_coupon_list({
             type: currentCouponType.value,
             offset: currentCategory.value.currentPage
          }).then(res => res.info);
       }
 
       let getCouponInfo = async(ids) => { //取得票券資訊
-         return await couponApi.coupon_information({ 
+         return couponApi.coupon_information({ 
             coupon_ids: ids,
             full_info: false 
          }).then(res => res.info.results.coupon_information);
       }
 
       let getBrandInfo = async(ids) => { //取得品牌資訊
-         return await brandApi.brand_information({ 
+         return brandApi.brand_information({ 
             brand_ids: ids, 
             full_info: false 
          }).then(res => res.info.results.brand_information)
       }
 
       let getAvailableStore = async(ids) => { //取得對應店家
-         return await storeApi.searchAvailableStore({
+         return storeApi.searchAvailableStore({
             coupon_ids: ids
          }).then(res => res.info.results.search_coupon_available_store_results)
       }
@@ -110,7 +110,7 @@ export default {
             let targetInfo = couponInfo.find(coupon => coupon.coupon_id === coupon_id);
             let targetStore = storeInfo.find(store => store.coupon_id === coupon_id);
             let obj = { ...current, couponInfo: targetInfo, storeInfo: targetStore };
-            obj.brandInfo = brandInfo.find(brand => brand.brand_id === obj.couponInfo.brand_ids[0]);
+            obj.brandInfo = brandInfo.find(brand => brand.brand_id === obj.couponInfo.brand_ids[0]) || null;
             prev.push(obj);
             return prev;
          }, []);
@@ -121,12 +121,13 @@ export default {
          let intergationResult = [];
          let pagnationData = await getCouponList();
          let couponList = pagnationData.results.my_coupon_list;
+         let brandInfo = [];
          if (couponList.length !== 0) {
             let couponIds = gatherCouponIds(couponList);
             let couponInfo = await getCouponInfo(couponIds);
-            let brandIds = gatherBrandIds(couponInfo);
-            let brandInfo = await getBrandInfo(brandIds);
             let storeInfo = await getAvailableStore(couponIds);
+            let brandIds = gatherBrandIds(couponInfo);
+            if (brandIds.length !== 0) brandInfo = await getBrandInfo(brandIds);
             intergationResult = integrateData({ couponList, couponInfo, brandInfo, storeInfo });
          }
          currentCategory.value = { key: 'currentPage', value: pagnationData.next };
