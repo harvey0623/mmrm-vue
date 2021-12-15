@@ -8,6 +8,7 @@ import { brandApi } from '@/api/brand.js';
 import { storeApi } from '@/api/store.js';
 import { couponApi } from '@/api/coupon.js';
 import { pointApi } from '@/api/point.js';
+import { voucherApi } from '@/api/voucher.js';
 import RedeemCoupon from '@/components/CouponBlock/RedeemCoupon.vue';
 import PointPicker from '@/components/PointPicker/index.vue';
 export default {
@@ -138,6 +139,53 @@ export default {
          }).then(res => res.info.results.coupon_information);
       }
 
+      let getVoucherInfo = async(voucherIds) => {
+         return voucherApi.getInfo({
+            voucher_ids: voucherIds,
+            full_info: false
+         }).then(res => res.results.voucher_information)
+      }
+
+      let getBrandArr = (data) => {
+         let result = data.reduce((prev, current) => {
+            prev = prev.concat(current.brand_ids);
+            return prev;
+         }, []);
+         return Array.from(new Set(result));
+      }
+
+      let mergeCouponAndStore = (couponInfo, storeData) => { //合併票券和商店資料資料
+         return couponInfo.reduce((prev, current) => {
+            let couponId = current.coupon_id;
+            let obj = storeData.find(item => item.coupon_id === couponId);
+            prev.push({ ...current, storeList: obj || null });
+            return prev;
+         }, []);
+      }
+
+      let getCouponBlock = async(couponIds) => {
+         if (couponIds.length === 0) return { brandIdArr: [], couponList: [] };
+         let couponInfoData = await getCouponInfo(couponIds);
+         let brandIdArr = getBrandArr(couponInfoData);
+         let storeData = await storeApi.searchAvailableStore(couponIds);
+         let couponList = mergeCouponAndStore(couponInfoData, storeData);
+         return { brandIdArr, couponList };
+      }
+
+      let getVoucherBlock = async(voucherIds) => {
+         if (voucherIds.length === 0) return { brandIdArr: [], voucherList: [] };
+         let voucherInfo = await getVoucherInfo(voucherIds);
+         let brandIdArr = getBrandArr(voucherInfo);
+         console.log(brandIdArr);
+         // let voucherList = [];
+         // for (let i = 0; i < voucherInfo.length; i++) {
+         //    let voucher = voucherInfo[i];
+         //    let storeInfo = await this.getVoucherStore(voucher.voucher_id);
+         //    voucherList.push({ ...voucher, storeList: storeInfo || null });
+         // }
+         // return { brandIdArr, voucherList };
+      }
+
       let exchangeHandler = async(params) => {
          let { status, info } = await activityApi.redeemCoupon(params)
             .then(res => res)
@@ -261,23 +309,24 @@ export default {
          isLoading.value = true;
          activityId.value = parseInt(root.$route.params.activity_id);
          activityInfo.data = await getActivityInfo();
-         let { brand_id, coupon_ids } = activityInfo.data;
+         let { brand_id, coupon_ids, voucher_ids } = activityInfo.data;
          activityBrandLogo.value = await getBrandInfo([brand_id])
             .then(res => res[0].feature_image_small.url);
-         let couponInfo = await getCouponInfo(coupon_ids);
-         let brandIds = getBrandIds(couponInfo);
-         let brandInfo = await getBrandInfo(brandIds);
-         let storeInfo = await storeApi.searchAvailableStore({ coupon_ids })
-            .then(res => res.info.results.search_coupon_available_store_results);
-         couponList.data = intergateCoupon({ couponInfo, brandInfo, storeInfo });
+         let normalCoupon = await getCouponBlock(coupon_ids);
+         let voucherCoupon = await getVoucherBlock(voucher_ids);
+         // let brandIds = getBrandIds(couponInfo);
+         // let brandInfo = await getBrandInfo(brandIds);
+         // let storeInfo = await storeApi.searchAvailableStore({ coupon_ids })
+         //    .then(res => res.info.results.search_coupon_available_store_results);
+         // couponList.data = intergateCoupon({ couponInfo, brandInfo, storeInfo });
 
-         if (isPointType.value) {
-            let normalPoint = await getPointCategoryInfo('point_condition');
-            let externalPoint = await getPointCategoryInfo('external_point_condition');
-            let allPoint = normalPoint.concat(externalPoint);
-            pickerItem.data = createPickList(allPoint);
-            if (moreThanOnePickerItem.value) usePointPicker.value = true;
-         }
+         // if (isPointType.value) {
+         //    let normalPoint = await getPointCategoryInfo('point_condition');
+         //    let externalPoint = await getPointCategoryInfo('external_point_condition');
+         //    let allPoint = normalPoint.concat(externalPoint);
+         //    pickerItem.data = createPickList(allPoint);
+         //    if (moreThanOnePickerItem.value) usePointPicker.value = true;
+         // }
 
          isLoading.value = false;
       });
