@@ -14,9 +14,9 @@ export default {
    setup(props, { root }) {
       let { questionList } = registerList();
       let user = reactive({
-         mobile: '0986104667',
-         security_question: 'sq01',
-         security_answer: 'aaa'
+         mobile: '',
+         security_question: '',
+         security_answer: ''
       });
       let msgOption = reactive({
          isOpen: false,

@@ -17,10 +17,8 @@ export default {
       let loginSuccess = ref(false);
       let form = ref(null);
       let user = reactive({
-         account: '0999803025',
-         password: '1qaz2wsx',
-         // account: '0986104667',
-         // password: 'abc123',
+         account: '',
+         password: '',
       });
       let msgOption = reactive({
          isOpen: false,
