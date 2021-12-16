@@ -9,4 +9,12 @@ export const storeApi = {
       }).then(res => res.data);
       return result;
    },
+   async searchVoucherStore(payload) {
+      let result = await httpConfig({
+         url: '/store/search_voucher_available_store',
+         method: 'post',
+         data: { ...payload }
+      }).then(res => res.data);
+      return result;
+   },
 }

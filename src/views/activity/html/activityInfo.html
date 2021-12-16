@@ -1,6 +1,6 @@
 <section class="activityInfo_section">
    <div class="banner">
-      <div class="inner"></div>
+      <div class="inner" :style="activityBanner"></div>
    </div>
    <div class="wrap">
       <div class="activityIntro">
@@ -33,9 +33,18 @@
          <div class="title">兌換此活動可獲得以下票券</div>
          <div class="content">
             <RedeemCoupon
-               v-for="coupon in couponList.data"
+               v-for="coupon in couponBlock.data"
                :key="coupon.coupon_id"
                :couponItem="coupon"
+               :brandList="brandList.data"
+               couponType="coupon"
+            ></RedeemCoupon>
+            <RedeemCoupon
+               v-for="coupon in voucherBlock.data"
+               :key="coupon.coupon_id"
+               :couponItem="coupon"
+               :brandList="brandList.data"
+               couponType="voucher"
             ></RedeemCoupon>
          </div>
       </div>

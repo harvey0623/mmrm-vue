@@ -24,20 +24,14 @@ export default {
       let activityBrandLogo = ref('');
       let pointPicker = ref(null);
       let usePointPicker = ref(false);
+      let brandList = reactive({ data: [] });
       let activityInfo = reactive({ data: {} });
-      let couponList = reactive({ data: [] });
+      let couponBlock = reactive({ data: [] });
+      let voucherBlock = reactive({ data: [] });
       let pickerItem = reactive({ data: [] });
       let tempStatus = ref(false);
-      let redeemStatus = {
-         free: '免費兌換',
-         redeem_code: '兌換碼兌換',
-         point: '點數兌換'
-      };
-      let usageStatus = {
-         opening: '已開啟',
-         unopened: '尚未開始',
-         closed: '已結束'
-      };
+      let redeemStatus = { free: '免費兌換', redeem_code: '兌換碼兌換', point: '點數兌換' };
+      let usageStatus = { opening: '已開啟', unopened: '尚未開始', closed: '已結束' };
       let doubleCheckOption = reactive({
          isOpen: false,
          showCancel: true,
@@ -62,14 +56,16 @@ export default {
          category: ''
       });
 
-      let hasActivityInfo = computed(() => {
-         return !(_.isEmpty(activityInfo.data));
+      let hasActivityInfo = computed(() => !(_.isEmpty(activityInfo.data)));
+
+      let activityBanner = computed(() => {
+         if (!hasActivityInfo.value) return {};
+         let imgUrl = activityInfo.data.feature_image.url;
+         if (!imgUrl) return {};
+         else return { backgroundImage: `url(${imgUrl})` };
       });
 
-      let activityTitle = computed(() => {
-         if (!hasActivityInfo.value) return '';
-         else return activityInfo.data.title;
-      });
+      let activityTitle = computed(() => hasActivityInfo.value ? activityInfo.data.title : '');
 
       let activityDuration = computed(() => {
          if (!hasActivityInfo.value) return '';
@@ -78,20 +74,15 @@ export default {
          return `${startTime}~${endTime}`;
       });
 
-      let activityMeta = computed(() => {
-         if (!hasActivityInfo.value) return [];
-         else return activityInfo.data.meta;
-      });
+      let activityMeta = computed(() => hasActivityInfo.value ? activityInfo.data.meta : []);
 
-      let activityContent = computed(() => {
-         if (!hasActivityInfo.value) return '';
-         else return activityInfo.data.content;
-      });
+      let activityContent = computed(() => hasActivityInfo.value ? activityInfo.data.content : '');
 
       let brandLogoBg = computed(() => {
          if (!hasActivityInfo.value) return {};
-         if (activityBrandLogo.value === '') return {};
-         return { backgroundImage: `url(${activityBrandLogo.value})` };
+         let imgUrl = activityBrandLogo.value;
+         if (!imgUrl) return {};
+         else return { backgroundImage: `url(${imgUrl})` };
       });
 
       let activityIsOpening = computed(() => {
@@ -114,9 +105,7 @@ export default {
          return activityInfo.data.redeem_type === 'point';
       });
 
-      let moreThanOnePickerItem = computed(() => {
-         return pickerItem.data.length > 1;
-      });
+      let moreThanOnePickerItem = computed(() => pickerItem.data.length > 1);
 
       let getActivityInfo = async() => {
          return activityApi.couponInfo({
@@ -154,7 +143,7 @@ export default {
          return Array.from(new Set(result));
       }
 
-      let mergeCouponAndStore = (couponInfo, storeData) => { //合併票券和商店資料資料
+      let mergeCouponAndStore = (couponInfo, storeData) => {
          return couponInfo.reduce((prev, current) => {
             let couponId = current.coupon_id;
             let obj = storeData.find(item => item.coupon_id === couponId);
@@ -167,7 +156,9 @@ export default {
          if (couponIds.length === 0) return { brandIdArr: [], couponList: [] };
          let couponInfoData = await getCouponInfo(couponIds);
          let brandIdArr = getBrandArr(couponInfoData);
-         let storeData = await storeApi.searchAvailableStore(couponIds);
+         let storeData = await storeApi.searchAvailableStore({ coupon_ids: couponIds }).then(res => {
+            return res.info.results.search_coupon_available_store_results;
+         });
          let couponList = mergeCouponAndStore(couponInfoData, storeData);
          return { brandIdArr, couponList };
       }
@@ -176,14 +167,13 @@ export default {
          if (voucherIds.length === 0) return { brandIdArr: [], voucherList: [] };
          let voucherInfo = await getVoucherInfo(voucherIds);
          let brandIdArr = getBrandArr(voucherInfo);
-         console.log(brandIdArr);
-         // let voucherList = [];
-         // for (let i = 0; i < voucherInfo.length; i++) {
-         //    let voucher = voucherInfo[i];
-         //    let storeInfo = await this.getVoucherStore(voucher.voucher_id);
-         //    voucherList.push({ ...voucher, storeList: storeInfo || null });
-         // }
-         // return { brandIdArr, voucherList };
+         let voucherList = [];
+         for (let i = 0; i < voucherInfo.length; i++) {
+            let voucher = voucherInfo[i];
+            let storeInfo = await storeApi.searchVoucherStore({ voucher_id: 1 });
+            voucherList.push({ ...voucher, storeList: storeInfo.info.results || null });
+         }
+         return { brandIdArr, voucherList };
       }
 
       let exchangeHandler = async(params) => {
@@ -197,14 +187,6 @@ export default {
          };
       }
 
-      let getBrandIds = (data) => {
-         let arr = data.reduce((prev, current) => {
-            prev = prev.concat(current.brand_ids);
-            return prev;
-         }, []);
-         return Array.from(new Set(arr));
-      }
-
       let getPointCategoryInfo = async(key) => { //取得點數分類資訊
          if (activityInfo.data[key] === undefined) return [];
          let pointIds = activityInfo.data[key].map(item => item.point_id);
@@ -213,15 +195,6 @@ export default {
             .then(res => res.info.results.point_information);
          result.forEach(item => item.category = key);
          return _.cloneDeep(result);
-      }
-
-      let intergateCoupon = ({ couponInfo, brandInfo, storeInfo }) => { //整和票券
-         return couponInfo.reduce((prev, current) => {
-            let targetBrand = brandInfo.find(item => item.brand_id === current.brand_ids[0]);
-            let targetStore = storeInfo.find(item => item.coupon_id === current.coupon_id);
-            prev.push({ ...current, brandInfo: targetBrand, storeInfo: targetStore });
-            return prev;
-         }, []);
       }
 
       let createPickList = (pointInfo) => { //產生點數下拉清單
@@ -310,28 +283,29 @@ export default {
          activityId.value = parseInt(root.$route.params.activity_id);
          activityInfo.data = await getActivityInfo();
          let { brand_id, coupon_ids, voucher_ids } = activityInfo.data;
-         activityBrandLogo.value = await getBrandInfo([brand_id])
-            .then(res => res[0].feature_image_small.url);
+         activityBrandLogo.value = getBrandInfo([brand_id]).then(res => res[0].feature_image_small.url);
+
          let normalCoupon = await getCouponBlock(coupon_ids);
          let voucherCoupon = await getVoucherBlock(voucher_ids);
-         // let brandIds = getBrandIds(couponInfo);
-         // let brandInfo = await getBrandInfo(brandIds);
-         // let storeInfo = await storeApi.searchAvailableStore({ coupon_ids })
-         //    .then(res => res.info.results.search_coupon_available_store_results);
-         // couponList.data = intergateCoupon({ couponInfo, brandInfo, storeInfo });
+         let allCouponBrandIds = normalCoupon.brandIdArr.concat(voucherCoupon.brandIdArr);
+         if (allCouponBrandIds.length > 0) {
+            brandList.data = await getBrandInfo(allCouponBrandIds);
+         }
+         couponBlock.data = normalCoupon.couponList;
+         voucherBlock.data = voucherCoupon.voucherList;
 
-         // if (isPointType.value) {
-         //    let normalPoint = await getPointCategoryInfo('point_condition');
-         //    let externalPoint = await getPointCategoryInfo('external_point_condition');
-         //    let allPoint = normalPoint.concat(externalPoint);
-         //    pickerItem.data = createPickList(allPoint);
-         //    if (moreThanOnePickerItem.value) usePointPicker.value = true;
-         // }
+         if (isPointType.value) {
+            let normalPoint = await getPointCategoryInfo('point_condition');
+            let externalPoint = await getPointCategoryInfo('external_point_condition');
+            let allPoint = normalPoint.concat(externalPoint);
+            pickerItem.data = createPickList(allPoint);
+            if (moreThanOnePickerItem.value) usePointPicker.value = true;
+         }
 
          isLoading.value = false;
       });
 
-      return { isLoading, activityTitle, activityDuration, activityMeta, activityContent, activityBrandLogo, brandLogoBg, activityIsOpening, redeemTypeText, usageText, couponList, readyExchange, doubleCheckOption, processHandler, exchangeHandler, msgOption, finishHandler, codePopupOption, isPointType, pickerItem, moreThanOnePickerItem, usePointPicker, selectPoint, pointPicker }
+      return { isLoading, activityBanner, activityTitle, activityDuration, activityMeta, activityContent, activityBrandLogo, brandLogoBg, activityIsOpening, redeemTypeText, usageText, couponBlock, voucherBlock, readyExchange, doubleCheckOption, processHandler, exchangeHandler, msgOption, finishHandler, codePopupOption, isPointType, pickerItem, moreThanOnePickerItem, usePointPicker, selectPoint, pointPicker, brandList }
    },
    components: {
       RedeemCoupon,

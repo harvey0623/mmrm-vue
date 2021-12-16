@@ -222,7 +222,7 @@ const routes = [
 				component: ActivityInfo
 			},
 			{
-				path: 'coupon/:coupon_id(\\d+)',
+				path: 'coupon/id/:coupon_id(\\d+)/type/:couponType',
 				name: 'activityCoupon',
 				component: ActivityCoupon
 			},
