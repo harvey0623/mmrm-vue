@@ -57,7 +57,7 @@ export const getAboutCouponInfo = function () {
    let getStoreInfo = (couponIds) => { //取得商店資訊
       return storeApi.searchAvailableStore({
          coupon_ids: couponIds
-      }).then(res => res.info.results.search_coupon_available_store_results[0])
+      }).then(res => res.info.results.search_coupon_available_store_results[0]);
    }
 
    let getVoucherStoreInfo = (voucherId) => {

@@ -101,7 +101,9 @@ export default {
          myCouponId.value = parseInt(root.$route.params.my_coupon_id);
          couponDetail.data = await getCouponDetail();
          couponInfo.data = await getCouponInfo([couponDetail.data.coupon_id]);
-         brandInfo.data = await getBrandInfo([couponInfo.data.brand_ids[0]]);
+         if (couponInfo.data.brand_ids.length > 0) {
+            brandInfo.data = await getBrandInfo([couponInfo.data.brand_ids[0]]);
+         }
          storeInfo.data = await getStoreInfo([couponDetail.data.coupon_id]);
          isLoading.value = false;
       }
