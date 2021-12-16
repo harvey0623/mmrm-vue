@@ -26,7 +26,7 @@ export default {
          @include size(100%, $basicHeight);
          padding-left: 15px;
          background-color: #fff;
-         border-bottom: 1px solid lightgray;
+         border-bottom: 1px solid #efeded;
          z-index: 11;
          >a {
             display: inline-block;

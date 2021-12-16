@@ -51,13 +51,13 @@ export default {
       onMounted(async() => {
          isLoading.value = true;
          assignData();
-         if (myCouponIds.data.length === 0) return false;
-         await getMyCouponDetail();
-         let couponInfo = await couponApi.coupon_information({
-            coupon_ids: couponIds,
-            full_info: false
-         }).then(res => res.info.results.coupon_information);
-         couponList.data = intergateCoupon(couponInfo);
+         // if (myCouponIds.data.length === 0) return false;
+         // await getMyCouponDetail();
+         // let couponInfo = await couponApi.coupon_information({
+         //    coupon_ids: couponIds,
+         //    full_info: false
+         // }).then(res => res.info.results.coupon_information);
+         // couponList.data = intergateCoupon(couponInfo);
          isLoading.value = false;
       });
       
