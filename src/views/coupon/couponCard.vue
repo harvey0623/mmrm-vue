@@ -69,7 +69,9 @@ export default {
          myCouponId.value = parseInt(root.$route.params.my_coupon_id);
          couponDetail.data = await getCouponDetail();
          couponInfo.data = await getCouponInfo([couponDetail.data.coupon_id]);
-         brandInfo.data = await getBrandInfo([couponInfo.data.brand_ids[0]]);
+         if (couponInfo.data.brand_ids > 0) {
+            brandInfo.data = await getBrandInfo([couponInfo.data.brand_ids[0]]);
+         }
          let memberProfile = await memberApi.get_member_profile().then(res => {
             return res.info.results.member_profile;
          });
