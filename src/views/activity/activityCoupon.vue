@@ -11,11 +11,10 @@ export default {
       }
    },
    setup(props, { root }) {
-      let { hasCouponInfo ,couponInfo, brandInfo, storeInfo, couponBackgroundImage, couponTitle, couponDuration, couponDesc, brandTitle, brandBackgroundImage, totalUageTimes, allStoreAvailable, storeCount, getCouponInfo, getBrandInfo, getStoreInfo } 
+      let { hasCouponInfo ,couponInfo, brandInfo, storeInfo, couponBackgroundImage, couponTitle, couponDuration, couponDesc, brandTitle, brandBackgroundImage, totalUageTimes, allStoreAvailable, storeCount, getCouponInfo, getBrandInfo, getStoreInfo, getVoucherInfo, getVoucherStoreInfo } 
          = getAboutCouponInfo();
       let couponId = ref(0);
       let isLoading = ref(false);
-
       let couponTransferredText = computed(() => {
          if (!hasCouponInfo.value) return '';
          return couponInfo.data.can_transfer ? '允許轉贈' : '不可轉贈';
@@ -24,9 +23,15 @@ export default {
       onMounted(async() => {
          isLoading.value = true;
          couponId.value = parseInt(root.$route.params.coupon_id);
-         couponInfo.data = await getCouponInfo([couponId.value]);
-         brandInfo.data = await getBrandInfo([couponInfo.data.brand_ids[0]]);
-         storeInfo.data = await getStoreInfo([couponId.value]);
+         let couponType = root.$route.params.couponType;
+         let infoMethod = couponType === 'coupon' ? getCouponInfo : getVoucherInfo;
+         let storeMehtod = couponType === 'coupon' ? getStoreInfo : getVoucherStoreInfo;
+         let storeParams = couponType === 'coupon' ? [couponId.value] : couponId.value;
+         couponInfo.data = await infoMethod([couponId.value]);
+         storeInfo.data = await storeMehtod(storeParams);
+         if (couponInfo.data.brand_ids.length > 0) {
+            brandInfo.data = await getBrandInfo([couponInfo.data.brand_ids[0]]);
+         }
          isLoading.value = false;
       });
 
