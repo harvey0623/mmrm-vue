@@ -60,8 +60,10 @@ export default {
       }
 
       onMounted(async() => {
+         isLoading.value = true;
          let pointList = await memberApi.member_summary().then(res => res.info.results.point_summary.current_point);
          addPointIdToUrl(pointList);
+         isLoading.value = false;
       });
 
       let logoutHandler = async() => {

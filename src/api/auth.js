@@ -2,8 +2,8 @@ import { httpConfig } from './config.js';
 import { crypto } from '@/plugins/crypto/index.js';
 
 export const authApi = {
-   async login(payload) { //登入
-      return await httpConfig({
+   login(payload) { //登入
+      return httpConfig({
          url: '/member/login',
          method: 'post',
          data: {
@@ -13,8 +13,8 @@ export const authApi = {
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
-   async logout() { //登出
-      return await httpConfig({
+   logout() { //登出
+      return httpConfig({
          url: '/member/logout',
          method: 'post',
          data: {}
@@ -24,8 +24,8 @@ export const authApi = {
          return { status: false };
       });
    },
-   async register_check(payload) { //註冊第一步
-      return await httpConfig({
+   register_check(payload) { //註冊第一步
+      return httpConfig({
          url: '/member/register_check',
          method: 'post',
          data: {
@@ -39,8 +39,8 @@ export const authApi = {
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
-   async register({ step1, step2 }) { //註冊第二步
-      return await httpConfig({
+   register({ step1, step2 }) { //註冊第二步
+      return httpConfig({
          url: '/member/register',
          method: 'post',
          data: {
@@ -52,8 +52,8 @@ export const authApi = {
       }).then(res => res.data)
          .catch(err => err.response.data)
    },
-   async registerVerify(payload) { //註冊第三步
-      return await httpConfig({
+   registerVerify(payload) { //註冊第三步
+      return httpConfig({
          url: '/member/register_verify',
          method: 'post',
          data: payload

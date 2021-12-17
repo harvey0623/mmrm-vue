@@ -1,32 +1,29 @@
 import { httpConfig } from './config.js';
 
 export const activityApi = {
-   async briefCoupon() {
-      let result = await httpConfig({
+   briefCoupon() {
+      return httpConfig({
          url: '/activity/brief_coupon_activity_type',
          method: 'post',
          data: {}
       }).then(res => res.data);
-      return result;
    },
-   async searchCoupon(payload) {
-      let result = await httpConfig({
+   searchCoupon(payload) {
+      return httpConfig({
          url: '/activity/search_coupon_activity',
          method: 'post',
          data: {...payload}
       }).then(res => res.data);
-      return result;
    },
-   async couponInfo(payload) {
-      let result = await httpConfig({
+   couponInfo(payload) {
+      return httpConfig({
          url: '/activity/coupon_activity_information',
          method: 'post',
          data: {...payload}
       }).then(res => res.data);
-      return result;
    },
-   async redeemCoupon(payload) {
-      let result = await httpConfig({
+   redeemCoupon(payload) {
+      return httpConfig({
          url: '/activity/redeem_coupon_activity',
          method: 'post',
          data: {...payload}
@@ -35,6 +32,5 @@ export const activityApi = {
       }).catch(err => {
          return err.response.data;
       });
-      return result;
    },
 }
