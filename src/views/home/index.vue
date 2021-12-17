@@ -2,11 +2,10 @@
    <div class="home">
       <div class="mycontainer">
          <EntranceBlock
-            v-for="service in serviceList"
+            v-for="service in serviceInfo"
             :key="service.itemType"
             :title="service.title"
             :lists="service.lists"
-            :isLogin="isLogin"
             @logout="logoutHandler"
          ></EntranceBlock>
       </div>
@@ -15,7 +14,8 @@
 </template>
 
 <script>
-import { ref, reactive, computed } from '@vue/composition-api';
+import { ref, reactive, computed, onMounted } from '@vue/composition-api';
+import { memberApi } from '@/api/member.js';
 import EntranceBlock from '@/components/EntranceBlock/index.vue';
 export default {
    name: 'home',
@@ -26,7 +26,7 @@ export default {
    },
    setup(props, { root }) {
       let isLoading = ref(false);
-      let serviceList = reactive([
+      let serviceInfo = reactive([
          {
             itemType: 'member',
             title: '會員項目',
@@ -37,7 +37,7 @@ export default {
                { itemType: 'card', title: '會員條碼', path: '/member/card', auth: true, icon: 'fas fa-qrcode' },
                { itemType: 'level', title: '會員等級', path: '/member/level', auth: true, icon: 'fas fa-tasks' },
                { itemType: 'transaction', title: '交易紀錄', path: '/member/transaction', auth: true, icon: 'fas fa-history' },
-               { itemType: 'point', title: '點數資訊', path: '/member/pointInfo/12', auth: true, icon: 'fas fa-coins' },
+               { itemType: 'point', title: '點數資訊', path: '/member/pointInfo/', auth: true, icon: 'fas fa-coins' },
                { itemType: 'logout', title: '登出', path: '/', auth: true, icon: 'fas fa-sign-out-alt' }
             ]
          },
@@ -51,7 +51,18 @@ export default {
          }
       ]);
 
-      let isLogin = computed(() => root.$store.state.auth.isLogin);
+      let addPointIdToUrl = (pointList) => {
+         if (pointList.length === 0) return;
+         let pointId = pointList[1].point_id;
+         let targetServiceList = serviceInfo[0].lists;
+         let pointObj = targetServiceList.find(item => item.itemType === 'point');
+         pointObj.path = pointObj.path + pointId;
+      }
+
+      onMounted(async() => {
+         let pointList = await memberApi.member_summary().then(res => res.info.results.point_summary.current_point);
+         addPointIdToUrl(pointList);
+      });
 
       let logoutHandler = async() => {
          isLoading.value = true;
@@ -59,7 +70,7 @@ export default {
          isLoading.value = false;
       }
 
-      return { isLoading, serviceList, isLogin, logoutHandler };
+      return { isLoading, serviceInfo, logoutHandler };
    },
    components: {
       EntranceBlock

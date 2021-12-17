@@ -27,18 +27,14 @@ export default {
       lists: {
          type: Array,
          required: true
-      },
-      isLogin: {
-         type: Boolean,
-         required: true
       }
    },
-   setup(props, context) {
-      let { lists, isLogin } = toRefs(props);
-      
-      let serviceLists = computed(() => {
-         return lists.value.filter(list => list.auth === isLogin.value);
-      });
+   setup(props, { root }) {
+      let { lists } = toRefs(props);
+
+      let isLogin = computed(() => root.$store.state.auth.isLogin);
+
+      let serviceLists = computed(() => lists.value.filter(list => list.auth === isLogin.value));
       
       let hasLists = computed(() => serviceLists.value.length > 0);
 

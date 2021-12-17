@@ -2,8 +2,8 @@ import { httpConfig } from './config.js';
 import { crypto } from '@/plugins/crypto/index.js';
 
 export const memberApi = {
-   async forget_password(payload) { //忘記密碼第一步
-      return await httpConfig({
+   forget_password(payload) { //忘記密碼第一步
+      return httpConfig({
          url: '/member/v1.1/forget_password',
          method: 'post',
          data: {
@@ -14,16 +14,16 @@ export const memberApi = {
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
-   async forget_password_verify(payload) { //忘記密-簡訊驗證
-      return await httpConfig({
+   forget_password_verify(payload) { //忘記密-簡訊驗證
+      return httpConfig({
          url: '/member/forget_password_verify',
          method: 'post',
          data: payload
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
-   async reset_password(payload) { //重設密碼
-      return await httpConfig({
+   reset_password(payload) { //重設密碼
+      return httpConfig({
          url: '/member/reset_password',
          method: 'post',
          data: {
@@ -33,8 +33,8 @@ export const memberApi = {
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
-   async verify_member_password(payload) { //密碼驗證
-      return await httpConfig({
+   verify_member_password(payload) { //密碼驗證
+      return httpConfig({
          url: '/member/verify_member_password',
          method: 'post',
          data: {
@@ -43,24 +43,24 @@ export const memberApi = {
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
-   async get_member_profile() { //會員資料
-      return await httpConfig({
+   get_member_profile() { //會員資料
+      return httpConfig({
          url: '/member/get_member_profile',
          method: 'post',
          data: {}
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
-   async update_member_profile(payload) { //更新會員資料
-      return await httpConfig({
+   update_member_profile(payload) { //更新會員資料
+      return httpConfig({
          url: '/member/update_member_profile',
          method: 'post',
          data: payload
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
-   async update_member_mobile(payload) { //更新會員手機
-      return await httpConfig({
+   update_member_mobile(payload) { //更新會員手機
+      return httpConfig({
          url: '/member/update_member_mobile',
          method: 'post',
          data: {
@@ -70,16 +70,16 @@ export const memberApi = {
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
-   async member_verify(payload) { //會員認證(更新手機號碼用)
-      return await httpConfig({
+   member_verify(payload) { //會員認證(更新手機號碼用)
+      return httpConfig({
          url: '/member/member_verify',
          method: 'post',
          data: payload
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
-   async update_member_password(payload) { //更新密碼
-      return await httpConfig({
+   update_member_password(payload) { //更新密碼
+      return httpConfig({
          url: '/member/update_member_password',
          method: 'post',
          data: {
@@ -89,16 +89,16 @@ export const memberApi = {
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
-   async member_summary() { //會員資訊
-      return await httpConfig({
+   member_summary() { //會員資訊
+      return httpConfig({
          url: '/member/member_summary',
          method: 'post',
          data: {}
       }).then(res => res.data)
          .catch(err => err.response.data);
    },
-   async member_card() { //會員條碼
-      return await httpConfig({
+   member_card() { //會員條碼
+      return httpConfig({
          url: '/member/get_member_card',
          method: 'post',
          data: {}
