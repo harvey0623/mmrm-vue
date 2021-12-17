@@ -51,7 +51,10 @@ export default {
          }
       ]);
 
-      let addPointIdToUrl = (pointList) => {
+      let isLogin = computed(() => root.$store.state.auth.isLogin);
+
+      let addPointIdToUrl = async () => {
+         let pointList = await memberApi.member_summary().then(res => res.info.results.point_summary.current_point);
          if (pointList.length === 0) return;
          let pointId = pointList[1].point_id;
          let targetServiceList = serviceInfo[0].lists;
@@ -61,8 +64,7 @@ export default {
 
       onMounted(async() => {
          isLoading.value = true;
-         let pointList = await memberApi.member_summary().then(res => res.info.results.point_summary.current_point);
-         addPointIdToUrl(pointList);
+         if (isLogin.value) await addPointIdToUrl();
          isLoading.value = false;
       });
 
@@ -80,6 +82,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
