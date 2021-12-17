@@ -309,7 +309,9 @@ export default {
 
       onMounted(async() => {
          isLoading.value = true;
-         window.addEventListener('scroll', scrollHandler);
+         setTimeout(() => {
+            window.addEventListener('scroll', scrollHandler);
+         }, 100);
          await createPointSlider();
       });
 
