@@ -70,7 +70,8 @@ export default {
 
       let logoutHandler = async() => {
          isLoading.value = true;
-         await root.$store.dispatch('auth/logout');
+         let logoutStatus = await root.$store.dispatch('auth/logout');
+         if (logoutStatus) root.$router.replace('/login');
          isLoading.value = false;
       }
 

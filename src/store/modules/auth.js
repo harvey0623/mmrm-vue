@@ -41,6 +41,7 @@ export const authStore = {
             commit('setLogin', false);
             commit('setLogoutPopup', true, { root: true });
          }
+         return logoutResult.status;
       },
       async register_step1({ commit }, payload) { //註冊第一步
          let stepResult = await authApi.register_check(payload);

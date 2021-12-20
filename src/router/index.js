@@ -40,7 +40,8 @@ const routes = [
 		name: 'home',
 		component: Home,
 		meta: {
-			layout: 'default'
+			layout: 'default',
+			auth: true
 		}
 	},
 	{
